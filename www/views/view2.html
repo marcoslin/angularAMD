@@ -1,0 +1,12 @@
+<h3 class="title" ng-bind="title"></h3>
+
+<div>
+    <label for="txt_title">Change Title: </label>
+    <input id="txt_title" type="text" class="topcoat-text-input--large" ng-model="title">
+</div>
+
+<ul>
+    <li class="hlist" ng-repeat="row in rows">
+        <img ng-src="{{row.media.m}}">
+    </li>
+</ul>

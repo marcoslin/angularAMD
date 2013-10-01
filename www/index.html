@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" ng-app="ngreq-app">
+
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to AngularJS/RequireJS Sample</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/topcoat-desktop-light.css">
+</head>
+
+<body>
+    <h1>Welcome to AngularJS/RequireJS Sample</h1>
+    <div class="topcoat-button-bar">
+        <div class="topcoat-button-bar__item">
+            <a class="topcoat-button-bar__button--large" href="#/view1">View 1</a>
+        </div>
+        <div class="topcoat-button-bar__item">
+            <a class="topcoat-button-bar__button--large" href="#/view2">View 2</a>
+        </div>
+        <div class="topcoat-button-bar__item">
+            <a class="topcoat-button-bar__button--large" href="#/view3">View 3</a>
+        </div>
+    </div>
+    
+    <div ng-view></div>
+    
+    
+    <script src="js/libs/angular/angular.js"></script>
+    <script src="js/libs/angular/angular-route.js"></script>
+    <script src="js/libs/angular/angular-resource.js"></script>
+    
+    <script src="js/scripts/directive/customDirectives.js"></script>
+    <script src="js/scripts/service/dataServices.js"></script>
+    <script src="js/scripts/app.js"></script>
+    <script src="js/scripts/controller/view1_ctrl.js"></script>
+    <script src="js/scripts/controller/view2_ctrl.js"></script>
+    <script src="js/scripts/controller/view3_ctrl.js"></script>
+    
+    
+    <!--
+    <script src="js/require.js" data-main="js/main.js"></script>
+    -->
+</body>
+
+</html>

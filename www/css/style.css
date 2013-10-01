@@ -1,0 +1,11 @@
+
+h3.title {
+    color: DarkBlue;
+}
+
+li.hlist {
+    height: 160px;
+    width: 160px;
+    display: inline;
+    list-style-type: none;
+}
