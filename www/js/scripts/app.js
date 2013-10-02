@@ -1,7 +1,7 @@
 define(['angular-route'], function () {
 
     var app = angular.module("ngreq-app", ['ngRoute']);
-    var j, eagerAngular = angular, lazyAngular = {}, cachedInternals = {}, lazyModules = {};
+    var eagerAngular = angular, lazyAngular = {}, cachedInternals = {}, lazyModules = {};
     
 	function makeLazyModule(name, cachedInternals) {
 		var lazyModule = {
@@ -63,39 +63,6 @@ define(['angular-route'], function () {
             }
         }
         
-        function dummyPictures () {
-            console.log("Dummy Picture called");
-            return {
-                query: function () { return ["Dummy Picture"]; }
-            } 
-        }
-        
-        
-        
-        function view2Resolver() {
-            return {
-                load: ['$q', '$rootScope', function ($q, $rootScope) {
-                    var defer = $q.defer();
-                    require(["View2Controller"], function () {
-                        defer.resolve();
-                        $rootScope.$apply();
-                    });
-                    return defer.promise;
-                }],
-                Pictures: ['$q', '$rootScope', function ($q, $rootScope) {
-                    var defer = $q.defer();
-                    require(["dataServices"], function () {
-                        var injector = angular.injector(["dataServices","ng"]);
-                        $rootScope.$apply(function () {
-                            defer.resolve(injector.get("Pictures"));
-                        });
-                    });
-                    return defer.promise;
-                }]
-            }
-        }
-        
-        
         $routeProvider
             .when("/view1", {
                 templateUrl: "views/view1.html", controller: "View1Controller",
@@ -112,20 +79,32 @@ define(['angular-route'], function () {
             .otherwise({redirectTo: '/view1'})
     }]);
 
-    // Start lazy
+    /*
+    Lazy Angular works by basically replacing the angular.module to a custom version
+    that calls the cached provider created during th config phaze of the app.
+    
+    By replacing the window.angular version, the lazy loaded module are created using
+    the cached $provider instead of the native version.
+    
+    The lazyAngular is therefore a proxy to the cached $provider
+    */
     angular.extend(lazyAngular, eagerAngular);
     console.log("lazyAngular: ", lazyAngular);
     
     lazyAngular.module = function(name, requires, configFn) {
         var ret, realModule;
         if( typeof(requires) === "undefined" ) {
-            if( lazyModules.hasOwnProperty(name) ) ret = lazyModules[name];
-            else ret = eagerAngular.module(name);
+            if( lazyModules.hasOwnProperty(name) ) {
+                ret = lazyModules[name];
+            } else {
+                ret = eagerAngular.module(name);
+            }
         } else {
             if( configFn != null ) throw new Error("config function unimplemented yet, module: " + name);
             ret = makeLazyModule(name, cachedInternals);
             lazyModules[name] = ret;
-            ret.realModule = eagerAngular.module(name, requires, configFn);
+            //ret.realModule = eagerAngular.module(name, requires, configFn);
+            //eagerAngular.module(name, requires, configFn);
         }
         return ret;
     };
