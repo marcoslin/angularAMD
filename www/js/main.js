@@ -2,15 +2,26 @@ require.config({
 
 	// alias libraries paths
     paths: {
-        'domReady': 'libs/requirejs/domReady',
-        'angular': 'libs/angular/angular',
+        'angular-route': 'libs/angular/angular-route',
+        'angular-resource': 'libs/angular/angular-resource',
+        'dataServices': 'scripts/service/dataServices',
+        'customDirectives': 'scripts/directive/customDirectives',
+        'View1Controller': 'scripts/controller/view1_ctrl',
+        'View2Controller': 'scripts/controller/view2_ctrl',
+        'View3Controller': 'scripts/controller/view3_ctrl',
         'app': 'scripts/app'
     },
 
     // angular does not support AMD out of the box, put it in a shim
     shim: {
-        'angular': {
-            exports: 'angular'
+        'angular-route': {
+            exports: 'angular-route'
+        },
+        'angular-resource': {
+            exports: 'angular-resource'
+        },
+        'app': {
+            deps: ['angular-resource']
         }
     },
 

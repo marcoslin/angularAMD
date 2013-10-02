@@ -3,12 +3,8 @@
  */
 define([
     'require',
-    'angular',
     'app'
-], function (require, ng) {
+], function (require) {
     'use strict';
-    console.log("ng: ", ng);
-    require(['domReady!'], function (document) {
-        ng.bootstrap(document, ['app']);
-    });
+    angular.bootstrap(document, ['ngreq-app']);
 });
