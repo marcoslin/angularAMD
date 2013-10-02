@@ -21,11 +21,12 @@ require.config({
         'angular-resource': {
             exports: 'angular-resource'
         },
-        'moreServices' : {
-            exports: "moreServices",
+        'dataServices' : {
+            exports: "dataServices",
             deps: ['angular-resource']
         },
-        'app': {
+        'moreServices' : {
+            exports: "moreServices",
             deps: ['angular-resource']
         }
     },
