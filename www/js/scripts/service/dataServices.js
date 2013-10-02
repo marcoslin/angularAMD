@@ -1,7 +1,7 @@
-define(['app', 'angular-resource'], function (app) {
-    var service = angular.module("dataServices", ['ngResource']);
+// dataServices
+define(['app'], function (app) {
     
-    service.factory('Pictures', ['$http', '$q', '$log', function ($http, $q, $log) {
+    app.register.factory('Pictures', ['$http', '$q', '$log', function ($http, $q, $log) {
         var feed_url = "http://ycpi.api.flickr.com/services/feeds/photos_public.gne?format=json&tags=London&jsoncallback=JSON_CALLBACK";
         return {
             query: function () {
@@ -18,6 +18,5 @@ define(['app', 'angular-resource'], function (app) {
             }
         };
     }]);
-    
-    return service;
+
 });

@@ -5,6 +5,7 @@ require.config({
         'angular-route': 'libs/angular/angular-route',
         'angular-resource': 'libs/angular/angular-resource',
         'dataServices': 'scripts/service/dataServices',
+        'moreServices': 'scripts/service/moreServices',
         'customDirectives': 'scripts/directive/customDirectives',
         'View1Controller': 'scripts/controller/view1_ctrl',
         'View2Controller': 'scripts/controller/view2_ctrl',
@@ -19,6 +20,10 @@ require.config({
         },
         'angular-resource': {
             exports: 'angular-resource'
+        },
+        'moreServices' : {
+            exports: "moreServices",
+            deps: ['angular-resource']
         },
         'app': {
             deps: ['angular-resource']
