@@ -1,7 +1,6 @@
 // customDirectives
 define(['app'], function (app) {
-    
-    app.register.directive('ngWrite', function ($timeout, $log) {
+    app.register.directive('ngWrite', ['$timeout', '$log', function ($timeout, $log) {
         return {
             restrict: 'A',
             link: function (scope, elm, attr) {
@@ -9,6 +8,5 @@ define(['app'], function (app) {
                 elm.text(text_value);
             }
         };
-    });
-
+    }]);
 });
