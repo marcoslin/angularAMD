@@ -9,3 +9,7 @@ li.hlist {
     display: inline;
     list-style-type: none;
 }
+
+#map-canvas {
+	height: 500px;
+}

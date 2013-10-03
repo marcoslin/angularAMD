@@ -1,7 +1,6 @@
-define(['angular-route'], function () {
-
+define(['domReady!', 'angular-route'], function (doc) {
     var app = angular.module("ngreq-app", ['ngRoute']);
-
+    
     function resolveController(names) {
         return {
             load: ['$q', '$rootScope', function ($q, $rootScope) {
@@ -15,6 +14,10 @@ define(['angular-route'], function () {
         }
     }
     
+    
+    /**
+     * Configure Angular ngApp with route and cache the needed providers
+     */
     app.config(
         ['$routeProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
          function ($routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
@@ -26,8 +29,6 @@ define(['angular-route'], function () {
             factory: $provide.factory,
             service: $provide.service
         };
-        
-
         
         $routeProvider
             .when("/view1", {
@@ -42,9 +43,14 @@ define(['angular-route'], function () {
                 templateUrl: "views/view3.html", controller: "View3Controller",
                 resolve: resolveController(["customDirectives", "View3Controller"])
             })
+            .when("/viewmap", {
+                templateUrl: "views/view_map.html", controller: "ViewMapController",
+                resolve: resolveController(["ViewMapController"])
+            })
             .otherwise({redirectTo: '/view1'})
     }]);
 
+    
     /*
     Lazy Angular works by basically replacing the angular.module to a custom version
     that calls the cached provider created during th config phaze of the app.
@@ -108,6 +114,9 @@ define(['angular-route'], function () {
         return ret;
     };
     window.angular = lazyAngular;
-    
+
+    // Bootstrap Angular
+    angular.bootstrap(doc, ['ngreq-app']);
+
     return app;
 });

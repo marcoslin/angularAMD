@@ -1,36 +1,32 @@
 require.config({
 
+    baseUrl: "/js",
+    
 	// alias libraries paths
     paths: {
-        'angular-route': 'libs/angular/angular-route',
-        'angular-resource': 'libs/angular/angular-resource',
+        'async': 'libs/requirejs/async',
+        'domReady': 'libs/requirejs/domReady',
+        'gmaps': 'libs/google/gmaps',
+        'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min',
+        'angular-route': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min',
+        'angular-resource': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min',
         'dataServices': 'scripts/service/dataServices',
         'moreServices': 'scripts/service/moreServices',
         'customDirectives': 'scripts/directive/customDirectives',
         'View1Controller': 'scripts/controller/view1_ctrl',
         'View2Controller': 'scripts/controller/view2_ctrl',
         'View3Controller': 'scripts/controller/view3_ctrl',
+        'ViewMapController': 'scripts/controller/view_map_ctrl',
         'app': 'scripts/app'
     },
 
-    // angular does not support AMD out of the box, put it in a shim
+    // Add angular modules that does not support AMD out of the box, put it in a shim
     shim: {
-        'angular-route': {
-            exports: 'angular-route'
-        },
-        'angular-resource': {
-            exports: 'angular-resource'
-        },
-        'dataServices' : {
-            exports: "dataServices",
-            deps: ['angular-resource']
-        },
-        'moreServices' : {
-            exports: "moreServices",
-            deps: ['angular-resource']
-        }
+        'angular-route': ['angular'],
+        'angular-resource': ['angular'],
+        'moreServices' : ['angular-resource']
     },
 
     // kick start application
-    deps: ['./bootstrap']
+    deps: ['app']
 });
