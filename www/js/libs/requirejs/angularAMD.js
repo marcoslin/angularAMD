@@ -1,3 +1,12 @@
+/*
+Need to attempt alternate implementation by extending _invokeQueue
+
+Reference:
+http://stackoverflow.com/questions/10924503/angularjs-inject-module-after-app-initialization/18365367#18365367
+http://stackoverflow.com/questions/18591966/inject-module-dynamically-only-if-required
+
+*/
+
 define(function () {
     var ngAMD = {}, app_register, orig_angular;
     
