@@ -1,5 +1,6 @@
-define(['domReady!', 'angular-route'], function (doc) {
-    var app = angular.module("ngreq-app", ['ngRoute']);
+define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) {
+    var app = angular.module("ngreq-app", ['ngRoute']),
+        ngAMD = angularAMD(app);
     
     function resolveController(names) {
         return {
@@ -18,17 +19,7 @@ define(['domReady!', 'angular-route'], function (doc) {
     /**
      * Configure Angular ngApp with route and cache the needed providers
      */
-    app.config(
-        ['$routeProvider', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
-         function ($routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
-
-        app.register = {
-            controller: $controllerProvider.register,
-            directive: $compileProvider.directive,
-            filter: $filterProvider.register,
-            factory: $provide.factory,
-            service: $provide.service
-        };
+    app.config(['$routeProvider', function ($routeProvider) {
         
         $routeProvider
             .when("/view1", {

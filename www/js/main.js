@@ -6,6 +6,7 @@ require.config({
     paths: {
         'async': 'libs/requirejs/async',
         'domReady': 'libs/requirejs/domReady',
+        'angularAMD': 'libs/requirejs/angularAMD',
         'gmaps': 'libs/google/gmaps',
         'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min',
         'angular-route': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min',
