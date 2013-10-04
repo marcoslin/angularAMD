@@ -1,5 +1,35 @@
 <h3 class="title" ng-write="title"></h3>
-<div>Deferred: {{deferred}}</div>
+
+<table>
+    <tr>
+        <th>config</th>
+        <td>
+            <div id="run_block_message">{{config_block_message}}</div>
+        </td>
+    </tr>
+    <tr>
+        <th>run</th>
+        <td>
+            <div id="run_block_message">{{run_block_message}}</div>
+        </td>
+    </tr>
+    <tr>
+        <th>Deferred</th>
+        <td>
+            <label for="deferred">[{{deferred.label}}]: </label>
+            <div id="deferred">{{deferred.message}}</div>
+        </td>
+    </tr>
+    <tr>
+    <th>Another</th>
+        <td>
+            <label for="another">[{{another.label}}]: </label>
+            <div id="another">{{another.message}}</div>
+        </td>
+    </tr>
+</table>
+
+
 <div>
     <label for="txt_title">Change Title: </label>
     <input id="txt_title" type="text" class="topcoat-text-input--large" ng-model="title">

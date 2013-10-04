@@ -14,6 +14,8 @@ define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) 
             .otherwise({redirectTo: '/view1'})
     }]);
     
+    app.ngAMD = ngAMD;
+    
     // Bootstrap Angular
     angular.bootstrap(doc, ['ngreq-app']);
 

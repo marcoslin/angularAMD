@@ -12,7 +12,7 @@ require.config({
         'angular-route': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min',
         'angular-resource': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min',
         'dataServices': 'scripts/service/dataServices',
-        'moreServices': 'scripts/service/moreServices',
+        'moreServices': 'scripts/service/moreServicesAMD',
         'customDirectives': 'scripts/directive/customDirectives',
         'View1Controller': 'scripts/controller/view1_ctrl',
         'View2Controller': 'scripts/controller/view2_ctrl',
@@ -24,8 +24,7 @@ require.config({
     // Add angular modules that does not support AMD out of the box, put it in a shim
     shim: {
         'angular-route': ['angular'],
-        'angular-resource': ['angular'],
-        'moreServices' : ['angular-resource']
+        'angular-resource': ['angular']
     },
 
     // kick start application

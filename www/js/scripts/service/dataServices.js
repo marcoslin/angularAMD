@@ -1,7 +1,8 @@
 // dataServices
-define(['app','angular-resource'], function (app) {
-    
-    app.register.factory('Pictures', ['$http', '$q', '$log', '$resource', function ($http, $q, $log, $resource) {
+// define(['app','angular-resource'], function (app) {
+define(['app'], function (app) {
+    // app.register.factory('Pictures', ['$http', '$q', '$log', '$resource', function ($http, $q, $log, $resource) {
+    app.register.factory('Pictures', ['$http', '$q', '$log', function ($http, $q, $log) {
         var feed_url = "http://ycpi.api.flickr.com/services/feeds/photos_public.gne?format=json&tags=London&jsoncallback=JSON_CALLBACK";
         return {
             query: function () {
