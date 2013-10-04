@@ -24,7 +24,8 @@ require.config({
     // Add angular modules that does not support AMD out of the box, put it in a shim
     shim: {
         'angular-route': ['angular'],
-        'angular-resource': ['angular']
+        'angular-resource': ['angular'],
+        'moreServices': ['angular-resource']
     },
 
     // kick start application

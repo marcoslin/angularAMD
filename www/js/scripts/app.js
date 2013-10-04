@@ -20,7 +20,7 @@ define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) 
     angular.bootstrap(doc, ['ngreq-app']);
 
     // Wire custom version of angular
-    window.angular = ngAMD.lazyAngularModule();
+    window.angular = ngAMD.getAlternateAngular();
 
     return app;
 });

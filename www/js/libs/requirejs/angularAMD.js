@@ -2,97 +2,27 @@
 Need to attempt alternate implementation by extending _invokeQueue
 
 Reference:
-http://stackoverflow.com/questions/10924503/angularjs-inject-module-after-app-initialization/18365367#18365367
+http://stackoverflow.com/questions/10924503/angularjs-inject-module-after-app-initialization
 http://stackoverflow.com/questions/18591966/inject-module-dynamically-only-if-required
+http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs
+
+https://github.com/david-driscoll/ng-amd
+https://github.com/nikospara/angular-require-lazy
 
 */
 
 define(function () {
-    var ngAMD = {}, app_providers = {}, app_injector, app_register, orig_angular;
-    
-    /**
-     * Creating a replica of angular's module function.  Not a perfect implementation
-     * REF: angular.js:1324 (1.2.0-rc.2)
-     *
-     * Lazy Angular works by basically replacing the angular.module to a custom version
-     * that calls the cached provider created during th config phaze of the app.
-     *
-     * By replacing the window.angular version, the lazy loaded module are created using
-     * the cached $provider instead of the native version.
-     *
-     * Problems:
-     * 1. Cannot run angular.module(...).config
-     * 2. Order that .factory/.service etc is called matters
-     *
-     * The lazyAngular is therefore a proxy to the cached $provider
-    */
-    function makeLazyModule(name, requires, configFn) {
-        // console.log("Creating lazyModule '" + name + "' with deps:", requires);
+    var ngAMD = {}, orig_angular, alternate_queue = [], app_cached_providers = {};
 
-        function notImplemented(name) {
-            throw new Error("'module(...)." + name + "' not implemented in angularAMD.");
-        }
-        
-		var lazyModule = {
-            _invokeQueue: [],
-            _runBlocks: [],
-            requires: requires,
-            name: name,
-            provider: function () {
-				app_register.provider.apply(null, arguments);
-				return lazyModule;
-			},
-			factory: function () {
-                console.log("'" + name + "'.factory call with: ", arguments);
-				app_register.factory.apply(null, arguments);
-				return lazyModule;
-			},
-            service: function () {
-                console.log("'" + name + "'.service call with: ", arguments);
-				app_register.service.apply(null, arguments);
-				return lazyModule;
-            },
-            value: function () {
-				app_register.value.apply(null, arguments);
-				return lazyModule;
-            },
-            constant: function () {
-				app_register.constant.apply(null, arguments);
-				return lazyModule;
-            },
-            animation: function () {
-                app_register.animation.apply(null, arguments);
-            },
-			filter: function () {
-				app_register.filter.apply(null, arguments);
-				return lazyModule;
-			},
-			controller: function () {
-                console.log("'" + name + "'.controller call with: ", arguments);
-				app_register.controller.apply(null, arguments);
-				return lazyModule;
-			},
-			directive: function () {
-                console.log("'" + name + "'.directive call with: ", arguments);
-				app_register.directive.apply(null, arguments);
-				return lazyModule;
-			},
-            //config: notImplemented("config"),
-			run: function (r) {
-				this._runBlocks.push(r);
-				return lazyModule;
-			}
-		};
-		return lazyModule;
-	}
-    
     /**
-     * Return route for given controller.
+     * Return route for given controller and set the resolver to instantiate defined controller.
+     * controller_path is needed to allow requirejs to find the code for controller.  If the path
+     * to controller is defined in require.config, it can then be omitted.
      *
-     * @templateURL:     Path to the html template
-     * @controller:      Name of the controller to use
-     * @controller_path: Path to the controller to be loaded that requirejs will understand.
-     *                   If not provided, will attempt to load using @controller
+     * @param: {string} templateURL:     Path to the html template
+     * @param: {string} controller:      Name of the controller to use
+     * @param: {string} controller_path: Path to the controller to be loaded that requirejs will understand.
+     *                                   If not provided, will attempt to load using @controller
      */
     ngAMD.route = function (templateURL, controller, controller_path) {
         var req_dep = controller_path || controller;
@@ -112,14 +42,20 @@ define(function () {
         };
     };
     
-    var lazyAngular = {}, lazyModules = {};
-    var lazyQueue = [];
-    
+    /**
+     * Recreate the modules created by alternate angular in ng-app using cached $provider.
+     * As AMD loader does not guarantee the order of dependency in a require([...],...)
+     * clause, user must make sure that dependecies are clearly setup in shim in order
+     * for this to work.
+     *
+     * HACK ALERT:
+     * This method relay on inner working of angular.module code, and access _invokeQueue
+     * and _runBlock private variable.  Must test carefully with each release of angular.
+     */
     ngAMD.processQueue = function () {        
-        // Loop through all modules
-        while (lazyQueue.length) {
-        //for (var x=0; x<lazyQueue.length; x+=1) {
-            var item = lazyQueue.pop(),
+        // Process alternate queue in FIFO fashion
+        while (alternate_queue.length) {
+            var item = alternate_queue.shift(),
                 invokeQueue = item.module._invokeQueue;
         
             // Setup the providers define in the module
@@ -129,8 +65,8 @@ define(function () {
                     method = q[1],
                     args = q[2];
                 
-                if (app_providers.hasOwnProperty(provider)) {
-                    var cachedProvider = app_providers[provider];
+                if (app_cached_providers.hasOwnProperty(provider)) {
+                    var cachedProvider = app_cached_providers[provider];
                     console.log("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
                     cachedProvider[method].apply(null, args);
                 }
@@ -140,57 +76,68 @@ define(function () {
             // Execute the run block of the module
             if ( item.module._runBlocks ) {
                 angular.forEach(item.module._runBlocks, function(run_block) {
-                    var inj = app_injector;
-                    console.log("'" + item.name + "': executing run block: ", run_block);
-                    inj.invoke(run_block);
+                    var injector = app_cached_providers.$injector;
+                    //console.log("'" + item.name + "': executing run block: ", run_block);
+                    injector.invoke(run_block);
                 });
             }
+            
+            // How to remove the module??? 
+            orig_angular.module(item.name, [], orig_angular.noop);
         }
 
     };
     
-    
-    ngAMD.lazyAngularModule = function () {
-        orig_angular.extend(lazyAngular, orig_angular);
+    /**
+     * Create an alternate angular so that subsequent call to angular.module will queue up
+     * the module created for later processing via the .processQueue method. 
+     * 
+     * This delaying processing is needed as angular does not recognize any newly created
+     * module after angular.bootstrap has ran.  The only way to add new objects to angular
+     * post bootstrap is using cached provider.
+     * 
+     * Once the modules has been queued, processQueue would then use each module's _invokeQueue
+     * and _runBlock to recreate object using cached $provider.  In essence, creating a dumplite
+     * object into the current ng-app.  As result, if there are subsequent call to retrieve the
+     * module post processQueue, it would retrieve a module that is not integrated into the ng-app.
+     * 
+     * Therefore, any subsequent angular.module call to retrieve the module created with alternate
+     * angular will return undefined.
+     * 
+     */
+    ngAMD.getAlternateAngular = function () {
+        var alternateAngular = {}, alternateModules = {};
         
-        lazyAngular.module = function(name, requires) {
+        orig_angular.extend(alternateAngular, orig_angular);
+        
+        // Custom version of angular.module used as cache
+        alternateAngular.module = function(name, requires) {
             
             if( typeof(requires) === "undefined" ) {
-                return orig_angular.module(name);
+                // Return undefined if module was created using the alternateAngular
+                if (alternateModules.hasOwnProperty(name)) {
+                    return undefined;
+                } else {
+                    return orig_angular.module(name);
+                }
+                
             } else {
                 console.log("lazyAngular.module START for '" + name + "': ", arguments);
-                
                 var orig_mod = orig_angular.module.apply(null, arguments),
                     item = { name: name, module: orig_mod};
-                
-                lazyQueue.push(item);
-                
-                console.log("lazyAngular.module END for '" + name + "'");
+                alternate_queue.push(item);
+                alternateModules[name] = orig_mod;
                 return orig_mod;
             }
-            
-            /*
-            var ret;
-            if( typeof(requires) === "undefined" ) {
-                if( lazyModules.hasOwnProperty(name) ) {
-                    ret = lazyModules[name];
-                } else {
-                    ret = orig_angular.module(name);
-                }
-            } else {
-                if( configFn != null ) throw new Error("config function unimplemented yet, module: " + name);
-                ret = makeLazyModule(name, requires, configFn);
-                lazyModules[name] = ret;
-            }
-            console.log("lazyAngular.module END for '" + name + "'");
-            return ret;
-            */
         };
                 
-        return lazyAngular;
+        return alternateAngular;
     }
     
-    
+    /**
+     * Initialization of angularAMD.  The objective is to cache the $provider and $injector from the app
+     * to be used later.
+     */
     return function (app) {
         // Store the original angular
         orig_angular = angular;
@@ -198,7 +145,7 @@ define(function () {
         app.config(
             ['$controllerProvider', '$compileProvider', '$filterProvider', '$animateProvider', '$provide', function (controllerProvider, compileProvider, filterProvider, animateProvider, provide) {
                 // Cache Providers
-                app_providers = {
+                app_cached_providers = {
                     $controllerProvider: controllerProvider,
                     $directive: compileProvider,
                     $filter: filterProvider,
@@ -207,7 +154,7 @@ define(function () {
                 };
                 
                 // Create a app.register object
-                app_register = {
+                app.register = {
                     controller: controllerProvider.register,
                     directive: compileProvider.directive,
                     filter: filterProvider.register,
@@ -217,16 +164,14 @@ define(function () {
                     value: provide.value,
                     animation: animateProvider.register
                 };
-                app.register = app_register;
             
             }]
         );
-        // Try to get injector
+        // Get the injector for the app
         app.run(function ($injector) {
-            app_injector = $injector;
-            app_providers.$injector = $injector;
+            // $injector must be obtained in .run instead of .config
+            app_cached_providers.$injector = $injector;
         });
-        
         
         // Return the angularAMD object
         return ngAMD;
