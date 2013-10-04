@@ -39,7 +39,7 @@ define(function () {
             requires: requires,
             name: name,
             provider: function () {
-				app_register.provider(arguments);
+				app_register.provider.apply(null, arguments);
 				return lazyModule;
 			},
 			factory: function () {
