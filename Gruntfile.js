@@ -18,10 +18,16 @@ module.exports = function (grunt) {
                     { expand: true, cwd: "bower_components/requirejs/", src: 'require.js', dest: "www/js/lib/requirejs/" }
                 ]
             }
-        }
+        },
+        karma: {
+            unit: {
+                configFile: 'test/conf/karma.unit.js'
+            }
+        },
     });
     
     grunt.registerTask('setup', ['bower:install', 'copy:bower-www']);
+    grunt.registerTask('test', ['karma:unit']);
     
 };
 

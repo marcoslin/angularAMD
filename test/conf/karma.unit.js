@@ -14,7 +14,7 @@ module.exports = function(config) {
             {pattern: 'bower_components/angular/*.js', watched: false, included: false},
             {pattern: 'bower_components/angular-mocks/angular-mocks.js', watched: false, included: false},
             {pattern: 'src/angularAMD.js', watched: true, included: false},
-            {pattern: 'test/unit/testSpec.js', watched: true, included: false},
+            {pattern: 'test/unit/*Spec.js', watched: true, included: false},
             'bower_components/requirejs/require.js',
             'test/unit/test-main.js'
         ],
@@ -29,7 +29,7 @@ module.exports = function(config) {
         
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-        logLevel: config.LOG_DEBUG,
+        logLevel: config.LOG_INFO,
         
         
         // enable / disable watching file and executing tests whenever any file changes
