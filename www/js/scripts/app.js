@@ -13,9 +13,7 @@ define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) 
             .when("/viewmap", ngAMD.route('views/view_map.html', 'ViewMapController'))
             .otherwise({redirectTo: '/view1'})
     }]);
-    
-    app.ngAMD = ngAMD;
-    
+        
     // Bootstrap Angular
     angular.bootstrap(doc, ['ngreq-app']);
 

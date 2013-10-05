@@ -11,9 +11,25 @@ https://github.com/nikospara/angular-require-lazy
 
 */
 
+/*jslint devel: true, node: true, vars: true, nomen: true */
+/*globals define, angular */
+
 define(function () {
+    'use strict';
     var ngAMD = {}, orig_angular, alternate_queue = [], app_cached_providers = {};
 
+    // USED ONLY FOR UNIT TESTING
+    ngAMD.__read_protected = function (name) {
+        if (name === "app_cached_providers") {
+            return app_cached_providers;
+        } else if (name === "alternate_queue") {
+            return alternate_queue;
+        } else if (name === "orig_angular") {
+            return orig_angular;
+        }
+        
+    }
+    
     /**
      * Return route for given controller and set the resolver to instantiate defined controller.
      * controller_path is needed to allow requirejs to find the code for controller.  If the path
@@ -52,14 +68,15 @@ define(function () {
      * This method relay on inner working of angular.module code, and access _invokeQueue
      * and _runBlock private variable.  Must test carefully with each release of angular.
      */
-    ngAMD.processQueue = function () {        
+    ngAMD.processQueue = function () {
         // Process alternate queue in FIFO fashion
         while (alternate_queue.length) {
             var item = alternate_queue.shift(),
-                invokeQueue = item.module._invokeQueue;
+                invokeQueue = item.module._invokeQueue,
+                y;
         
             // Setup the providers define in the module
-            for (var y=0; y<invokeQueue.length; y+=1) {
+            for (y = 0; y < invokeQueue.length; y += 1) {
                 var q = invokeQueue[y],
                     provider = q[0],
                     method = q[1],
@@ -71,14 +88,14 @@ define(function () {
                     cachedProvider[method].apply(null, args);
                 }
 
-            };
+            }
             
             // Execute the run block of the module
-            if ( item.module._runBlocks ) {
-                angular.forEach(item.module._runBlocks, function(run_block) {
+            if (item.module._runBlocks) {
+                angular.forEach(item.module._runBlocks, function processRunBlock(block) {
                     var injector = app_cached_providers.$injector;
                     //console.log("'" + item.name + "': executing run block: ", run_block);
-                    injector.invoke(run_block);
+                    injector.invoke(block);
                 });
             }
             
@@ -111,9 +128,9 @@ define(function () {
         orig_angular.extend(alternateAngular, orig_angular);
         
         // Custom version of angular.module used as cache
-        alternateAngular.module = function(name, requires) {
+        alternateAngular.module = function (name, requires) {
             
-            if( typeof(requires) === "undefined" ) {
+            if (typeof requires === "undefined") {
                 // Return undefined if module was created using the alternateAngular
                 if (alternateModules.hasOwnProperty(name)) {
                     return undefined;
@@ -132,7 +149,7 @@ define(function () {
         };
                 
         return alternateAngular;
-    }
+    };
     
     /**
      * Initialization of angularAMD.  The objective is to cache the $provider and $injector from the app
@@ -167,11 +184,15 @@ define(function () {
             
             }]
         );
+        
         // Get the injector for the app
         app.run(function ($injector) {
             // $injector must be obtained in .run instead of .config
             app_cached_providers.$injector = $injector;
         });
+        
+        // Create a property to store ngAMD on app
+        app.ngAMD = ngAMD;
         
         // Return the angularAMD object
         return ngAMD;

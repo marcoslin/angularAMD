@@ -1,0 +1,28 @@
+{
+    "name": "angularAMD",
+    "version": "0.1.0",
+    "description": "RequireJS plugin for AngularJS",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/marcoslin/angularAMD.git"
+    },
+    "keywords": [
+        "angularjs",
+        "requirejs"
+    ],
+    "author": "Marcos Lin",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marcoslin/angularAMD/issues"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-bower-task": "~0.3.2",
+        "grunt-karma": "~0.6.2",
+        "load-grunt-tasks": "~0.1.0",
+        "karma": "~0.10.2",
+        "karma-ng-scenario": "~0.1.0"
+    }
+}

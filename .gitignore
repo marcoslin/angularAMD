@@ -1,2 +1,4 @@
-www/js/libs/angular/
-
+# Ignore Directory created by tools
+node_modules/
+bower_components/
+www/js/lib/
