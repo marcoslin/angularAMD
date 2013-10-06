@@ -17,10 +17,15 @@
     },
     "dependencies": {},
     "devDependencies": {
+        "mustache": "~0.7.2",
         "grunt": "~0.4.1",
         "grunt-contrib-copy": "~0.4.1",
         "grunt-bower-task": "~0.3.2",
         "grunt-karma": "~0.6.2",
+        "grunt-contrib-uglify": "~0.2.0",
+        "grunt-contrib-requirejs": "~0.4.0",
+        "grunt-contrib-requirejs": "~0.4.0",
+        "grunt-templater": "~0.0.4",
         "load-grunt-tasks": "~0.1.0",
         "karma": "~0.10.2",
         "karma-ng-scenario": "~0.1.0"

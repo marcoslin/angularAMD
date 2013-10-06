@@ -4,8 +4,8 @@
 
 module.exports = function (config) {
     config.set({
-        // base path, that will be used to resolve files and exclude
-        basePath: '../..',
+        // base path, note that this is expected to be ran under build directory
+        basePath: '../../..',
         
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine', 'requirejs'],
@@ -14,11 +14,12 @@ module.exports = function (config) {
         files: [
             {pattern: 'bower_components/angular/*.js', watched: false, included: false},
             {pattern: 'bower_components/angular-mocks/angular-mocks.js', watched: false, included: false},
-            {pattern: 'src/angularAMD.js', watched: true, included: false},
+            {pattern: 'build/*.js', watched: true, included: false},
+            {pattern: 'src/*.js', watched: true, included: false},
             {pattern: 'test/unit/*Spec.js', watched: true, included: false},
             {pattern: 'test/unit/lib/*.js', watched: true, included: false},
             'bower_components/requirejs/require.js',
-            'test/unit/test-main.js'
+            '{{{main-js-file}}}'
         ],
         
         // files: ['test/conf/testSpec.js'],
