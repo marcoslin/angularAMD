@@ -184,11 +184,11 @@ define(['angular'], function () {
         );
         
         // Get the injector for the app
-        app.run(function ($injector) {
+        app.run(['$injector', function ($injector) {
             // $injector must be obtained in .run instead of .config
             app_injector = $injector;
             app_cached_providers.$injector = app_injector;
-        });
+        }]);
         
         // Create a property to store ngAMD on app
         app.ngAMD = ngAMD;
