@@ -1,13 +1,14 @@
 // Karma configuration
 // http://karma-runner.github.io/0.10/config/configuration-file.html
+/*jslint node: true */
 
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
         // base path, that will be used to resolve files and exclude
         basePath: '../..',
         
         // testing framework to use (jasmine/mocha/qunit/...)
-        frameworks: ['jasmine','requirejs'],
+        frameworks: ['jasmine', 'requirejs'],
         
         // list of files / patterns to load in the browser
         files: [
@@ -15,6 +16,7 @@ module.exports = function(config) {
             {pattern: 'bower_components/angular-mocks/angular-mocks.js', watched: false, included: false},
             {pattern: 'src/angularAMD.js', watched: true, included: false},
             {pattern: 'test/unit/*Spec.js', watched: true, included: false},
+            {pattern: 'test/unit/lib/*.js', watched: true, included: false},
             'bower_components/requirejs/require.js',
             'test/unit/test-main.js'
         ],

@@ -14,21 +14,9 @@ https://github.com/nikospara/angular-require-lazy
 /*jslint devel: true, node: true, vars: true, nomen: true */
 /*globals define, angular */
 
-define(function () {
+define(['angular'], function () {
     'use strict';
     var ngAMD = {}, orig_angular, alternate_queue = [], app_cached_providers = {};
-
-    // USED ONLY FOR UNIT TESTING
-    ngAMD.__read_protected = function (name) {
-        if (name === "app_cached_providers") {
-            return app_cached_providers;
-        } else if (name === "alternate_queue") {
-            return alternate_queue;
-        } else if (name === "orig_angular") {
-            return orig_angular;
-        }
-        
-    }
     
     /**
      * Return route for given controller and set the resolver to instantiate defined controller.
@@ -103,6 +91,18 @@ define(function () {
             orig_angular.module(item.name, [], orig_angular.noop);
         }
 
+    };
+    
+    /**
+     * Return cached app injector
+     */
+    ngAMD.getCachedProvider = function (provider_name) {
+        // Hack used for unit testing that orig_angular has been captured
+        if (provider_name==="__orig_angular") {
+            return orig_angular;
+        } else {
+            return app_cached_providers[provider_name];
+        }
     };
     
     /**

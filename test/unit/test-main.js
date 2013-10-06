@@ -1,19 +1,21 @@
+/*jslint browser: true, node: true, nomen: true */
+
 require.config({
     // The baseUrl depends on what is defined in karma.unit.js:basePath
     baseUrl: "/base",
     
     // alias libraries paths
     paths: {
-        'angularAMD': 'src/angularAMD',
         'angular': 'bower_components/angular/angular',
+        'angularAMD': 'src/angularAMD',
+        'app': 'test/unit/lib/app',
         'testSpec': 'test/unit/testSpec'
     },
     
     shim: {
         'angular': {
             exports: 'angular'
-        },
-        'angularAMD': ['angular']
+        }
     },
     
     deps: ['testSpec'],
