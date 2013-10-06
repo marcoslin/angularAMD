@@ -40,7 +40,7 @@
 
     
     // Return the result in a factory
-    services.factory('UtestResult', function () {
+    services.factory('UtestServiceResult', function () {
         return utest_result;
     });
     

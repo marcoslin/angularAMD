@@ -1,21 +1,7 @@
-/*
-Need to attempt alternate implementation by extending _invokeQueue
-
-Reference:
-http://stackoverflow.com/questions/10924503/angularjs-inject-module-after-app-initialization
-http://stackoverflow.com/questions/18591966/inject-module-dynamically-only-if-required
-http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs
-
-https://github.com/david-driscoll/ng-amd
-https://github.com/nikospara/angular-require-lazy
-
-*/
-
 /*jslint node: true, vars: true, nomen: true */
 /*globals define, angular */
 
 define(['angular'], function () {
-    'use strict';
     var ngAMD = {},
         orig_angular,
         alternate_queue = [],

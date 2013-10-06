@@ -1,16 +1,22 @@
 /*jslint browser: true, devel: true, node: true, nomen: true */
 /*globals define, angular, describe, expect, it */
 
+/**
+ * Test with 2 main objectives:
+ * 1. Make sure that ngAMD's cache provider works
+ * 2. Make sure that independent angular.modules can be incorporated in the project
+ *    by using the ngAMD.processQueue() method to load these modules.
+ */
 define(['servicesAMD'], function (app) {
     'use strict';
     describe('Utest Services', function () {
-        console.log("Running ctrlSpec.js");
+        //console.log("Running serviceSpec.js");
         var results,
             inject = app.ngAMD.inject;
         
-        inject(['UtestResult', function (UtestResult) {
-            results = UtestResult;
-        }]);
+        inject(function (UtestServiceResult) {
+            results = UtestServiceResult;
+        });
 
         it("results should exists.", function () {
             expect(results).toBeDefined();

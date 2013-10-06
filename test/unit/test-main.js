@@ -17,17 +17,23 @@ require.config({
         'servicesSpec': 'test/unit/servicesSpec',
         'controllerSpec': 'test/unit/controllerSpec'
     },
-    
+
     shim: {
         /*
         'services' in this case is a regular angular.js module and therefore non-requirejs module so 
         must be defined in shim.  This is critical as 'services' depends on processing in 'app' to
         support loading of regular angular.js modules.
         */
-        'services': ['app']
+        'services': ['app'],
+        /*
+        Define the *Spec.js dependencies so that it can be executed in order
+        */
+        'servicesSpec': ['appSpec'],
+        'controllerSpec': ['servicesSpec']
     },
     
-    deps: ['controllerSpec', 'servicesSpec', 'appSpec'],
+    // controllerSpec is at the end of dependency tree so kicking it off will start entire test
+    deps: ['controllerSpec'],
     
     // start test run, once Require.js is done
     callback: window.__karma__.start

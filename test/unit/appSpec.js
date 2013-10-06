@@ -1,11 +1,14 @@
 /*jslint browser: true, devel: true, node: true, nomen: true */
 /*globals define, angular, describe, expect, it */
 
+/**
+ * Test focusing on setup of ngAMD making sure that cached provider are defined.
+ */
 define(['app'], function (app) {
     'use strict';
-    console.log("Running testSpec.js");
-    
     describe('angularAMD.ngAMD', function () {
+        //console.log("Running appSpec.js");
+        
         it('app is defined.', function () {
             expect(app.name).toBe(app.__appname);
         });
@@ -46,17 +49,3 @@ define(['app'], function (app) {
     });
 
 });
-
-
-/*
-describe('angularAMD: Unit Tests', function () {
-    'use strict';
-    var ngAMD = 3;
-    // Load angularAMD
-    it('test01', function () {
-        console.log(app.ngAMD);
-        expect(app.ngAMD).toBe(3);
-    });    
-
-});
-*/
