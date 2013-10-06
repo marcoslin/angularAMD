@@ -1,4 +1,4 @@
 // moreServices
 define(['app', 'scripts/service/moreServices'], function (app) {
-    app.ngAMD.processQueue();   
+    app.ngAMD.processQueue();
 });

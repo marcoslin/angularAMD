@@ -7,18 +7,27 @@ require.config({
     // alias libraries paths
     paths: {
         'angular': 'bower_components/angular/angular',
+        'angular-mocks': 'bower_components/angular-mocks/angular-mocks',
         'angularAMD': 'src/angularAMD',
         'app': 'test/unit/lib/app',
-        'testSpec': 'test/unit/testSpec'
+        'controller': 'test/unit/lib/controller',
+        'services': 'test/unit/lib/services',
+        'servicesAMD': 'test/unit/lib/servicesAMD',
+        'testSpec': 'test/unit/testSpec',
+        'servicesSpec': 'test/unit/servicesSpec',
+        'controllerSpec': 'test/unit/controllerSpec'
     },
     
     shim: {
-        'angular': {
-            exports: 'angular'
-        }
+        /*
+        'services' in this case is a regular angular.js module and therefore non-requirejs module so 
+        must be defined in shim.  This is critical as 'services' depends on processing in 'app' to
+        support loading of regular angular.js modules.
+        */
+        'services': ['app']
     },
     
-    deps: ['testSpec'],
+    deps: ['controllerSpec', 'servicesSpec', 'testSpec'],
     
     // start test run, once Require.js is done
     callback: window.__karma__.start

@@ -3,6 +3,7 @@
 
 define(['app'], function (app) {
     'use strict';
+    console.log("Running testSpec.js");
     
     describe('angularAMD.ngAMD', function () {
         it('app is defined.', function () {

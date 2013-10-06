@@ -11,12 +11,16 @@ https://github.com/nikospara/angular-require-lazy
 
 */
 
-/*jslint devel: true, node: true, vars: true, nomen: true */
+/*jslint node: true, vars: true, nomen: true */
 /*globals define, angular */
 
 define(['angular'], function () {
     'use strict';
-    var ngAMD = {}, orig_angular, alternate_queue = [], app_cached_providers = {};
+    var ngAMD = {},
+        orig_angular,
+        alternate_queue = [],
+        app_injector,
+        app_cached_providers = {};
     
     /**
      * Return route for given controller and set the resolver to instantiate defined controller.
@@ -72,7 +76,7 @@ define(['angular'], function () {
                 
                 if (app_cached_providers.hasOwnProperty(provider)) {
                     var cachedProvider = app_cached_providers[provider];
-                    console.log("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
+                    //console.log("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
                     cachedProvider[method].apply(null, args);
                 }
 
@@ -98,11 +102,19 @@ define(['angular'], function () {
      */
     ngAMD.getCachedProvider = function (provider_name) {
         // Hack used for unit testing that orig_angular has been captured
-        if (provider_name==="__orig_angular") {
+        if (provider_name === "__orig_angular") {
             return orig_angular;
         } else {
             return app_cached_providers[provider_name];
         }
+    };
+    
+    /**
+     * Create inject function that uses cached $injector.
+     * Designed primarly to be used during unit testing.
+     */
+    ngAMD.inject = function () {
+        return app_injector.invoke.apply(null, arguments);
     };
     
     /**
@@ -139,7 +151,7 @@ define(['angular'], function () {
                 }
                 
             } else {
-                console.log("lazyAngular.module START for '" + name + "': ", arguments);
+                //console.log("alternateAngular.module START for '" + name + "': ", arguments);
                 var orig_mod = orig_angular.module.apply(null, arguments),
                     item = { name: name, module: orig_mod};
                 alternate_queue.push(item);
@@ -188,7 +200,8 @@ define(['angular'], function () {
         // Get the injector for the app
         app.run(function ($injector) {
             // $injector must be obtained in .run instead of .config
-            app_cached_providers.$injector = $injector;
+            app_injector = $injector;
+            app_cached_providers.$injector = app_injector;
         });
         
         // Create a property to store ngAMD on app
