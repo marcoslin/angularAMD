@@ -13,7 +13,7 @@ require.config({
         'controller': 'test/unit/lib/controller',
         'services': 'test/unit/lib/services',
         'servicesAMD': 'test/unit/lib/servicesAMD',
-        'testSpec': 'test/unit/testSpec',
+        'appSpec': 'test/unit/appSpec',
         'servicesSpec': 'test/unit/servicesSpec',
         'controllerSpec': 'test/unit/controllerSpec'
     },
@@ -27,7 +27,7 @@ require.config({
         'services': ['app']
     },
     
-    deps: ['controllerSpec', 'servicesSpec', 'testSpec'],
+    deps: ['controllerSpec', 'servicesSpec', 'appSpec'],
     
     // start test run, once Require.js is done
     callback: window.__karma__.start
