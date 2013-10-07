@@ -64,6 +64,8 @@ define(['angular'], function () {
                     var cachedProvider = app_cached_providers[provider];
                     //console.log("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
                     cachedProvider[method].apply(null, args);
+                } else {
+                    console.error("'" + provider + "' not found!!!");
                 }
 
             }
@@ -162,8 +164,8 @@ define(['angular'], function () {
                 // Cache Providers
                 app_cached_providers = {
                     $controllerProvider: controllerProvider,
-                    $directive: compileProvider,
-                    $filter: filterProvider,
+                    $compileProvider: compileProvider,
+                    $filterProvider: filterProvider,
                     $animateProvider: animateProvider,
                     $provide: provide
                 };

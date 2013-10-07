@@ -50,5 +50,18 @@ define(['servicesAMD'], function (app) {
             expect(value_name).toBe(results.value_name);
         }));
         
+        it(".directive check.", inject(function ($rootScope, $compile) {
+            var scope = $rootScope.$new(),
+                elm = angular.element("<div utest-directive=''></div>");
+            $compile(elm)(scope);
+            expect(elm.text()).toBe(results.directive_name);
+        }));
+
+        it(".filter check.", inject(function ($filter) {
+            var ufilter = $filter('utestFilter');
+            expect(ufilter).toBeDefined();
+            expect(ufilter("hello")).toBe("hello " + results.filter_name);
+        }));
+        
     });
 });

@@ -37,7 +37,23 @@
     utest_result.value_name = "utestServices.value_name ih3zRvZofo";
     services.value("value_name", utest_result.value_name);
     
+    utest_result.directive_name = "utestServices.directive_name Krloe7G1CH";
+    services.directive('utestDirective', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, elm, attr) {
+                elm.text(utest_result.directive_name);
+            }
+        };
+    });
 
+    utest_result.filter_name = "utestServices.filter_name 0WWb0usFCB";
+    services.filter('utestFilter', function () {
+        return function (input) {
+            return input + " " + utest_result.filter_name;
+        };
+    });
+    
     
     // Return the result in a factory
     services.factory('UtestServiceResult', function () {

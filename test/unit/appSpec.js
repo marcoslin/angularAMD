@@ -26,11 +26,11 @@ define(['app'], function (app) {
             it('controllerProvider', function () {
                 expect(app.ngAMD.getCachedProvider("$controllerProvider")).toBeDefined();
             });
-            it('directive', function () {
-                expect(app.ngAMD.getCachedProvider("$directive")).toBeDefined();
+            it('compileProvider', function () {
+                expect(app.ngAMD.getCachedProvider("$compileProvider")).toBeDefined();
             });
-            it('filter', function () {
-                expect(app.ngAMD.getCachedProvider("$filter")).toBeDefined();
+            it('filterProvider', function () {
+                expect(app.ngAMD.getCachedProvider("$filterProvider")).toBeDefined();
             });
             it('animateProvider', function () {
                 expect(app.ngAMD.getCachedProvider("$animateProvider")).toBeDefined();
