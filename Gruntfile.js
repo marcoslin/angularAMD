@@ -19,10 +19,36 @@ module.exports = function (grunt) {
             }
         },
         copy: {
+            "build": {
+                files: [
+                    {
+                        expand: true, cwd: "src/",
+                        src: 'angularAMD.js', dest: "www/js/lib/requirejs/"
+                    }
+                ]
+            },
             "bower-www": {
                 files: [
-                    { expand: true, cwd: "bower_components/angular/", src: '*.js', dest: "www/js/lib/angular/" },
-                    { expand: true, cwd: "bower_components/requirejs/", src: 'require.js', dest: "www/js/lib/requirejs/" }
+                    {
+                        expand: true, cwd: "bower_components/angular/",
+                        src: 'angular.js', dest: "www/js/lib/angular/"
+                    },
+                    {
+                        expand: true, cwd: "bower_components/angular-ui-bootstrap-bower/",
+                        src: ['ui-bootstrap.js','ui-bootstrap-tpls.js'], dest: "www/js/lib/angular-ui-bootstrap/"
+                    },
+                    {
+                        expand: true, cwd: "bower_components/requirejs/",
+                        src: 'require.js', dest: "www/js/lib/requirejs/"
+                    },
+                    {
+                        expand: true, cwd: "bower_components/requirejs-plugins/src/",
+                        src: 'async.js', dest: "www/js/lib/requirejs/"
+                    },
+                    {
+                        expand: true, cwd: "bower_components/domReady/",
+                        src: 'domReady.js', dest: "www/js/lib/requirejs/"
+                    }
                 ]
             }
         },
@@ -95,7 +121,8 @@ module.exports = function (grunt) {
         'template:main-min-js','template:karma-min-js',
         'karma:build',
         'uglify:build',
-        'karma:build-min'
+        'karma:build-min',
+        'copy:build'
     ]);
     
 };

@@ -4,15 +4,16 @@ require.config({
     
 	// alias libraries paths
     paths: {
-        'async': 'libs/requirejs/async',
-        'domReady': 'libs/requirejs/domReady',
-        'angularAMD': 'libs/requirejs/angularAMD',
-        'gmaps': 'libs/google/gmaps',
-        'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min',
+        'angular': 'lib/angular/angular',
         'angular-route': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min',
         'angular-resource': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min',
+        'async': 'lib/requirejs/async',
+        'domReady': 'lib/requirejs/domReady',
+        'angularAMD': 'lib/requirejs/angularAMD',
+
         'dataServices': 'scripts/service/dataServices',
         'moreServices': 'scripts/service/moreServicesAMD',
+        'gmaps': 'scripts/service/gmaps',
         'customDirectives': 'scripts/directive/customDirectives',
         'View1Controller': 'scripts/controller/view1_ctrl',
         'View2Controller': 'scripts/controller/view2_ctrl',
