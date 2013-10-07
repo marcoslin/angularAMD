@@ -7,10 +7,12 @@ require.config({
         'angular': 'lib/angular/angular',
         'angular-route': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min',
         'angular-resource': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min',
+        'ui-bootstrap': 'scripts/directive/ui-bootstrapAMD',
         'async': 'lib/requirejs/async',
         'domReady': 'lib/requirejs/domReady',
         'angularAMD': 'lib/requirejs/angularAMD',
 
+        'navMenu': 'scripts/directive/navMenu',
         'dataServices': 'scripts/service/dataServices',
         'moreServices': 'scripts/service/moreServicesAMD',
         'gmaps': 'scripts/service/gmaps',

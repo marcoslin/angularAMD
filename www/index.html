@@ -1,33 +1,16 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <title>Welcome to AngularJS/RequireJS Sample</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/topcoat-desktop-light.css">
-</head>
-
-<body>
-    <h1>Welcome to AngularJS/RequireJS Sample</h1>
-    <div class="topcoat-button-bar">
-        <div class="topcoat-button-bar__item">
-            <a class="topcoat-button-bar__button--large" href="#/view1">View 1</a>
-        </div>
-        <div class="topcoat-button-bar__item">
-            <a class="topcoat-button-bar__button--large" href="#/view2">View 2</a>
-        </div>
-        <div class="topcoat-button-bar__item">
-            <a class="topcoat-button-bar__button--large" href="#/view3">View 3</a>
-        </div>
-        <div class="topcoat-button-bar__item">
-            <a class="topcoat-button-bar__button--large" href="#/viewmap">Map</a>
-        </div>
-    </div>
+    <head>
+        <meta charset="utf-8">
+        <title>Welcome to AngularJS/RequireJS Sample</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
     
-    <div ng-view></div>
-    <script src="js/lib/requirejs/require.js" data-main="js/main.js"></script>
-    
-</body>
+    <body>
+        <div class="container" ng-view></div>
+        <script src="js/lib/requirejs/require.js" data-main="js/main.js"></script>
+    </body>
 
 </html>

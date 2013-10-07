@@ -7,17 +7,25 @@ define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) 
      */
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-            .when("/view1", ngAMD.route('views/view1.html', 'View1Controller'))
-            .when("/view2", ngAMD.route('views/view2.html', 'View2Controller'))
-            .when("/view3", ngAMD.route('views/view3.html', 'View3Controller'))
-            .when("/viewmap", ngAMD.route('views/view_map.html', 'ViewMapController'))
+            .when("/view1", ngAMD.route({
+                templateUrl: 'views/view1.html', controller: 'View1Controller', navTab: "view1"
+            }))
+            .when("/view2", ngAMD.route({
+                templateUrl: 'views/view2.html', controller: 'View2Controller', navTab: "view2"
+            }))
+            .when("/view3", ngAMD.route({
+                templateUrl: 'views/view3.html', controller: 'View3Controller', navTab: "view3"
+            }))
+            .when("/viewmap", ngAMD.route({
+                templateUrl: 'views/view_map.html', controller: 'ViewMapController', navTab: "viewmap"
+            }))
             .otherwise({redirectTo: '/view1'})
     }]);
         
     // Bootstrap Angular
     angular.bootstrap(doc, ['ngreq-app']);
 
-    // Wire custom version of angular
+    // Wire custom version of angular to support lazy loading for independent angular modules
     window.angular = ngAMD.getAlternateAngular();
 
     return app;

@@ -1,12 +1,34 @@
-<h3 class="title" ng-bind="title"></h3>
+<nav-menu></nav-menu>
 
-<div>
-    <label for="txt_title">Change Title: </label>
-    <input id="txt_title" type="text" class="topcoat-text-input--large" ng-model="title">
+
+<div class="jumbotron">
+    <h2>Choose Location:</h2>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'London'">London</button>
+        <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Paris'">Paris</button>
+        <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Rome'">Rome</button>
+    </div>
+    
+    <hr>
+    
+    <div class="container">
+        <carousel id="slide-carousel" interval="slideChangeInterval">
+            <slide id="slide-image" ng-repeat="row in rows" active="row.active">
+                <img  ng-src="{{row.media.m}}" style="margin:auto;">
+                <div class="carousel-caption text-center">
+                    <p>Slide {{$index+1}} {{row.title}}</p>
+                </div>
+            </slide>
+        </carousel>
+    </div>
+
 </div>
 
+<!--
 <ul>
     <li class="hlist" ng-repeat="row in rows">
         <img ng-src="{{row.media.m}}">
     </li>
 </ul>
+-->

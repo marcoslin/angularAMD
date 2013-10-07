@@ -1,4 +1,4 @@
-define(['app','gmaps'], function (app, gmaps) {
+define(['app','gmaps', 'navMenu'], function (app, gmaps) {
     app.register.controller('ViewMapController', ['$scope', '$log', function ($scope, $log) {
         $scope.title = "Where is Colosseo?"; 
         // Set the location to be Colosseum
