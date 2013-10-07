@@ -9,14 +9,16 @@ define(['angular'], function () {
         app_cached_providers = {};
     
     /**
-     * Return route for given controller and set the resolver to instantiate defined controller.
-     * controller_path is needed to allow requirejs to find the code for controller.  If the path
-     * to controller is defined in require.config, it can then be omitted.
+     * Helper function to generate angular's $routeProvider.route.  'config' must be an object.
+     * 
+     * Populate the resolve attribute using either 'controllerUrl' or 'controller'.  If 'controllerUrl'
+     * is passed, it will attempt to load the passed Url using requirejs and remove the attribute from
+     * the result.  Otherwise, it will attempt to populate resolve by loading what's been passed in
+     * 'controller'.  If neither is passed, resolve is not populated.
      *
-     * @param: {string} templateURL:     Path to the html template
-     * @param: {string} controller:      Name of the controller to use
-     * @param: {string} controller_path: Path to the controller to be loaded that requirejs will understand.
-     *                                   If not provided, will attempt to load using @controller
+     * This function works as a pass-through, meaning what ever is passed in as config will be returned,
+     * except for 'controllerUrl' attribute.
+     *
      */
     ngAMD.route = function (config) {
         
