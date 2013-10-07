@@ -18,22 +18,39 @@ define(['angular'], function () {
      * @param: {string} controller_path: Path to the controller to be loaded that requirejs will understand.
      *                                   If not provided, will attempt to load using @controller
      */
-    ngAMD.route = function (templateURL, controller, controller_path) {
-        var req_dep = controller_path || controller;
-        return {
-            templateUrl: templateURL,
-            controller: controller,
-            resolve: {
-                load: ['$q', '$rootScope', function ($q, $rootScope) {
-                    var defer = $q.defer();
-                    require([req_dep], function () {
-                        defer.resolve();
-                        $rootScope.$apply();
-                    });
-                    return defer.promise;
-                }]
-            }
-        };
+    ngAMD.route = function (config) {
+        
+        var load_controller;
+
+        /*
+        If controllerUrl provided, load the provided Url using requirejs, otherwise,
+        attempt to load the controller using the controller name passed
+        */
+        if ( config.hasOwnProperty("controllerUrl") ) {
+            load_controller = config.controllerUrl;
+            delete config.controllerUrl;
+        } else if (typeof config.controller === 'string') {
+            load_controller = config.controller;
+        }
+        
+        /*
+        If controller needs to be loaded, append to the resolve property
+        */
+        if (load_controller) {
+            var resolve = config.resolve || {};
+            resolve['__load'] = ['$q', '$rootScope', function ($q, $rootScope) {
+                var defer = $q.defer();
+                require([load_controller], function () {
+                    defer.resolve();
+                    $rootScope.$apply();
+                });
+                return defer.promise;
+            }]
+            config.resolve = resolve;
+        }
+        
+        
+        return config;
     };
     
     /**
