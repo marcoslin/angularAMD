@@ -1,6 +1,6 @@
 <div class="masthead" nav-menu></div>
 
-<h2>Angular Services:</h2>
+<h2>dataServices from angular.module:</h2>
 
 <hr>
 
@@ -8,7 +8,7 @@
 
     <dl class="dl-horizontal">
         <dt><code>.ng-write</code> directive:</dt>
-        <dd><span ng-write="Written string">NOT WORKING!!!</span></dd>
+        <dd><span ng-write="Directive Output">ngWrite FAILED!!!</span></dd>
     </dl>
     
     <dl class="dl-horizontal">
@@ -22,13 +22,15 @@
     </dl>
     
     <dl class="dl-horizontal">
-        <dt>Deferred:</dt>
-        <dd>{{deferred.message}}</dd>
+        <dt><code>DeferredObject</code>:</dt>
+        <dd ng-cloak>{{obj_response.message}}</dd>
+        <dt><code>.label</code>:</dt>
+        <dd ng-cloak>{{obj_response.label}}</dd>
     </dl>
         
     <dl class="dl-horizontal">
-        <dt>Another:</dt>
-        <dd><span ng-write="ngWrite_message">NOT WORKING!!!</span></dd>
+        <dt><code>DeferredString</code>:</dt>
+        <dd><span ng-write="str_response"></span></dd>
     </dl>
         
     

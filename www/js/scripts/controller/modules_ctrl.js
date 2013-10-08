@@ -1,7 +1,6 @@
-define(['app', 'service/moreServicesAMD', 'directive/customDirectives', 'directive/navMenu'], function (app) {
-    app.register.controller('ModulesController', ['$scope', '$log', 'DeferredResponse', 'AnotherResponse', '$rootScope', function ($scope, $log, DeferredResponse, AnotherResponse, $rootScope) {
-        $scope.deferred = DeferredResponse.set("This is defered response");
-        $scope.another = AnotherResponse.set("This is another response");
-        $scope.ngWrite_message = "hello there.";
+define(['app', 'service/dataServicesAMD', 'directive/write', 'directive/navMenu'], function (app) {
+    app.register.controller('ModulesController', ['$scope', '$log', 'DeferredObject', 'DeferredString', '$rootScope', function ($scope, $log, DeferredObject, DeferredString, $rootScope) {
+        $scope.obj_response = DeferredObject.get("This is defered response", 4000);
+        $scope.str_response = DeferredString.get("Show case ngWrite with promise", 3000);
     }])
 }); 

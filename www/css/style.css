@@ -24,14 +24,9 @@
     padding: 0 10% 0 10%;
 }
 
-p.main-content {
-    text-align: justify;
-}
-
 .main-content .break {
     margin: 25px 0;
 }
-
 
 /**
  * Bootstrap's "Justified nav" Theme
