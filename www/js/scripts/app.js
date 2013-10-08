@@ -7,19 +7,19 @@ define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) 
      */
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-            .when("/view1", ngAMD.route({
-                templateUrl: 'views/view1.html', controller: 'View1Controller', navTab: "view1"
+            .when("/home", ngAMD.route({
+                templateUrl: 'views/home.html', controller: 'HomeController', navTab: "home"
             }))
-            .when("/view2", ngAMD.route({
-                templateUrl: 'views/view2.html', controller: 'View2Controller', navTab: "view2"
+            .when("/pictures", ngAMD.route({
+                templateUrl: 'views/pictures.html', controller: 'PicturesController', navTab: "pictures"
             }))
-            .when("/view3", ngAMD.route({
-                templateUrl: 'views/view3.html', controller: 'View3Controller', navTab: "view3"
+            .when("/modules", ngAMD.route({
+                templateUrl: 'views/modules.html', controller: 'ModulesController', navTab: "modules"
             }))
-            .when("/viewmap", ngAMD.route({
-                templateUrl: 'views/view_map.html', controller: 'ViewMapController', navTab: "viewmap"
+            .when("/map", ngAMD.route({
+                templateUrl: 'views/map.html', controller: 'MapController', navTab: "map"
             }))
-            .otherwise({redirectTo: '/view1'})
+            .otherwise({redirectTo: '/home'})
     }]);
         
     // Bootstrap Angular

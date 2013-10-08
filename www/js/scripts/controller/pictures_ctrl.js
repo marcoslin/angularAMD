@@ -1,6 +1,6 @@
-define(['app', 'dataServices', 'ui-bootstrap', 'navMenu'], function (app) {
+define(['app', 'service/dataServices', 'directive/ui-bootstrap', 'directive/navMenu'], function (app) {
         
-    app.register.controller('View2Controller', ['$scope','Pictures', function ($scope, Pictures) {
+    app.register.controller('PicturesController', ['$scope','Pictures', function ($scope, Pictures) {
         $scope.slideChangeInterval = 4000;
         
         $scope.$watch('cityModel', function (newValue) {

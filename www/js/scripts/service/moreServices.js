@@ -1,6 +1,6 @@
 // Services coded using regular angular approach
-angular.module("moreServices", ['ngResource'])
-.factory("DeferredResponse", function ($timeout, $q, $resource, ServiceLabel) {
+angular.module("moreServices", [])
+.factory("DeferredResponse", function ($timeout, $q, ServiceLabel) {
     return {
         set: function (message) {
             var d = $q.defer();
@@ -27,7 +27,7 @@ angular.module("moreServices", ['ngResource'])
         $rootScope.config_block_message = "And config works!!!";
     }, 1000);
 })
-.run(function ($rootScope, $timeout, $resource) {
+.run(function ($rootScope, $timeout) {
     console.log("Calling moreServices.run.  $rootScope.$id: " + $rootScope.$id);
     $timeout(function () {
         $rootScope.run_block_message = "Greetings from .run";

@@ -1,5 +1,5 @@
-define(['app','gmaps', 'navMenu'], function (app, gmaps) {
-    app.register.controller('ViewMapController', ['$scope', '$log', function ($scope, $log) {
+define(['app', 'service/gmaps', 'directive/navMenu'], function (app, gmaps) {
+    app.register.controller('MapController', ['$scope', '$log', function ($scope, $log) {
         $scope.title = "Where is Colosseo?"; 
         // Set the location to be Colosseum
         var latLong = new gmaps.LatLng(41.8902, 12.4923),
