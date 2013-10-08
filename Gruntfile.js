@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     // Config variables
     var configVars = {
         "build": "build",
-        "dist": "dist",
+        "dist_www": "../gh-pages",
         "www_port": "9768",
         "www_server": "localhost"
     };
@@ -50,6 +50,26 @@ module.exports = function (grunt) {
                     {
                         expand: true, cwd: "bower_components/domReady/",
                         src: 'domReady.js', dest: "www/js/lib/requirejs/"
+                    }
+                ]
+            },
+            "dist-www": {
+                files: [
+                    {
+                        src: '<%= cvars.build %>/angularAMD.min.js',
+                        dest: "<%= cvars.dist_www %>/js/lib/requirejs/angularAMD.js"
+                    },
+                    {
+                        src: 'bower_components/angular/angular.min.js',
+                        dest: "<%= cvars.dist_www %>/js/lib/angular/angular.js"
+                    },
+                    {
+                        src: 'bower_components/angular-route/angular-route.min.js',
+                        dest: "<%= cvars.dist_www %>/js/lib/angular/angular-route.js"
+                    },
+                    {
+                        src: 'bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js',
+                        dest: "<%= cvars.dist_www %>/js/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js"
                     }
                 ]
             },
@@ -133,23 +153,51 @@ module.exports = function (grunt) {
                 files: {
                     '<%= cvars.build %>/angularAMD.min.js': ['src/angularAMD.js']
                 }
+            },
+            "dist-www": {
+                files: [
+                    {
+                        expand: true, cwd: "www/js/",
+                        src: 'main.js', dest: "<%= cvars.dist_www %>/js/"
+                    },
+                    {
+                        expand: true, cwd: "www/js/scripts/",
+                        src: '**/*.js', dest: "<%= cvars.dist_www %>/js/scripts/"
+                    },
+                    {
+                        src: 'bower_components/requirejs/require.js',
+                        dest: "<%= cvars.dist_www %>/js/lib/requirejs/require.js"
+                    },
+                    {
+                        expand: true, cwd: "bower_components/requirejs-plugins/src/",
+                        src: 'async.js', dest: "<%= cvars.dist_www %>/js/lib/requirejs/"
+                    },
+                    {
+                        expand: true, cwd: "bower_components/domReady/",
+                        src: 'domReady.js', dest: "<%= cvars.dist_www %>/js/lib/requirejs/"
+                    }
+                ]
             }
-        },
-        useminPrepare: {
-            html: 'www/index.html',
-            options: {
-                dest: '<%= cvars.build %>'
-            }
-        },
-        usemin: {
-            html: ['www/{,*/}*.html'],
-            css: ['www/css/*.css']
         },
         cssmin: {
-            // Setup by usemin
+            "dist-www": {
+                files: {
+                    '<%= cvars.dist_www %>/css/style.css': 'www/css/style.css'
+                }
+                
+            }
         },
         htmlmin : {
-            // Setup by usemin
+            "dist-www": {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: [{
+                    expand: true, cwd: "www/",
+                    src: '**/*.html', dest: "<%= cvars.dist_www %>/"
+                }]
+            }
         }
     });
     
@@ -173,11 +221,11 @@ module.exports = function (grunt) {
     
     grunt.registerTask('setup-www', ['copy:setup-www']);
     grunt.registerTask('serve-www', ['setup-www', 'open', 'connect:serve-www']);
-    grunt.registerTask('build-www', [
-        'useminPrepare',
-        'concat',
-        'cssmin',
-        'htmlmin'
+    grunt.registerTask('dist-www', [
+        'cssmin:dist-www',
+        'uglify:dist-www',
+        'htmlmin:dist-www',
+        'copy:dist-www'
     ]);
     
 };
