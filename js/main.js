@@ -1,6 +1,6 @@
 require.config({
 
-    baseUrl: "/js/scripts",
+    baseUrl: "js/scripts",
     
 	// alias libraries paths
     paths: {
