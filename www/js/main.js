@@ -1,6 +1,6 @@
 require.config({
 
-    baseUrl: "/js/scripts",
+    baseUrl: "js/scripts",
     
 	// alias libraries paths
     paths: {
@@ -14,7 +14,7 @@ require.config({
         'HomeController': 'controller/home_ctrl',
         'MapController': 'controller/map_ctrl',
         'PicturesController': 'controller/pictures_ctrl',
-        'ModulesController': 'controller/modules_ctrl',
+        'ModulesController': 'controller/modules_ctrl'
     },
 
     // Add angular modules that does not support AMD out of the box, put it in a shim
