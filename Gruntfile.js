@@ -1,5 +1,5 @@
 // Gruntfile
-/*jslint devel: true, node: true */
+/*jslint devel: true, node: true, white:true */
 
 module.exports = function (grunt) {
     'use strict';
@@ -8,34 +8,36 @@ module.exports = function (grunt) {
     // Config variables
     var configVars = {
         "build": "build",
-        "dist": "dist"
-    }
+        "dist": "dist",
+        "www_port": "9768",
+        "www_server": "localhost"
+    };
     
     grunt.initConfig({
         cvars: configVars,
         bower: {
-            install: {
+            setup: {
                 options: { install: true, copy: false }
             }
         },
         copy: {
-            "build": {
+            "setup-www": {
                 files: [
                     {
                         expand: true, cwd: "src/",
                         src: 'angularAMD.js', dest: "www/js/lib/requirejs/"
-                    }
-                ]
-            },
-            "bower-www": {
-                files: [
+                    },
                     {
                         expand: true, cwd: "bower_components/angular/",
                         src: 'angular.js', dest: "www/js/lib/angular/"
                     },
                     {
+                        expand: true, cwd: "bower_components/angular-route/",
+                        src: 'angular-route.js', dest: "www/js/lib/angular/"
+                    },
+                    {
                         expand: true, cwd: "bower_components/angular-ui-bootstrap-bower/",
-                        src: ['ui-bootstrap.js','ui-bootstrap-tpls.js'], dest: "www/js/lib/angular-ui-bootstrap/"
+                        src: ['ui-bootstrap-tpls.js'], dest: "www/js/lib/angular-ui-bootstrap/"
                     },
                     {
                         expand: true, cwd: "bower_components/requirejs/",
@@ -50,6 +52,34 @@ module.exports = function (grunt) {
                         src: 'domReady.js', dest: "www/js/lib/requirejs/"
                     }
                 ]
+            },
+            "build-www": {
+                files: [
+                    {
+                        expand: true, cwd: "www/",
+                        src: ['index.html','css/**', 'views/**', 'js/main.js', 'js/scripts/**'],
+                        dest: "<%= cvars.build %>/www/"
+                    }
+                ]
+            }
+        },
+        connect: {
+            // URL should be: http://localhost:9768/www/ to simulate github pages
+            options : {
+                hostname: '<%= cvars.www_server %>',
+                port: '<%= cvars.www_port %>',
+                base: '.'
+            },
+            "serve-www": {
+                options : {
+                    keepalive: true
+                }
+            }
+        },
+        open: {
+            "serve-www": {
+                path: 'http://<%= cvars.www_server %>:<%= cvars.www_port %>/www/',
+                app: 'Google Chrome Canary'
             }
         },
         karma: {
@@ -104,10 +134,26 @@ module.exports = function (grunt) {
                     '<%= cvars.build %>/angularAMD.min.js': ['src/angularAMD.js']
                 }
             }
+        },
+        useminPrepare: {
+            html: 'www/index.html',
+            options: {
+                dest: '<%= cvars.build %>'
+            }
+        },
+        usemin: {
+            html: ['www/{,*/}*.html'],
+            css: ['www/css/*.css']
+        },
+        cssmin: {
+            // Setup by usemin
+        },
+        htmlmin : {
+            // Setup by usemin
         }
     });
     
-    grunt.registerTask('setup', ['bower:install', 'copy:bower-www']);
+    grunt.registerTask('setup', ['bower:setup']);
     grunt.registerTask('test', [
         'template:main-js','template:karma-js',
         'karma:unit'
@@ -121,8 +167,17 @@ module.exports = function (grunt) {
         'template:main-min-js','template:karma-min-js',
         'karma:build',
         'uglify:build',
-        'karma:build-min',
-        'copy:build'
+        'karma:build-min'
+    ]);
+    
+    
+    grunt.registerTask('setup-www', ['copy:setup-www']);
+    grunt.registerTask('serve-www', ['setup-www', 'open', 'connect:serve-www']);
+    grunt.registerTask('build-www', [
+        'useminPrepare',
+        'concat',
+        'cssmin',
+        'htmlmin'
     ]);
     
 };
