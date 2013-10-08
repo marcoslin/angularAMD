@@ -1,3 +1,1 @@
-define(['app', 'ui-bootstrap'], function (app) {
-    app.ngAMD.processQueue();
-});
+define(["app","ui-bootstrap"],function(a){a.ngAMD.processQueue()});

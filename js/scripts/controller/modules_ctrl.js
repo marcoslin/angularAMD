@@ -1,6 +1,1 @@
-define(['app', 'service/dataServicesAMD', 'directive/write', 'directive/navMenu'], function (app) {
-    app.register.controller('ModulesController', ['$scope', '$log', 'DeferredObject', 'DeferredString', '$rootScope', function ($scope, $log, DeferredObject, DeferredString, $rootScope) {
-        $scope.obj_response = DeferredObject.get("This is defered response", 4000);
-        $scope.str_response = DeferredString.get("Show case ngWrite with promise", 3000);
-    }])
-}); 
+define(["app","service/dataServicesAMD","directive/write","directive/navMenu"],function(a){a.register.controller("ModulesController",["$scope","$log","DeferredObject","DeferredString","$rootScope",function(a,b,c,d){a.obj_response=c.get("This is defered response",4e3),a.str_response=d.get("Show case ngWrite with promise",3e3)}])});

@@ -1,5 +1,1 @@
-define(['app', 'directive/navMenu'], function (app) {
-    app.register.controller('HomeController', ['$scope', '$log', function ($scope, $log) {
-        $scope.title = "Welcome"; 
-    }])
-}); 
+define(["app","directive/navMenu"],function(a){a.register.controller("HomeController",["$scope","$log",function(a){a.title="Welcome"}])});

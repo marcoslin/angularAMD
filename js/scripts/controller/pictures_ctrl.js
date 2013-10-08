@@ -1,14 +1,1 @@
-define(['app', 'service/picturesService', 'directive/ui-bootstrapAMD', 'directive/navMenu'], function (app) {
-        
-    app.register.controller('PicturesController', ['$scope','Pictures', function ($scope, Pictures) {
-        $scope.slideChangeInterval = 4000;
-        
-        $scope.$watch('cityModel', function (newValue) {
-            if (newValue) {
-                $scope.rows = Pictures.query(newValue);
-            }
-        });
-        
-    }]);
-
-}); 
+define(["app","service/picturesService","directive/ui-bootstrapAMD","directive/navMenu"],function(a){a.register.controller("PicturesController",["$scope","Pictures",function(a,b){a.slideChangeInterval=4e3,a.$watch("cityModel",function(c){c&&(a.rows=b.query(c))})}])});
