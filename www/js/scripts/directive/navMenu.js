@@ -12,7 +12,7 @@ define(['app'], function (app) {
     
     app.register.directive('navMenu', function () {
         return {
-            restrict: 'E',
+            restrict: 'A',
             controller: 'navMenuController',
             templateUrl: 'js/scripts/directive/templates/navMenu.html'
         };

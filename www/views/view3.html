@@ -1,37 +1,36 @@
-<nav-menu></nav-menu>
-<h3 class="title" ng-write="title"></h3>
+<div class="masthead" nav-menu></div>
 
-<table>
-    <tr>
-        <th>config</th>
-        <td>
-            <div id="run_block_message">{{config_block_message}}</div>
-        </td>
-    </tr>
-    <tr>
-        <th>run</th>
-        <td>
-            <div id="run_block_message">{{run_block_message}}</div>
-        </td>
-    </tr>
-    <tr>
-        <th>Deferred</th>
-        <td>
-            <label for="deferred">[{{deferred.label}}]: </label>
-            <div id="deferred">{{deferred.message}}</div>
-        </td>
-    </tr>
-    <tr>
-    <th>Another</th>
-        <td>
-            <label for="another">[{{another.label}}]: </label>
-            <div id="another">{{another.message}}</div>
-        </td>
-    </tr>
-</table>
+<h2>Angular Services:</h2>
 
+<hr>
 
-<div>
-    <label for="txt_title">Change Title: </label>
-    <input id="txt_title" type="text" class="topcoat-text-input--large" ng-model="title">
+<div class="main-content">
+
+    <dl class="dl-horizontal">
+        <dt><code>.ng-write</code> directive:</dt>
+        <dd><span ng-write="Written string">NOT WORKING!!!</span></dd>
+    </dl>
+    
+    <dl class="dl-horizontal">
+        <dt>Value set in <code>.config</code>:</dt>
+        <dd>{{config_block_message}}</dd>
+    </dl>
+    
+    <dl class="dl-horizontal">
+        <dt>Value set in <code>.run</code>:</dt>
+        <dd>{{run_block_message}}</dd>
+    </dl>
+    
+    <dl class="dl-horizontal">
+        <dt>Deferred:</dt>
+        <dd>{{deferred.message}}</dd>
+    </dl>
+        
+    <dl class="dl-horizontal">
+        <dt>Another:</dt>
+        <dd><span ng-write="ngWrite_message">NOT WORKING!!!</span></dd>
+    </dl>
+        
+    
+
 </div>
