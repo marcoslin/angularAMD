@@ -15,7 +15,9 @@
 
     <carousel id="slide-carousel" interval="slideChangeInterval">
         <slide id="slide-image" ng-repeat="row in rows" active="row.active">
-            <img  ng-src="{{row.media.m}}" style="margin:auto;">
+            <a ng-href="{{row.link}}" target="_blank">
+                <img ng-src="{{row.media.m}}" style="margin:auto;">
+            </a>
             <div class="carousel-caption text-center">
                 <p>Slide {{$index+1}} {{row.title}}</p>
             </div>
