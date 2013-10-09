@@ -17,14 +17,16 @@ Usage
 Starting point for a `angularAMD` app is to define a `app.js` module that instantiate `angularAMD`
 and bootstraping AngularJS:
 
-	define(['angularAMD'], function (angularAMD) {
-	    var app = angular.module(app_name, ['webapp']),
-		ngAMD = angularAMD(app);
-	    ... // Setup app here. E.g.: run .config with $routeProvider
-	    ngAMD.bootstrap();
-	    window.angular = ngAMD.getAlternateAngular();  // Optional
-	    return app;
-	});
+```Javascript
+define(['angularAMD'], function (angularAMD) {
+    var app = angular.module(app_name, ['webapp']),
+	ngAMD = angularAMD(app);
+    ... // Setup app here. E.g.: run .config with $routeProvider
+    ngAMD.bootstrap();
+    window.angular = ngAMD.getAlternateAngular();  // Optional
+    return app;
+});
+```
 
 Once `angularAMD` has been initialized, you can access this instance via `app.ngAMD`.  Please note that
 `.getAlternateAngular()` is only needed if you wish to perform on-demand loading of  module created using
