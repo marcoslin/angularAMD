@@ -5,8 +5,25 @@ define(['angular'], function () {
     var ngAMD = {},
         orig_angular,
         alternate_queue = [],
+        app_name,
         app_injector,
         app_cached_providers = {};
+    
+    /**
+     * Bootstrap angular when DOM is ready
+     */
+    ngAMD.bootstrap = function () {
+        orig_angular.element(document).ready(function () {
+            orig_angular.bootstrap(document, [app_name]); 
+        });
+    }
+    
+    /**
+     * Expouse name of the app that has been bootstraped
+     */
+    ngAMD.appname = function () {
+        return app_name;
+    };
     
     /**
      * Helper function to generate angular's $routeProvider.route.  'config' must be an object.
@@ -177,6 +194,7 @@ define(['angular'], function () {
     return function (app) {
         // Store the original angular
         orig_angular = angular;
+        
         // Cache provider needed
         app.config(
             ['$controllerProvider', '$compileProvider', '$filterProvider', '$animateProvider', '$provide', function (controllerProvider, compileProvider, filterProvider, animateProvider, provide) {
@@ -210,6 +228,9 @@ define(['angular'], function () {
             app_injector = $injector;
             app_cached_providers.$injector = app_injector;
         }]);
+        
+        // Store the app name needed by .bootstrap function.
+        app_name = app.name;
         
         // Create a property to store ngAMD on app
         app.ngAMD = ngAMD;

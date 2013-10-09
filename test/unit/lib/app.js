@@ -18,7 +18,7 @@ define(['angularAMD'], function (angularAMD) {
     app.__appname = app_name;
     app.__origAngular = origAngular;
     
-    angular.bootstrap(document, [app_name]);
+    ngAMD.bootstrap();
     window.angular = altAngular;
     
     return app;

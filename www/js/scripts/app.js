@@ -1,4 +1,4 @@
-define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) {
+define(['angularAMD', 'angular-route'], function (angularAMD) {
     var app = angular.module("ngreq-app", ['ngRoute']),
         ngAMD = angularAMD(app);
     
@@ -37,15 +37,17 @@ define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) 
             }]
         };
     });
+    
+    // Create directive to output link to GitHub
     app.run(['$rootScope', function ($rootScope) {
         $rootScope.githubLink = function (Url) {
             return "https://github.com/marcoslin/angularAMD/blob/master/www/" + Url;
         };
     }]);
         
-    // Bootstrap Angular
-    angular.bootstrap(doc, ['ngreq-app']);
-
+    // Bootstrap Angular when DOM is ready
+    ngAMD.bootstrap();
+    
     // Wire custom version of angular to support lazy loading for independent angular modules
     window.angular = ngAMD.getAlternateAngular();
 

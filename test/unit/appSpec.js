@@ -9,11 +9,11 @@ define(['app'], function (app) {
     describe('angularAMD.ngAMD', function () {
         //console.log("Running appSpec.js");
         
-        it('app is defined.', function () {
-            expect(app.name).toBe(app.__appname);
-        });
         it('app.ngAMD is created.', function () {
-            expect(app.ngAMD).toBe(app.ngAMD);
+            expect(app.ngAMD).toBeDefined();
+        });
+        it('app is defined.', function () {
+            expect(app.name).toBe(app.ngAMD.appname());
         });
         it('app.__origAngular is defined.', function () {
             expect(app.__origAngular).toBeDefined();
