@@ -1,14 +1,12 @@
 
 angularAMD  [![Build Status](https://travis-ci.org/marcoslin/angularAMD.png)](https://travis-ci.org/marcoslin/angularAMD)
 ==========
-RequireJS plugin for AngularJS
+angularAMD is a utility that facilitate the use of RequireJS in AngularJS support on-demand loading
+of 3rd party module such as [angular-ui](git@github.com:marcoslin/bower-angularAMD.git).
 
-
-Other Packages
+Installation
 ==========
-
-https://github.com/david-driscoll/ng-amd
-https://github.com/nikospara/angular-require-lazy
+    bower install angularAMD
 
 
 References
