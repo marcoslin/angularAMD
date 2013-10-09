@@ -35,37 +35,42 @@ Once `angularAMD` has been initialized, you can access this instance via `app.ng
 An alternative to `.getAlternateAngular()` is to load all your 3rd party modules (or any module you coded
 using `angular.module`) as a dependency to your `app.js` in your `main.js`:
 
-	require.config({
-		paths: {
-			'angular': 'lib/angular',
-			'angularAMD': 'lib/angularAMD',
-			'ui-boostrap': ''lib/ui-bootstrap'
-		},
-		shim: {
-			'app': ['ui-boostrap']
-		},
-		deps: ['app']
-	});
-
+```Javascript
+require.config({
+    paths: {
+        'angular': 'lib/angular',
+        'angularAMD': 'lib/angularAMD',
+        'ui-boostrap': ''lib/ui-bootstrap'
+    },
+    shim: {
+        'app': ['ui-boostrap']
+    },
+    deps: ['app']
+});
+```
 
 ## On-Demand Loading of Controllers
 
 Use `ngAMD.route` when configuring routes using `$routeProvider` to enable on-demand loading of controllers:
 
-    app.config(function ($routeProvider) {
-        $routeProvider.when(
-            "/home",
-            ngAMD.route({
-                templateUrl: 'views/home.html',
-                controller: 'HomeController',
-                controllerUrl: 'scripts/controller.js'
-            })
-        );
-    });
+```Javascript
+app.config(function ($routeProvider) {
+$routeProvider.when(
+    "/home",
+    ngAMD.route({
+        templateUrl: 'views/home.html',
+        controller: 'HomeController',
+        controllerUrl: 'scripts/controller.js'
+    })
+);
+});
+```
 
 You can avoid passing of `controllerUrl` if you define it in your `main.js` as:
 
-    paths: { 'HomeController': 'scripts/controller.js' }
+```Javascript
+paths: { 'HomeController': 'scripts/controller.js' }
+```
 
 The primary purpose of `ngAMD.route` is set `.resolve` property to load controller using `require` statement.
 Any attribute you pass into this method will simply be returned, with exception of `controllerUrl`. 
@@ -76,22 +81,24 @@ Any attribute you pass into this method will simply be returned, with exception 
 All subsquent module definition would simply need to require `app` dependency and use `app.register` property to create
 desired AngularJS services:
 
-    define(['app'], function (app) {
-        app.register.factory('Pictures', function (...) {
-            ...
-        });
+```Javascript
+define(['app'], function (app) {
+    app.register.factory('Pictures', function (...) {
+        ...
     });
+});
+```
 
 Here is the list of methods supported by `app.register`:
 
-    * .controller
-    * .factory
-    * .service
-    * .constant
-    * .value
-    * .directive
-    * .filter
-    * .animation
+* .controller
+* .factory
+* .service
+* .constant
+* .value
+* .directive
+* .filter
+* .animation
 
 
 ## 3rd Party AngularJS Modules
@@ -102,9 +109,11 @@ all the modules that needs to be loaded and it's dependencies.  Remember that yo
 
 After all the dependencies has been loaded, run `ngAMD.processQueue()`:
 
-    define(['app', 'ui-bootstrap'], function (app) {
-        app.ngAMD.processQueue();
-    });
+```Javascript
+define(['app', 'ui-bootstrap'], function (app) {
+    app.ngAMD.processQueue();
+});
+```
 
 
 History
@@ -124,6 +133,6 @@ of the `.getAlternateAngular()` idea.
 References
 ==========
 
-    * [Dynamically Loading Controllers and Views with AngularJS and RequireJS](http://weblogs.asp.net/dwahlin/archive/2013/05/22/dynamically-loading-controllers-and-views-with-angularjs-and-requirejs.aspx) by Dan Wahlin
-    * [Lazy loading AngularJS modules with RequireJS](http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs) stackoverflow
-    * [angular-require-lazt](https://github.com/nikospara/angular-require-lazy) by Nikos Paraskevopoulos
+* [Dynamically Loading Controllers and Views with AngularJS and RequireJS](http://weblogs.asp.net/dwahlin/archive/2013/05/22/dynamically-loading-controllers-and-views-with-angularjs-and-requirejs.aspx) by Dan Wahlin
+* [Lazy loading AngularJS modules with RequireJS](http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs) stackoverflow
+* [angular-require-lazt](https://github.com/nikospara/angular-require-lazy) by Nikos Paraskevopoulos
