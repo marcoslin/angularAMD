@@ -19,21 +19,21 @@ define(['angular'], function () {
     }
     
     /**
-     * Expouse name of the app that has been bootstraped
+     * Expose name of the app that has been bootstraped
      */
     ngAMD.appname = function () {
         return app_name;
     };
     
     /**
-     * Helper function to generate angular's $routeProvider.route.  'config' must be an object.
+     * Helper function to generate angular's $routeProvider.route.  'config' input param must be an object.
      * 
      * Populate the resolve attribute using either 'controllerUrl' or 'controller'.  If 'controllerUrl'
-     * is passed, it will attempt to load the passed Url using requirejs and remove the attribute from
-     * the result.  Otherwise, it will attempt to populate resolve by loading what's been passed in
-     * 'controller'.  If neither is passed, resolve is not populated.
+     * is passed, it will attempt to load the Url using requirejs and remove the attribute from the config
+     * object.  Otherwise, it will attempt to populate resolve by loading what's been passed in 'controller'.
+     * If neither is passed, resolve is not populated.
      *
-     * This function works as a pass-through, meaning what ever is passed in as config will be returned,
+     * This function works as a pass-through, meaning what ever is passed in as 'config' will be returned,
      * except for 'controllerUrl' attribute.
      *
      */
@@ -42,8 +42,9 @@ define(['angular'], function () {
         var load_controller;
 
         /*
-        If controllerUrl provided, load the provided Url using requirejs, otherwise,
-        attempt to load the controller using the controller name passed
+        If controllerUrl is provided, load the provided Url using requirejs. Otherwise,
+        attempt to load the controller using the controller name.  In the later case,
+        controller name is expected to be defined as one of 'paths' in main.js. 
         */
         if ( config.hasOwnProperty("controllerUrl") ) {
             load_controller = config.controllerUrl;
@@ -52,9 +53,7 @@ define(['angular'], function () {
             load_controller = config.controller;
         }
         
-        /*
-        If controller needs to be loaded, append to the resolve property
-        */
+        // If controller needs to be loaded, append to the resolve property
         if (load_controller) {
             var resolve = config.resolve || {};
             resolve['__load'] = ['$q', '$rootScope', function ($q, $rootScope) {
@@ -109,9 +108,8 @@ define(['angular'], function () {
             // Execute the run block of the module
             if (item.module._runBlocks) {
                 angular.forEach(item.module._runBlocks, function processRunBlock(block) {
-                    var injector = app_cached_providers.$injector;
                     //console.log("'" + item.name + "': executing run block: ", run_block);
-                    injector.invoke(block);
+                    app_injector.invoke(block);
                 });
             }
             
@@ -122,7 +120,7 @@ define(['angular'], function () {
     };
     
     /**
-     * Return cached app injector
+     * Return cached app provider
      */
     ngAMD.getCachedProvider = function (provider_name) {
         // Hack used for unit testing that orig_angular has been captured
@@ -150,7 +148,7 @@ define(['angular'], function () {
      * post bootstrap is using cached provider.
      * 
      * Once the modules has been queued, processQueue would then use each module's _invokeQueue
-     * and _runBlock to recreate object using cached $provider.  In essence, creating a dumplite
+     * and _runBlock to recreate object using cached $provider.  In essence, creating a duplicate
      * object into the current ng-app.  As result, if there are subsequent call to retrieve the
      * module post processQueue, it would retrieve a module that is not integrated into the ng-app.
      * 
@@ -192,7 +190,7 @@ define(['angular'], function () {
      * to be used later.
      */
     return function (app) {
-        // Store the original angular
+        // Store reference to original angular
         orig_angular = angular;
         
         // Cache provider needed
