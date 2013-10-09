@@ -221,6 +221,7 @@ module.exports = function (grunt) {
     ]);
     
     grunt.registerTask('build', [
+        'setup',
         'genTestTemplates',
         'karma:build',
         'uglify:build',
@@ -228,6 +229,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build-travis', [
+        'setup',
         'genTestTemplates',
         'uglify:build',
         'karma:build-travis'
