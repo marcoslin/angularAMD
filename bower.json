@@ -6,8 +6,7 @@
         "angular-route": "~1.2.0",
         "angular-ui-bootstrap-bower": "~0.6.0",
         "requirejs": "~2.1.8",
-        "requirejs-plugins": "~1.0.2",
-        "domReady": "git://github.com/requirejs/domReady#2.0.1"
+        "requirejs-plugins": "~1.0.2"
     },
     "devDependencies": {
         "angular-scenario": "~1.2.0"

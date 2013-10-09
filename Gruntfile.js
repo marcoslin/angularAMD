@@ -47,10 +47,6 @@ module.exports = function (grunt) {
                     {
                         expand: true, cwd: "bower_components/requirejs-plugins/src/",
                         src: 'async.js', dest: "www/js/lib/requirejs/"
-                    },
-                    {
-                        expand: true, cwd: "bower_components/domReady/",
-                        src: 'domReady.js', dest: "www/js/lib/requirejs/"
                     }
                 ]
             },
@@ -189,10 +185,6 @@ module.exports = function (grunt) {
                     {
                         expand: true, cwd: "bower_components/requirejs-plugins/src/",
                         src: 'async.js', dest: "<%= cvars.dist_www %>/js/lib/requirejs/"
-                    },
-                    {
-                        expand: true, cwd: "bower_components/domReady/",
-                        src: 'domReady.js', dest: "<%= cvars.dist_www %>/js/lib/requirejs/"
                     }
                 ]
             }
