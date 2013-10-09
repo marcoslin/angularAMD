@@ -132,17 +132,18 @@ grunt serve-www
 
 History
 ==========
-Inpired by [Dan Wahlin's blog](http://weblogs.asp.net/dwahlin/archive/2013/05/22/dynamically-loading-controllers-and-views-with-angularjs-and-requirejs.aspx)
+This project was inpired by [Dan Wahlin's blog](http://weblogs.asp.net/dwahlin/archive/2013/05/22/dynamically-loading-controllers-and-views-with-angularjs-and-requirejs.aspx)
 where he explained the core concept of what is needed to make RequireJS works with AngularJS.  It is a *must* read
-if you wish to better understand implementation detail of angularAMD.
+if you wish to better understand implementation detail of `angularAMD`.
 
-As I started to implement RequireJS in my own project, I was stuck trying to figure out how to load my existing modules
+As I started to implement RequireJS in my own project, I got stuck trying to figure out how to load my existing modules
 without re-writting them.  After exhausive search with no satisfactory answer, I posted following question on 
 [StackOverflow](http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs).
 [Nikos Paraskevopoulos](http://stackoverflow.com/users/2764255/nikos-paraskevopoulos) was kind enough to share his
-solution with me but his implementation did not handle `.config` method and out of order definition in modules.
-However, his implementation gave me the foundation needed to support loading of 3rd party modules and source
-of the `.getAlternateAngular()` idea.
+solution with me but his implementation did not handle `.config` method calls and out of order definition in modules.
+However, his implementation gave me the foundation I needed to create `angularAMD` and his project is where the idea
+for `.getAlternateAngular()` came from.
+
 
 References
 ==========
