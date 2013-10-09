@@ -1,4 +1,3 @@
-
 angularAMD  [![Build Status](https://travis-ci.org/marcoslin/angularAMD.png)](https://travis-ci.org/marcoslin/angularAMD)
 ==========
 angularAMD is an utility that facilitate the use of RequireJS in AngularJS supporting on-demand loading
@@ -13,21 +12,24 @@ Usage
 
 ## Bootstrapping
 
-The starting point for a angularAMD project is an `app.js` module that instantiate angularAMD and bootstrap AngularJS:
+Starting point for a `angularAMD` project is to define a `app.js` module that instantiate `angularAMD`
+and to bootstrap AngularJS:
 
 	define(['angularAMD'], function (angularAMD) {
-		var app = angular.module(app_name, ['webapp']),
-			ngAMD = angularAMD(app);
-		... // Setup app here. E.g.: run .config with $routeProvider
-		ngAMD.bootstrap();
-		window.angular = ngAMD.getAlternateAngular();  // Only run this if you need load AngularJS modules
-		return app;
+	    var app = angular.module(app_name, ['webapp']),
+		ngAMD = angularAMD(app);
+	    ... // Setup app here. E.g.: run .config with $routeProvider
+	    ngAMD.bootstrap();
+	    window.angular = ngAMD.getAlternateAngular();  // Optional
+	    return app;
 	});
 
-Once `angularAMD` has been initialized, you can access instance via `app.ngAMD`.  Please note that `.getAlternateAngular()`
-is only needed if you wish to on-demand load module created using `angular.module`.  An alternative to this approach is to
-load all 3rd party modules (or any module you coded using `angular.module`) as a dependency to your `app.js` in your
-RequireJS' `main.js`:
+Once `angularAMD` has been initialized, you can access this instance via `app.ngAMD`.  Please note that
+`.getAlternateAngular()` is only needed if you wish to perform on-demand loading of  module created using
+`angular.module`.
+
+An alternative is to load all 3rd party modules (or any module you coded using `angular.module`) as a
+dependency to your `app.js` in your RequireJS' `main.js`:
 
 	require.config({
 		paths: {
@@ -42,32 +44,24 @@ RequireJS' `main.js`:
 	});
 
 
-## Configure Controller to Load On-Demand
+## On-Demand Loading of Controllers
 
 Use `ngAMD.route` when defining the route using `$routeProvider` to enable on-demand loading of controllers:
 
-    app.config(['$routeProvider', function ($routeProvider) {
+    app.config(function ($routeProvider) {
         $routeProvider.when(
-			"/home",
-			ngAMD.route(
-				{
-					templateUrl: 'views/home.html',
-					controller: 'HomeController',
-					controllerUrl: 'scripts/controller.js'
-				}
-			)
-		);
-	}]);
+            "/home",
+            ngAMD.route({
+                templateUrl: 'views/home.html',
+                controller: 'HomeController',
+                controllerUrl: 'scripts/controller.js'
+            })
+        );
+    });
 
 You can avoid passing of `controllerUrl` if you define it in your `main.js` as:
 
-	require.config({
-		paths: {
-			...,
-			'HomeController': 'scripts/controller.js'
-		},
-		...
-	});
+    paths: { 'HomeController': 'scripts/controller.js' }
 
 
 ## Creating a Module
@@ -96,7 +90,7 @@ Here is the list of properties supported by `app.register`:
 ## Support for 3rd party AngularJS Modules
 
 A wrapper is required to load 3rd party modules created using standard `angular.module` syntax.  Remember that you must
-have set `window.angular` using `.getAlternateAngular()` during [Bootstrap](#Bootstrapping) and call `ngAMD.processQueue()`
+have set `window.angular` using `.getAlternateAngular()` during [Bootstrapping](#bootstrapping) and call `ngAMD.processQueue()`
 after all dependcies has been loaded:
 
     define(['app', 'ui-bootstrap'], function (app) {
