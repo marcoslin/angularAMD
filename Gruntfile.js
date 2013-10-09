@@ -104,15 +104,19 @@ module.exports = function (grunt) {
         },
         karma: {
             "unit": {
-                configFile: '<%= cvars.build %>/test/conf/karma.unit.js'
+                configFile: '<%= cvars.build %>/test/conf/karma.unit.js',
+                singleRun: false
             },
             "build": {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.js',
-                singleRun: true
+                browsers: ['PhantomJS','Chrome','Firefox']
             },
             "build-min": {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.min.js',
-                singleRun: true
+                browsers: ['PhantomJS','Chrome','Firefox']
+            },
+            "build-travis": {
+                configFile: '<%= cvars.build %>/test/conf/karma.unit.min.js'
             }
         },
         template: {
@@ -210,14 +214,24 @@ module.exports = function (grunt) {
     /**
      * build the file, by testing the src/angularAMD.js first, minimize it, then test the minimized version
      */
-    grunt.registerTask('build', [
+    
+    grunt.registerTask('genTestTemplates', [
         'template:main-js','template:karma-js',
-        'template:main-min-js','template:karma-min-js',
+        'template:main-min-js','template:karma-min-js'
+    ]);
+    
+    grunt.registerTask('build', [
+        'genTestTemplates',
         'karma:build',
         'uglify:build',
         'karma:build-min'
     ]);
-    
+
+    grunt.registerTask('build-travis', [
+        'genTestTemplates',
+        'uglify:build',
+        'karma:build-travis'
+    ]);
     
     grunt.registerTask('setup-www', ['copy:setup-www']);
     grunt.registerTask('serve-www', ['setup-www', 'open', 'connect:serve-www']);
@@ -227,6 +241,9 @@ module.exports = function (grunt) {
         'htmlmin:dist-www',
         'copy:dist-www'
     ]);
+    
+    // Travis Test
+
     
 };
 
