@@ -9,6 +9,7 @@ module.exports = function (grunt) {
     var configVars = {
         "build": "build",
         "dist_www": "../gh-pages",
+        "dist_bower": "../bower-repo",
         "www_port": "9768",
         "www_server": "localhost"
     };
@@ -53,6 +54,15 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            "build-www": {
+                files: [
+                    {
+                        expand: true, cwd: "www/",
+                        src: ['index.html','css/**', 'views/**', 'js/main.js', 'js/scripts/**'],
+                        dest: "<%= cvars.build %>/www/"
+                    }
+                ]
+            },
             "dist-www": {
                 files: [
                     {
@@ -73,15 +83,19 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            "build-www": {
+            "dist-bower" : {
                 files: [
                     {
-                        expand: true, cwd: "www/",
-                        src: ['index.html','css/**', 'views/**', 'js/main.js', 'js/scripts/**'],
-                        dest: "<%= cvars.build %>/www/"
+                        src: 'src/angularAMD.js',
+                        dest: "<%= cvars.dist_bower %>/angularAMD.js"
+                    },
+                    {
+                        src: '<%= cvars.build %>/angularAMD.min.js',
+                        dest: "<%= cvars.dist_bower %>/angularAMD.min.js"
                     }
                 ]
             }
+
         },
         connect: {
             // URL should be: http://localhost:9768/www/ to simulate github pages
@@ -205,21 +219,24 @@ module.exports = function (grunt) {
         }
     });
     
+    
+    /* BASIC TASKS */
     grunt.registerTask('setup', ['bower:setup']);
-    grunt.registerTask('test', [
-        'template:main-js','template:karma-js',
-        'karma:unit'
-    ]);
-    
-    /**
-     * build the file, by testing the src/angularAMD.js first, minimize it, then test the minimized version
-     */
-    
     grunt.registerTask('genTestTemplates', [
         'template:main-js','template:karma-js',
         'template:main-min-js','template:karma-min-js'
     ]);
     
+    
+    /* Used during dev */
+    grunt.registerTask('test', [
+        'setup',
+        'genTestTemplates',
+        'karma:unit'
+    ]);
+
+    
+    /* Done with dev, build it by creating a minified version */
     grunt.registerTask('build', [
         'setup',
         'genTestTemplates',
@@ -227,7 +244,6 @@ module.exports = function (grunt) {
         'uglify:build',
         'karma:build-min'
     ]);
-
     grunt.registerTask('build-travis', [
         'setup',
         'genTestTemplates',
@@ -235,17 +251,23 @@ module.exports = function (grunt) {
         'karma:build-travis'
     ]);
     
+    /* Run sample website */
     grunt.registerTask('setup-www', ['copy:setup-www']);
-    grunt.registerTask('serve-www', ['setup-www', 'open', 'connect:serve-www']);
+    grunt.registerTask('serve-www', [
+        'setup-www', 'open',
+        'connect:serve-www'
+    ]);
+    
+    /* Create github pages */
     grunt.registerTask('dist-www', [
         'cssmin:dist-www',
         'uglify:dist-www',
         'htmlmin:dist-www',
         'copy:dist-www'
     ]);
-    
-    // Travis Test
 
+    /* Update bower repository -- must run build manually before this */
+    grunt.registerTask('dist-bower', ['copy:dist-bower']);
     
 };
 
