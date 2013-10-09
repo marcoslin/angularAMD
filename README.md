@@ -1,6 +1,6 @@
-angularAMD
-==========
 
+angularAMD  [![Build Status](https://travis-ci.org/marcoslin/angularAMD.png)](https://travis-ci.org/marcoslin/angularAMD)
+==========
 RequireJS plugin for AngularJS
 
 
