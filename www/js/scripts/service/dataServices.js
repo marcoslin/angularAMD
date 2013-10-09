@@ -25,12 +25,12 @@ angular.module("dataServices", [])
     console.log("Calling moreServices.config.  $rootScope.$id: " + $rootScope.$id);
     $timeout(function () {
         $rootScope.config_block_message = "And config works";
-    }, 1000);
+    }, 4000);
 }])
 .run(['$rootScope','$timeout', function ($rootScope, $timeout) {
     console.log("Calling moreServices.run.  $rootScope.$id: " + $rootScope.$id);
     $timeout(function () {
         $rootScope.run_block_message = "Greetings from .run";
-    }, 2000);
+    }, 3000);
 }])
 ;
