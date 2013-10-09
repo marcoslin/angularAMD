@@ -42,7 +42,7 @@ require.config({
     paths: {
         'angular': 'lib/angular',
         'angularAMD': 'lib/angularAMD',
-        'ui-boostrap': ''lib/ui-bootstrap'
+        'ui-boostrap': 'lib/ui-bootstrap'
     },
     shim: {
         'app': ['ui-boostrap']
