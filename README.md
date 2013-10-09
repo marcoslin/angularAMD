@@ -14,7 +14,7 @@ http://marcoslin.github.io/angularAMD/ has been created as a working demo for `a
 can be found in the `www/` directory of this project.
 
 
-## Bootstrapping
+### Bootstrapping
 
 Starting point for a `angularAMD` app is to define a `app.js` module that instantiate `angularAMD`
 and bootstraping AngularJS:
@@ -51,7 +51,7 @@ require.config({
 });
 ```
 
-## On-Demand Loading of Controllers
+### On-Demand Loading of Controllers
 
 Use `ngAMD.route` when configuring routes using `$routeProvider` to enable on-demand loading of controllers:
 
@@ -78,7 +78,7 @@ The primary purpose of `ngAMD.route` is set `.resolve` property to load controll
 Any attribute you pass into this method will simply be returned, with exception of `controllerUrl`. 
 
 
-## Creating a Module
+### Creating a Module
 
 All subsquent module definition would simply need to require `app` dependency and use `app.register` property to create
 desired AngularJS services:
