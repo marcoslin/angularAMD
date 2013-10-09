@@ -1,6 +1,13 @@
 <div class="masthead" nav-menu></div>
 
-<h2>dataServices from angular.module:</h2>
+<p class="lead">
+    Demonstrate how to create on-demand loaded components such as <code gh-link="js/scripts/controller/modules_ctrl.js">
+    </code> and <code gh-link="js/scripts/directive/write.js"></code>.
+    Standard AngularJS module <code gh-link="js/scripts/service/dataServices.js"></code> is supported
+    via wrapper <code gh-link="js/scripts/service/dataServicesAMD.js"></code>.  Notice that angularAMD
+    is able to handle out of sequence calls of <code>.factory</code> and <code>.constant</code> in
+    <code gh-link="js/scripts/service/dataServices.js"></code>.
+</p>
 
 <hr>
 
@@ -32,7 +39,5 @@
         <dt><code>DeferredString</code>:</dt>
         <dd><span ng-write="str_response"></span></dd>
     </dl>
-        
-    
 
 </div>

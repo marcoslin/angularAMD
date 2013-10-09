@@ -28,6 +28,10 @@
     margin: 25px 0;
 }
 
+.text-justify {
+    text-align:justify;
+}
+
 /**
  * Bootstrap's "Justified nav" Theme
  * URL: http://getbootstrap.com/2.3.2/examples/justified-nav.html
@@ -43,12 +47,12 @@ body {
     max-width: 1000px;
 }
 .container > hr {
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 /* Main marketing message and sign up button */
 .jumbotron {
-    margin: 80px 0;
+    margin: 50px 0;
     text-align: center;
 }
 .jumbotron h1 {

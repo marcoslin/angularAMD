@@ -1,15 +1,18 @@
 <div class="masthead" nav-menu></div>
 
-<h2>Choose a Location:</h2>
-
+<p class="lead">
+    Show case on-demand loading of <a href="http://angular-ui.github.io/bootstrap/" target="_blank">UI Bootstrap</a>
+    using <code gh-link="js/scripts/directive/ui-bootstrapAMD.js"></code> wrapper.
 <hr>
 
 <div class="main-content">
+    <span class="lead"><strong>Show pictures from:</strong></span>
     <div class="btn-group">
         <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'London'">London</button>
         <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Paris'">Paris</button>
         <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Rome'">Rome</button>
     </div>
+    
     
     <p class="break"></p>
 
@@ -19,7 +22,7 @@
                 <img ng-src="{{row.media.m}}" style="margin:auto;">
             </a>
             <div class="carousel-caption text-center">
-                <p>Slide {{$index+1}} {{row.title}}</p>
+                <p>Slide {{$index+1}}: {{row.title}}</p>
             </div>
         </slide>
     </carousel>

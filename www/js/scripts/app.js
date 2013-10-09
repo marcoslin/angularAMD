@@ -21,6 +21,27 @@ define(['domReady!', 'angularAMD', 'angular-route'], function (doc, angularAMD) 
             }))
             .otherwise({redirectTo: '/home'})
     }]);
+    
+    // Create function to link to GitHub
+    app.directive('ghLink', function () {
+        return {
+            restrict: 'A',
+            scope: true,
+            template: '<a href="{{fullpath}}" target="_blank">{{filename}}</a>',
+            controller: ['$scope', '$attrs', function (scope, attrs) {
+                var gh_root = "https://github.com/marcoslin/angularAMD/blob/master/www/",
+                    relfile = attrs.ghLink,
+                    fullpath = gh_root + relfile;
+                scope.fullpath = fullpath;
+                scope.filename = relfile.replace(/^.*[\\\/]/, '');
+            }]
+        };
+    });
+    app.run(['$rootScope', function ($rootScope) {
+        $rootScope.githubLink = function (Url) {
+            return "https://github.com/marcoslin/angularAMD/blob/master/www/" + Url;
+        };
+    }]);
         
     // Bootstrap Angular
     angular.bootstrap(doc, ['ngreq-app']);
