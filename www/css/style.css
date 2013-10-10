@@ -32,6 +32,10 @@
     text-align:justify;
 }
 
+.vam {
+    vertical-align: middle;
+}
+
 /**
  * Bootstrap's "Justified nav" Theme
  * URL: http://getbootstrap.com/2.3.2/examples/justified-nav.html
