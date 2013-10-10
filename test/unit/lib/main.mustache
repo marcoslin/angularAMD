@@ -11,10 +11,12 @@ require.config({
         'angularAMD': '{{{angularAMD-js-file}}}',
         'app': 'test/unit/lib/app',
         'controller': 'test/unit/lib/controller',
+        'regServices': 'test/unit/lib/regServices',
         'services': 'test/unit/lib/services',
         'servicesAMD': 'test/unit/lib/servicesAMD',
         'appSpec': 'test/unit/appSpec',
         'servicesSpec': 'test/unit/servicesSpec',
+        'regServicesSpec': 'test/unit/regServicesSpec',
         'controllerSpec': 'test/unit/controllerSpec'
     },
 
@@ -28,7 +30,8 @@ require.config({
         /*
         Define the *Spec.js dependencies so that it can be executed in order
         */
-        'servicesSpec': ['appSpec'],
+        'regServicesSpec': ['appSpec'],
+        'servicesSpec': ['regServicesSpec'],
         'controllerSpec': ['servicesSpec']
     },
     

@@ -93,15 +93,16 @@ define(['app'], function (app) {
 
 Here is the list of methods supported by `app.register`:
 
-* .controller
-* .factory
-* .service
-* .constant
-* .value
-* .directive
-* .filter
-* .animation
+* `.controller`
+* `.factory`
+* `.service`
+* `.constant`
+* `.value`
+* `.directive`
+* `.filter`
+* `.animation` **
 
+** `.animation` is not covered in unit test for now
 
 ## 3rd Party AngularJS Modules
 
