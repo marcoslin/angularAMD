@@ -104,13 +104,12 @@ Here is the list of methods supported by `app.register`:
 
 ** `.animation` is not covered in unit test for now
 
-## 3rd Party AngularJS Modules
+### 3rd Party AngularJS Modules
 
-A wrapper is required to load 3rd party modules created using standard `angular.module` syntax that defines
-all the modules that needs to be loaded and it's dependencies.  Remember that you must have called
-`.getAlternateAngular()` during [Bootstrapping](#bootstrapping) in order for this to work.
-
-After all the dependencies has been loaded, run `ngAMD.processQueue()`:
+A wrapper is required to load 3rd party modules created using standard `angular.module` statement. If you have
+called `.getAlternateAngular()` during [Bootstrapping](#bootstrapping), `angularAMD` will queue up all the
+modules created for later processing.  When all the dependencies are loaded, `.processQueue()` will go through
+all the queued up modules and copying them into current app using `app.register`:
 
 ```Javascript
 define(['app', 'ui-bootstrap'], function (app) {
