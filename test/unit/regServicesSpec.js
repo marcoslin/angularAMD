@@ -25,7 +25,7 @@ define(['regServices'], function (app) {
                 // Testing for out of order dependency.  constant_name should be defined after UtestRegFactory
                 expect(UtestRegFactory.name).toBe(results.factory_name);
                 expect(UtestRegFactory.const_name).toBe(results.reg_constant_name);
-            })
+            });
         });
         
         it(".reg_value check.", function () {
@@ -39,7 +39,7 @@ define(['regServices'], function (app) {
                 // Testing for out of order dependency.  constant_name should be defined after UtestRegFactory
                 expect(UtestRegService.name).toBe(results.service_name);
                 expect(UtestRegService.val_name).toBe(results.reg_value_name);
-            })
+            });
         });
         
         it(".directive check.", function () {
@@ -48,7 +48,7 @@ define(['regServices'], function (app) {
                     elm = angular.element("<div utest-reg-directive=''></div>");
                 $compile(elm)(scope);
                 expect(elm.text()).toBe(results.directive_name);
-            })
+            });
         });
         
         it(".filter check.", function () {
@@ -56,7 +56,7 @@ define(['regServices'], function (app) {
                 var ufilter = $filter('utestRegFilter');
                 expect(ufilter).toBeDefined();
                 expect(ufilter("hello")).toBe("hello " + results.reg_filter_name);
-            })
+            });
         });
 
         
