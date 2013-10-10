@@ -109,7 +109,7 @@ Here is the list of methods supported by `app.register`:
 A wrapper is required to load 3rd party modules created using standard `angular.module` statement. If you have
 called `.getAlternateAngular()` during [Bootstrapping](#bootstrapping), `angularAMD` will queue up all the
 modules created for later processing.  When all the dependencies are loaded, `.processQueue()` will go through
-all the queued up modules and copying them into current app using `app.register`:
+all the queued up modules and copy them into current app using `app.register`:
 
 ```Javascript
 define(['app', 'ui-bootstrap'], function (app) {
