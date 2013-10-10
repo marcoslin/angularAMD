@@ -2,10 +2,7 @@
 /*globals define, angular, describe, expect, it */
 
 /**
- * Test with 2 main objectives:
- * 1. Make sure that ngAMD's cache provider works
- * 2. Make sure that independent angular.modules can be incorporated in the project
- *    by using the ngAMD.processQueue() method to load these modules.
+ * Test to ensure that services can be created using app.register method.
  */
 define(['regServices'], function (app) {
     'use strict';
