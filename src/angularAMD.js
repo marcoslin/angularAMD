@@ -4,6 +4,7 @@
 define(function () {
     var ngAMD = {},
         orig_angular,
+        alt_angular,
         alternate_queue = [],
         app_name,
         app_injector,
@@ -12,9 +13,65 @@ define(function () {
     // Private method to check if angularAMD has been initialized
     function checkAngularAMDInitialized() {
         if ( typeof orig_angular === 'undefined' ) {
-            throw Error("angularAMD not initialized");
+            throw Error("angularAMD not initialized.  Need to call angularAMD.bootstrap(app) first.");
         }
     }
+
+    /**
+     * Create an alternate angular so that subsequent call to angular.module will queue up
+     * the module created for later processing via the .processQueue method. 
+     * 
+     * This delaying processing is needed as angular does not recognize any newly created
+     * module after angular.bootstrap has ran.  The only way to add new objects to angular
+     * post bootstrap is using cached provider.
+     * 
+     * Once the modules has been queued, processQueue would then use each module's _invokeQueue
+     * and _runBlock to recreate object using cached $provider.  In essence, creating a duplicate
+     * object into the current ng-app.  As result, if there are subsequent call to retrieve the
+     * module post processQueue, it would retrieve a module that is not integrated into the ng-app.
+     * 
+     * Therefore, any subsequent angular.module call to retrieve the module created with alternate
+     * angular will return undefined.
+     * 
+     */
+    function setAlternateAngular() {
+        var alternateModules = {};
+        
+        // This method cannot be called more than once
+        if (alt_angular) {
+            throw Error("setAlternateAngular can only be called once.");
+        } else {
+            alt_angular = {};
+        }
+        
+        // Make sure that bootstrap has been called
+        checkAngularAMDInitialized();
+
+        // Createa a copy of orig_angular
+        orig_angular.extend(alt_angular, orig_angular);
+        
+        // Custom version of angular.module used as cache
+        alt_angular.module = function (name, requires) {
+            
+            if (typeof requires === "undefined") {
+                // Return undefined if module was created using the alt_angular
+                if (alternateModules.hasOwnProperty(name)) {
+                    return undefined;
+                } else {
+                    return orig_angular.module(name);
+                }
+            } else {
+                //console.log("alt_angular.module START for '" + name + "': ", arguments);
+                var orig_mod = orig_angular.module.apply(null, arguments),
+                    item = { name: name, module: orig_mod};
+                alternate_queue.push(item);
+                alternateModules[name] = orig_mod;
+                return orig_mod;
+            }
+        };
+                
+        window.angular = alt_angular;
+    };
     
     
     // Constructor
@@ -137,6 +194,8 @@ define(function () {
         // Hack used for unit testing that orig_angular has been captured
         if (provider_name === "__orig_angular") {
             return orig_angular;
+        } else if (provider_name === "__alt_angular") {
+            return alt_angular;
         } else {
             return app_cached_providers[provider_name];
         }
@@ -150,70 +209,15 @@ define(function () {
         checkAngularAMDInitialized();
         return app_injector.invoke.apply(null, arguments);
     };
+
     
     /**
-     * Create an alternate angular so that subsequent call to angular.module will queue up
-     * the module created for later processing via the .processQueue method. 
-     * 
-     * This delaying processing is needed as angular does not recognize any newly created
-     * module after angular.bootstrap has ran.  The only way to add new objects to angular
-     * post bootstrap is using cached provider.
-     * 
-     * Once the modules has been queued, processQueue would then use each module's _invokeQueue
-     * and _runBlock to recreate object using cached $provider.  In essence, creating a duplicate
-     * object into the current ng-app.  As result, if there are subsequent call to retrieve the
-     * module post processQueue, it would retrieve a module that is not integrated into the ng-app.
-     * 
-     * Therefore, any subsequent angular.module call to retrieve the module created with alternate
-     * angular will return undefined.
-     * 
+     * Initialization of angularAMD that bootstraps AngularJS.  The objective is to cache the
+     * $provider and $injector from the app to be used later.
+     *
+     * enable_ngload: 
      */
-    angularAMD.prototype.getAlternateAngular = function () {
-        checkAngularAMDInitialized();
-        var alternateAngular = {}, alternateModules = {};
-        
-        orig_angular.extend(alternateAngular, orig_angular);
-        
-        // Custom version of angular.module used as cache
-        alternateAngular.module = function (name, requires) {
-            
-            if (typeof requires === "undefined") {
-                // Return undefined if module was created using the alternateAngular
-                if (alternateModules.hasOwnProperty(name)) {
-                    return undefined;
-                } else {
-                    return orig_angular.module(name);
-                }
-                
-            } else {
-                //console.log("alternateAngular.module START for '" + name + "': ", arguments);
-                var orig_mod = orig_angular.module.apply(null, arguments),
-                    item = { name: name, module: orig_mod};
-                alternate_queue.push(item);
-                alternateModules[name] = orig_mod;
-                return orig_mod;
-            }
-        };
-                
-        return alternateAngular;
-    };
-    
-    /**
-     * Bootstrap angular when DOM is ready
-    
-    angularAMD.prototype.bootstrap = function () {
-        checkAngularAMDInitialized();
-        orig_angular.element(document).ready(function () {
-            orig_angular.bootstrap(document, [app_name]); 
-        });
-    }
-     */
-    
-    /**
-     * Initialization of angularAMD.  The objective is to cache the $provider and $injector from the app
-     * to be used later.
-     */
-    angularAMD.prototype.bootstrap = function (app) {
+    angularAMD.prototype.bootstrap = function (app, enable_ngload) {
         // Prevent bootstrap from being called multiple times
         if (typeof orig_angular !== 'undefined') {
             throw Error("bootstrap can only be called once.");
@@ -221,6 +225,7 @@ define(function () {
         
         // Store reference to original angular which also used to check if bootstrap has take place.
         orig_angular = angular;
+        enable_ngload = enable_ngload || true;
         
         // Cache provider needed
         app.config(
@@ -263,6 +268,12 @@ define(function () {
         orig_angular.element(document).ready(function () {
             orig_angular.bootstrap(document, [app_name]); 
         });
+        
+        // Replace angular.module
+        if (enable_ngload) {
+            setAlternateAngular();
+        }
+        
     };
     
     

@@ -16,8 +16,6 @@ define(['angularAMD'], function (angularAMD) {
     app.__appname = app_name;
     app.__origAngular = origAngular;
     
-    angularAMD.bootstrap(app);
-    window.angular = angularAMD.getAlternateAngular();
-    
+    angularAMD.bootstrap(app);    
     return app;
 });

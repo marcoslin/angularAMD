@@ -46,9 +46,6 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
         
     // Bootstrap Angular when DOM is ready
     angularAMD.bootstrap(app);
-    
-    // Wire custom version of angular to support lazy loading for independent angular modules
-    window.angular = angularAMD.getAlternateAngular();
 
     return app;
 });
