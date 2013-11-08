@@ -29,6 +29,10 @@ module.exports = function (grunt) {
                         src: 'angularAMD.js', dest: "www/js/lib/requirejs/"
                     },
                     {
+                        expand: true, cwd: "src/",
+                        src: 'ngload.js', dest: "www/js/lib/requirejs/"
+                    },
+                    {
                         expand: true, cwd: "bower_components/angular/",
                         src: 'angular.js', dest: "www/js/lib/angular/"
                     },
@@ -66,6 +70,10 @@ module.exports = function (grunt) {
                         dest: "<%= cvars.dist_www %>/js/lib/requirejs/angularAMD.js"
                     },
                     {
+                        src: '<%= cvars.build %>/ngload.min.js',
+                        dest: "<%= cvars.dist_www %>/js/lib/requirejs/ngload.js"
+                    },
+                    {
                         src: 'bower_components/angular/angular.min.js',
                         dest: "<%= cvars.dist_www %>/js/lib/angular/angular.js"
                     },
@@ -88,6 +96,14 @@ module.exports = function (grunt) {
                     {
                         src: '<%= cvars.build %>/angularAMD.min.js',
                         dest: "<%= cvars.dist_bower %>/angularAMD.min.js"
+                    },
+                    {
+                        src: 'src/ngload.js',
+                        dest: "<%= cvars.dist_bower %>/ngload.js"
+                    },
+                    {
+                        src: '<%= cvars.build %>/ngload.min.js',
+                        dest: "<%= cvars.dist_bower %>/ngload.min.js"
                     }
                 ]
             }
@@ -134,14 +150,16 @@ module.exports = function (grunt) {
                 src: 'test/unit/lib/main.mustache',
                 dest: '<%= cvars.build %>/test/unit/lib/main.js',
                 variables: {
-                    "angularAMD-js-file": "src/angularAMD"
+                    "angularAMD-js-file": "src/angularAMD",
+                    "ngload-js-file": "src/ngload"
                 }
             },
             "main-min-js": {
                 src: 'test/unit/lib/main.mustache',
                 dest: '<%= cvars.build %>/test/unit/lib/main.min.js',
                 variables: {
-                    "angularAMD-js-file": "<%= cvars.build %>/angularAMD.min"
+                    "angularAMD-js-file": "<%= cvars.build %>/angularAMD.min",
+                    "ngload-js-file": "<%= cvars.build %>/ngload.min"
                 }
             },
             "karma-js": {
@@ -165,7 +183,8 @@ module.exports = function (grunt) {
                     'report': true
                 },
                 files: {
-                    '<%= cvars.build %>/angularAMD.min.js': ['src/angularAMD.js']
+                    '<%= cvars.build %>/angularAMD.min.js': ['src/angularAMD.js'],
+                    '<%= cvars.build %>/ngload.min.js': ['src/ngload.js']
                 }
             },
             "dist-www": {

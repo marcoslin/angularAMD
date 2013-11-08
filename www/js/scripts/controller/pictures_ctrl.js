@@ -1,4 +1,4 @@
-define(['app', 'service/picturesService', 'ngamd!ui-bootstrap', 'directive/navMenu'], function (app) {
+define(['app', 'service/picturesService', 'ngload!ui-bootstrap', 'directive/navMenu'], function (app) {
         
     app.register.controller('PicturesController', ['$scope','Pictures', function ($scope, Pictures) {
         $scope.slideChangeInterval = 4000;

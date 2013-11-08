@@ -1,22 +1,21 @@
 define(['angularAMD', 'angular-route'], function (angularAMD) {
-    var app = angular.module("ngreq-app", ['ngRoute']),
-        ngAMD = angularAMD(app);
+    var app = angular.module("ngreq-app", ['ngRoute']);
     
     /**
      * Configure Angular ngApp with route and cache the needed providers
      */
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-            .when("/home", ngAMD.route({
+            .when("/home", angularAMD.route({
                 templateUrl: 'views/home.html', controller: 'HomeController', navTab: "home"
             }))
-            .when("/pictures", ngAMD.route({
+            .when("/pictures", angularAMD.route({
                 templateUrl: 'views/pictures.html', controller: 'PicturesController', navTab: "pictures"
             }))
-            .when("/modules", ngAMD.route({
+            .when("/modules", angularAMD.route({
                 templateUrl: 'views/modules.html', controller: 'ModulesController', navTab: "modules"
             }))
-            .when("/map", ngAMD.route({
+            .when("/map", angularAMD.route({
                 templateUrl: 'views/map.html', controller: 'MapController', navTab: "map"
             }))
             .otherwise({redirectTo: '/home'})
@@ -46,10 +45,10 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
     }]);
         
     // Bootstrap Angular when DOM is ready
-    ngAMD.bootstrap();
+    angularAMD.bootstrap(app);
     
     // Wire custom version of angular to support lazy loading for independent angular modules
-    window.angular = ngAMD.getAlternateAngular();
+    window.angular = angularAMD.getAlternateAngular();
 
     return app;
 });

@@ -8,7 +8,7 @@ require.config({
         'angular-route': '../lib/angular/angular-route',
         'async': '../lib/requirejs/async',
         'angularAMD': '../lib/requirejs/angularAMD',
-        'ngamd': '../lib/requirejs/ngamd',
+        'ngload': '../lib/requirejs/ngload',
         'ui-bootstrap': '../lib/angular-ui-bootstrap/ui-bootstrap-tpls',
 
         'HomeController': 'controller/home_ctrl',

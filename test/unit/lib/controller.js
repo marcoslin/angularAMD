@@ -1,7 +1,7 @@
 /*jslint nomen: true */
 /*globals define, angular */
 
-define(['app','servicesAMD'], function (app) {
+define(['app','ngload!services'], function (app) {
     'use strict';
     var ctrl_name = "MainController";
     app.register.controller(ctrl_name, ['$scope', 'UtestFactory', 'UtestService', function ($scope, UtestFactory, UtestService) {

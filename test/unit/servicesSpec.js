@@ -7,7 +7,7 @@
  * 2. Make sure that independent angular.modules can be incorporated in the project
  *    by using the ngAMD.processQueue() method to load these modules.
  */
-define(['servicesAMD'], function (angularAMD) {
+define(['angularAMD', 'ngload!services'], function (angularAMD) {
     'use strict';
     describe('Utest Services', function () {
         //console.log("Running serviceSpec.js");
