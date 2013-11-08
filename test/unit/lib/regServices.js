@@ -6,12 +6,12 @@
  * A copy of services.js but created using app.register instead.
  * Note that sequence of definition does matter in this case
  */
-define(['app'], function(app) {
+define(['app', 'angularAMD'], function(app, angularAMD) {
     'use strict';
 
     // Services coded using regular angular approach
     var services = app.register,
-        inject = app.ngAMD.inject,
+        inject = angularAMD.inject,
         utest_reg_result = {};
     
     utest_reg_result.reg_constant_name = "regServices.reg_constant_name QSiNx5JlLP";

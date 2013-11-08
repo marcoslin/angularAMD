@@ -10,8 +10,8 @@
  * module must have it's dependency declared in shim.  The 'app' is cleared here as 'app'
  * variable is needed.
  */
-define(['app', 'services'], function (app) {
+define(['angularAMD', 'services'], function (angularAMD) {
     'use strict';
-    app.ngAMD.processQueue();
-    return app;
+    angularAMD.processQueue();
+    return angularAMD;
 });

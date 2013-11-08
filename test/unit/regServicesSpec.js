@@ -4,12 +4,12 @@
 /**
  * Test to ensure that services can be created using app.register method.
  */
-define(['regServices'], function (app) {
+define(['regServices','angularAMD'], function (app, angularAMD) {
     'use strict';
     describe('Utest Registered Services', function () {
         //console.log("Running serviceSpec.js");
         var results = app.__utest_regserv_result,
-            inject = app.ngAMD.inject;
+            inject = angularAMD.inject;
 
         it(".reg_constant check.", function () {
             inject(function (reg_constant_name) {

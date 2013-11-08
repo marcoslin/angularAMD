@@ -5,14 +5,14 @@
  * Testing declaration of controller following require.js spec and make sure
  * it's dependecies are loaded.
  */
-define(['controller'], function (app) {
+define(['controller', 'angularAMD'], function (app, angularAMD) {
     'use strict';
     describe('Utest Controller', function () {
         //console.log("Running controllerSpec.js");
         var ctrl_name = app.__utest_ctrl_result.ctrl_name,
             scope, service_results, ctrl;
 
-        app.ngAMD.inject(function ($rootScope, $controller, UtestServiceResult) {
+        angularAMD.inject(function ($rootScope, $controller, UtestServiceResult) {
             scope = $rootScope.$new();
             service_results = UtestServiceResult;
             ctrl = $controller(ctrl_name, { $scope: scope });

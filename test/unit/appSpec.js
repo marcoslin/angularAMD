@@ -4,16 +4,16 @@
 /**
  * Test focusing on setup of ngAMD making sure that cached provider are defined.
  */
-define(['app'], function (app) {
+define(['app','angularAMD'], function (app, angularAMD) {
     'use strict';
-    describe('angularAMD.ngAMD', function () {
+    describe('angularAMD', function () {
         //console.log("Running appSpec.js");
         
-        it('app.ngAMD is created.', function () {
-            expect(app.ngAMD).toBeDefined();
+        it('is created.', function () {
+            expect(angularAMD).toBeDefined();
         });
         it('app is defined.', function () {
-            expect(app.name).toBe(app.ngAMD.appname());
+            expect(app.name).toBe(angularAMD.appname());
         });
         it('app.__origAngular is defined.', function () {
             expect(app.__origAngular).toBeDefined();
@@ -24,26 +24,26 @@ define(['app'], function (app) {
         
         describe('cached property', function () {
             it('controllerProvider', function () {
-                expect(app.ngAMD.getCachedProvider("$controllerProvider")).toBeDefined();
+                expect(angularAMD.getCachedProvider("$controllerProvider")).toBeDefined();
             });
             it('compileProvider', function () {
-                expect(app.ngAMD.getCachedProvider("$compileProvider")).toBeDefined();
+                expect(angularAMD.getCachedProvider("$compileProvider")).toBeDefined();
             });
             it('filterProvider', function () {
-                expect(app.ngAMD.getCachedProvider("$filterProvider")).toBeDefined();
+                expect(angularAMD.getCachedProvider("$filterProvider")).toBeDefined();
             });
             it('animateProvider', function () {
-                expect(app.ngAMD.getCachedProvider("$animateProvider")).toBeDefined();
+                expect(angularAMD.getCachedProvider("$animateProvider")).toBeDefined();
             });
             it('provide', function () {
-                expect(app.ngAMD.getCachedProvider("$provide")).toBeDefined();
+                expect(angularAMD.getCachedProvider("$provide")).toBeDefined();
             });
             it('injector', function () {
-                expect(app.ngAMD.getCachedProvider("$injector")).toBeDefined();
+                expect(angularAMD.getCachedProvider("$injector")).toBeDefined();
             });
             it('orig_angular', function () {
                 // Access the 'hidden' provider created for unit test purpose
-                expect(app.ngAMD.getCachedProvider("__orig_angular")).toBe(app.__origAngular);
+                expect(angularAMD.getCachedProvider("__orig_angular")).toBe(app.__origAngular);
             });
         });
         
@@ -51,13 +51,13 @@ define(['app'], function (app) {
             
             it('should be simple pass-through', function () {
                 var utestConfig = { one: "m45awKLtbM", two: "IZh0o0almb", make: "FB7T7WefnD" };
-                expect(app.ngAMD.route(utestConfig)).toBe(utestConfig);
+                expect(angularAMD.route(utestConfig)).toBe(utestConfig);
             });
             
             describe('with controllerURL param:', function () {
                 var tabName = "6oO33kWCB2", r;
                 beforeEach(function () {
-                    r = app.ngAMD.route({ controllerUrl: 'test/unit/lib/controller', navtab: tabName });
+                    r = angularAMD.route({ controllerUrl: 'test/unit/lib/controller', navtab: tabName });
                 });
     
                 it('navtab should be defined.', function () {
@@ -77,7 +77,7 @@ define(['app'], function (app) {
             describe('with controller param: ', function () {
                 var tabName = "ioOc7ZIofT", r;
                 beforeEach(function () {
-                    r = app.ngAMD.route({ controller: 'controller' });
+                    r = angularAMD.route({ controller: 'controller' });
                 });
     
                 it('controller should be defined.', function () {

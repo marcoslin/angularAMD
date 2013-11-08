@@ -7,12 +7,12 @@
  * 2. Make sure that independent angular.modules can be incorporated in the project
  *    by using the ngAMD.processQueue() method to load these modules.
  */
-define(['servicesAMD'], function (app) {
+define(['servicesAMD'], function (angularAMD) {
     'use strict';
     describe('Utest Services', function () {
         //console.log("Running serviceSpec.js");
         var results,
-            inject = app.ngAMD.inject;
+            inject = angularAMD.inject;
         
         inject(function (UtestServiceResult) {
             results = UtestServiceResult;

@@ -9,21 +9,19 @@ define(function () {
         app_injector,
         app_cached_providers = {};
     
-    /**
-     * Bootstrap angular when DOM is ready
-     */
-    ngAMD.bootstrap = function () {
-        orig_angular.element(document).ready(function () {
-            orig_angular.bootstrap(document, [app_name]); 
-        });
+    // Private method to check if angularAMD has been initialized
+    function checkAngularAMDInitialized() {
+        if ( typeof orig_angular === 'undefined' ) {
+            throw Error("angularAMD not initialized");
+        }
     }
     
-    /**
-     * Expose name of the app that has been bootstraped
-     */
-    ngAMD.appname = function () {
-        return app_name;
-    };
+    
+    // Constructor
+    function angularAMD() {
+        var that = this;
+    }
+    
     
     /**
      * Helper function to generate angular's $routeProvider.route.  'config' input param must be an object.
@@ -37,8 +35,8 @@ define(function () {
      * except for 'controllerUrl' attribute.
      *
      */
-    ngAMD.route = function (config) {
-        
+    angularAMD.prototype.route = function (config) {
+        // Initialization not necessary to call this method.
         var load_controller;
 
         /*
@@ -71,6 +69,16 @@ define(function () {
         return config;
     };
     
+    
+    /**
+     * Expose name of the app that has been bootstraped
+     */
+    angularAMD.prototype.appname = function () {
+        checkAngularAMDInitialized();
+        return app_name;
+    };
+    
+    
     /**
      * Recreate the modules created by alternate angular in ng-app using cached $provider.
      * As AMD loader does not guarantee the order of dependency in a require([...],...)
@@ -81,7 +89,8 @@ define(function () {
      * This method relay on inner working of angular.module code, and access _invokeQueue
      * and _runBlock private variable.  Must test carefully with each release of angular.
      */
-    ngAMD.processQueue = function () {
+    angularAMD.prototype.processQueue = function () {
+        checkAngularAMDInitialized();
         // Process alternate queue in FIFO fashion
         while (alternate_queue.length) {
             var item = alternate_queue.shift(),
@@ -119,10 +128,12 @@ define(function () {
 
     };
     
+    
     /**
      * Return cached app provider
      */
-    ngAMD.getCachedProvider = function (provider_name) {
+    angularAMD.prototype.getCachedProvider = function (provider_name) {
+        checkAngularAMDInitialized();
         // Hack used for unit testing that orig_angular has been captured
         if (provider_name === "__orig_angular") {
             return orig_angular;
@@ -135,7 +146,8 @@ define(function () {
      * Create inject function that uses cached $injector.
      * Designed primarly to be used during unit testing.
      */
-    ngAMD.inject = function () {
+    angularAMD.prototype.inject = function () {
+        checkAngularAMDInitialized();
         return app_injector.invoke.apply(null, arguments);
     };
     
@@ -156,7 +168,8 @@ define(function () {
      * angular will return undefined.
      * 
      */
-    ngAMD.getAlternateAngular = function () {
+    angularAMD.prototype.getAlternateAngular = function () {
+        checkAngularAMDInitialized();
         var alternateAngular = {}, alternateModules = {};
         
         orig_angular.extend(alternateAngular, orig_angular);
@@ -186,11 +199,27 @@ define(function () {
     };
     
     /**
+     * Bootstrap angular when DOM is ready
+    
+    angularAMD.prototype.bootstrap = function () {
+        checkAngularAMDInitialized();
+        orig_angular.element(document).ready(function () {
+            orig_angular.bootstrap(document, [app_name]); 
+        });
+    }
+     */
+    
+    /**
      * Initialization of angularAMD.  The objective is to cache the $provider and $injector from the app
      * to be used later.
      */
-    return function (app) {
-        // Store reference to original angular
+    angularAMD.prototype.bootstrap = function (app) {
+        // Prevent bootstrap from being called multiple times
+        if (typeof orig_angular !== 'undefined') {
+            throw Error("bootstrap can only be called once.");
+        }
+        
+        // Store reference to original angular which also used to check if bootstrap has take place.
         orig_angular = angular;
         
         // Cache provider needed
@@ -230,11 +259,14 @@ define(function () {
         // Store the app name needed by .bootstrap function.
         app_name = app.name;
         
-        // Create a property to store ngAMD on app
-        app.ngAMD = ngAMD;
-        
-        // Return the angularAMD object
-        return ngAMD;
+        // Bootstrap Angular
+        orig_angular.element(document).ready(function () {
+            orig_angular.bootstrap(document, [app_name]); 
+        });
     };
+    
+    
+    // Create a new instance and return
+    return new angularAMD();
     
 });

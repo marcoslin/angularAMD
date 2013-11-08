@@ -10,16 +10,14 @@ define(['angularAMD'], function (angularAMD) {
      */
     var app_name = "unitest-app",
         app = angular.module(app_name, []),
-        ngAMD = angularAMD(app),
-        altAngular = ngAMD.getAlternateAngular(),
         origAngular = angular;
     
     // Add property for unit test
     app.__appname = app_name;
     app.__origAngular = origAngular;
     
-    ngAMD.bootstrap();
-    window.angular = altAngular;
+    angularAMD.bootstrap(app);
+    window.angular = angularAMD.getAlternateAngular();
     
     return app;
 });
