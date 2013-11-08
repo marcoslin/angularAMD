@@ -1,7 +1,7 @@
 /*jslint node: true, vars: true, nomen: true */
 /*globals define, angular */
 
-define(['angular'], function () {
+define(function () {
     var ngAMD = {},
         orig_angular,
         alternate_queue = [],

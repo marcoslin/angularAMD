@@ -21,6 +21,7 @@ require.config({
     },
 
     shim: {
+        'angularAMD': ['angular'],
         /*
         'services' in this case is a regular angular.js module and therefore non-requirejs module so 
         must be defined in shim.  This is critical as 'services' depends on processing in 'app' to
