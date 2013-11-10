@@ -7,7 +7,7 @@
 define(['app','angularAMD'], function (app, angularAMD) {
     'use strict';
     describe('angularAMD', function () {
-        //console.log("Running appSpec.js");
+        //console.log("Running app.spec.js");
         
         it('is created.', function () {
             expect(angularAMD).toBeDefined();
@@ -16,10 +16,14 @@ define(['app','angularAMD'], function (app, angularAMD) {
             expect(app.name).toBe(angularAMD.appname());
         });
         it('app.__origAngular is defined.', function () {
+            var orig_angular = angularAMD.getCachedProvider('__orig_angular');
             expect(app.__origAngular).toBeDefined();
+            expect(app.__origAngular).toBe(orig_angular);
         });
-        it('.getAlternateAngular works.', function () {
-            expect(window.angular).not.toBe(app.__origAngular);
+        it('alternate angular should be defined.', function () {
+            var alt_angular = angularAMD.getCachedProvider('__alt_angular');
+            expect(alt_angular).toBeDefined();
+            expect(window.angular).toBe(alt_angular);
         });
         
         describe('cached property', function () {

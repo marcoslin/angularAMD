@@ -5,7 +5,7 @@
 module.exports = function (config) {
     config.set({
         // base path, note that this is expected to be ran under build directory
-        basePath: '../../..',
+        basePath: '../..',
         
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine', 'requirejs'],
@@ -13,12 +13,11 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             {pattern: 'bower_components/angular/*.js', watched: false, included: false},
-            {pattern: 'build/*.js', watched: true, included: false},
             {pattern: 'src/*.js', watched: true, included: false},
-            {pattern: 'test/unit/*.spec.js', watched: true, included: false},
-            {pattern: 'test/unit/lib/*.js', watched: true, included: false},
+            {pattern: 'test/unit/app_no_ngload.spec.js', watched: true, included: false},
+            {pattern: 'test/unit/lib/app_no_ngload.js', watched: true, included: false},
             'bower_components/requirejs/require.js',
-            '{{{main-js-file}}}'
+            'test/unit/lib/main.no_ngload.js'
         ],
         
         // files: ['test/conf/testSpec.js'],

@@ -133,6 +133,10 @@ module.exports = function (grunt) {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.js',
                 singleRun: false
             },
+            "unit-no-ngload": {
+                configFile: 'test/conf/karma.unit.no_ngload.js',
+                singleRun: false
+            },
             "build": {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.js',
                 browsers: ['PhantomJS','Chrome','Firefox']
@@ -239,11 +243,22 @@ module.exports = function (grunt) {
     ]);
     
     
-    /* Used during dev */
+    /*
+    Designed to be used during the dev and contains 2 distinct tests:
+      - unit
+      - unit-no-ngload
+    
+    The `grunt test` will kick off the `unit` test first, and after
+    `ctrl-c` will kick off `unit-no-ngload` test.  This is needed as
+    it was dificult to load 2 different instance of angularAMD.  The
+    race condition was redering subsequent test with both ngload and
+    no-ngload version unpredictable.
+    */
     grunt.registerTask('test', [
         'setup',
         'genTestTemplates',
-        'karma:unit'
+        'karma:unit',
+        'karma:unit-no-ngload'
     ]);
 
     

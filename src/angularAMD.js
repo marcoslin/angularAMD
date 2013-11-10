@@ -2,8 +2,7 @@
 /*globals define, angular */
 
 define(function () {
-    var ngAMD = {},
-        orig_angular,
+    var orig_angular,
         alt_angular,
         alternate_queue = [],
         app_name,
@@ -148,6 +147,11 @@ define(function () {
      */
     angularAMD.prototype.processQueue = function () {
         checkAngularAMDInitialized();
+        
+        if (typeof alt_angular === 'undefined') {
+            throw Error("Alternate angular not set.  Make sure that `enable_ngload` option has been set when calling angularAMD.bootstrap");
+        }
+        
         // Process alternate queue in FIFO fashion
         while (alternate_queue.length) {
             var item = alternate_queue.shift(),
@@ -209,7 +213,28 @@ define(function () {
         checkAngularAMDInitialized();
         return app_injector.invoke.apply(null, arguments);
     };
-
+    
+    /**
+     * Reset angularAMD for resuse
+     */
+    angularAMD.prototype.reset = function () {
+        if (typeof orig_angular === 'undefined') {
+            return;
+        }
+        
+        // Restore original angular instance
+        window.angular = orig_angular;
+        
+        // Clear private variables
+        alt_angular = undefined;
+        alternate_queue = [];
+        app_name = undefined;
+        app_injector = undefined;
+        app_cached_providers = {};
+        
+        // Clear original angular
+        orig_angular = undefined;
+    }
     
     /**
      * Initialization of angularAMD that bootstraps AngularJS.  The objective is to cache the
@@ -217,7 +242,7 @@ define(function () {
      *
      * enable_ngload: 
      */
-    angularAMD.prototype.bootstrap = function (app, enable_ngload) {
+    angularAMD.prototype.bootstrap = function (app, enable_ngload, elem) {
         // Prevent bootstrap from being called multiple times
         if (typeof orig_angular !== 'undefined') {
             throw Error("bootstrap can only be called once.");
@@ -225,7 +250,10 @@ define(function () {
         
         // Store reference to original angular which also used to check if bootstrap has take place.
         orig_angular = angular;
-        enable_ngload = enable_ngload || true;
+        if (typeof enable_ngload === 'undefined') {
+            enable_ngload = true;
+        }
+        elem = elem || document;
         
         // Cache provider needed
         app.config(
@@ -266,16 +294,15 @@ define(function () {
         
         // Bootstrap Angular
         orig_angular.element(document).ready(function () {
-            orig_angular.bootstrap(document, [app_name]); 
+            orig_angular.bootstrap(elem, [app_name]); 
         });
         
         // Replace angular.module
         if (enable_ngload) {
+            //console.log("Setting alternate angular");
             setAlternateAngular();
         }
-        
-    };
-    
+    };  
     
     // Create a new instance and return
     return new angularAMD();
