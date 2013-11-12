@@ -13,53 +13,50 @@ Usage
 http://marcoslin.github.io/angularAMD/ has been created as a working demo for `angularAMD`.  The source code
 can be found in the `www/` directory of this project.
 
+### RequireJS data-main
 
-### Bootstrapping
-
-Starting point for a `angularAMD` app is to define a `app.js` module that instantiate `angularAMD`
-and bootstraping AngularJS:
-
-```Javascript
-define(['angularAMD'], function (angularAMD) {
-    var app = angular.module(app_name, ['webapp']),
-	ngAMD = angularAMD(app);
-    ... // Setup app here. E.g.: run .config with $routeProvider
-    ngAMD.bootstrap();
-    window.angular = ngAMD.getAlternateAngular();  // Optional
-    return app;
-});
-```
-
-Once `angularAMD` has been initialized, you can access this instance via `app.ngAMD`.  Please note that
-`.getAlternateAngular()` is only needed if you wish to perform on-demand loading of  module created using
-`angular.module`.
-
-An alternative to `.getAlternateAngular()` is to load all your 3rd party modules (or any module you coded
-using `angular.module`) as a dependency to your `app.js` in your `main.js`:
+Starting point for any RequireJS app is a `main.js`, which should be used to define the components and their dependencies.  Use `deps` to kick off `app.js`:
 
 ```Javascript
 require.config({
+    baseUrl: "js",
     paths: {
-        'angular': 'lib/angular',
-        'angularAMD': 'lib/angularAMD',
-        'ui-boostrap': 'lib/ui-bootstrap'
+        'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min',
+        'angularAMD': 'lib/angularAMD.min',
+        'ngload': 'lib/ngload.min'
     },
     shim: {
-        'app': ['ui-boostrap']
-    },
+        'angularAMD': ['angular'],
+        'ngload': ['angularAMD']
+    },    
     deps: ['app']
 });
 ```
 
+### Bootstrapping AngularJS
+
+Once components' dependencies has been defined, use a `app.js` to create AngularJS application and perform bootstrapping:
+
+```Javascript
+define(['angularAMD'], function (angularAMD) {
+    var app = angular.module(app_name, ['webapp']);
+    ... // Setup app here. E.g.: run .config with $routeProvider
+    angularAMD.bootstrap(app);
+    return app;
+});
+```
+
+As bootstrapping is taking place manually, `ng-app` should not be used in HTML.  `angularAMD.bootstrap(app);` will take care of bootstraping AngularJS.
+
 ### On-Demand Loading of Controllers
 
-Use `ngAMD.route` when configuring routes using `$routeProvider` to enable on-demand loading of controllers:
+Use `angularAMD.route` when configuring routes using `$routeProvider` to enable on-demand loading of controllers:
 
 ```Javascript
 app.config(function ($routeProvider) {
 $routeProvider.when(
     "/home",
-    ngAMD.route({
+    angularAMD.route({
         templateUrl: 'views/home.html',
         controller: 'HomeController',
         controllerUrl: 'scripts/controller.js'
@@ -74,7 +71,7 @@ You can avoid passing of `controllerUrl` if you define it in your `main.js` as:
 paths: { 'HomeController': 'scripts/controller.js' }
 ```
 
-The primary purpose of `ngAMD.route` is set `.resolve` property to load controller using `require` statement.
+The primary purpose of `angularAMD.route` is set `.resolve` property to load controller using `require` statement.
 Any attribute you pass into this method will simply be returned, with exception of `controllerUrl`. 
 
 
@@ -106,16 +103,21 @@ Here is the list of methods supported by `app.register`:
 
 ### 3rd Party AngularJS Modules
 
-A wrapper is required to load 3rd party modules created using standard `angular.module` statement. If you have
-called `.getAlternateAngular()` during [Bootstrapping](#bootstrapping), `angularAMD` will queue up all the
-modules created for later processing.  When all the dependencies are loaded, `.processQueue()` will go through
-all the queued up modules and copy them into current app using `app.register`:
+A RequireJS plugin `ngload` is included as part of `angularAMD`.  You can use the following syntax load a 3rd party module created using standard `angular.module` statement.  I
 
 ```Javascript
-define(['app', 'ui-bootstrap'], function (app) {
-    app.ngAMD.processQueue();
+define(['app', 'ngload!dataServices'], function (app) {...});
+```
+
+In case you need to load your module using RequireJS plugin or if you have complex dependecies, you can create a wrapper RequireJS module as below:
+
+```Javascript
+define(['angularAMD', 'ui-bootstrap'], function (angularAMD) {
+    angularAMD.processQueue();
 });
 ```
+
+In this case, all depdencies will be queued up and when `.processQueue()` is called, it will go through the queued and copy them into current app using `app.register`:
 
 
 Running Sample Project
