@@ -4,7 +4,7 @@
     Demonstrate how to create on-demand loaded components such as <code gh-link="js/scripts/controller/modules_ctrl.js">
     </code> and <code gh-link="js/scripts/directive/write.js"></code>.
     Standard AngularJS module <code gh-link="js/scripts/service/dataServices.js"></code> is supported
-    via wrapper <code gh-link="js/scripts/service/dataServicesAMD.js"></code>.  Notice that angularAMD
+    via RequireJS plugin <code gh-link="src/ngload.js"></code> as used in <code gh-link="js/scripts/controller/modules_ctrl.js"></code>.  Notice that angularAMD
     is able to handle out of sequence calls of <code>.factory</code> and <code>.constant</code> in
     <code gh-link="js/scripts/service/dataServices.js"></code>.
 </p>
@@ -30,9 +30,9 @@
     
     <dl class="dl-horizontal">
         <dt><code>DeferredObject</code>:</dt>
-        <dd ng-cloak>{{obj_response.message}}</dd>
+        <dd>{{obj_response.message}}</dd>
         <dt><code>.label</code>:</dt>
-        <dd ng-cloak>{{obj_response.label}}</dd>
+        <dd>{{obj_response.label}}</dd>
     </dl>
         
     <dl class="dl-horizontal">

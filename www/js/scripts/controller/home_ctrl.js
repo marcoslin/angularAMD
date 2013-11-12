@@ -1,5 +1,5 @@
-define(['app', 'directive/navMenu'], function (app) {
+define(['app', 'directive/navMenu','prettify'], function (app) {
     app.register.controller('HomeController', ['$scope', '$log', function ($scope, $log) {
-        $scope.title = "Welcome"; 
+        $scope.title = "angularAMD"; 
     }])
 }); 

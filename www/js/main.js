@@ -10,6 +10,7 @@ require.config({
         'angularAMD': '../lib/requirejs/angularAMD',
         'ngload': '../lib/requirejs/ngload',
         'ui-bootstrap': '../lib/angular-ui-bootstrap/ui-bootstrap-tpls',
+        'prettify': '../lib/google-code-prettify/prettify',
 
         'HomeController': 'controller/home_ctrl',
         'MapController': 'controller/map_ctrl',
