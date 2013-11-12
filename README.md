@@ -103,7 +103,7 @@ Here is the list of methods supported by `app.register`:
 
 ### 3rd Party AngularJS Modules
 
-A RequireJS plugin `ngload` is included as part of `angularAMD`.  You can use the following syntax load a 3rd party module created using standard `angular.module` statement.  I
+3rd party AngularJS module, meaning any module created using `angular.module` syntax, can be loaded as any normal JavaScript file *before* `angularAMD.bootstrap` is called.  After bootstraping, any AngularJS module must be loaded using the included `ngload` RequireJS plugin.
 
 ```Javascript
 define(['app', 'ngload!dataServices'], function (app) {...});
