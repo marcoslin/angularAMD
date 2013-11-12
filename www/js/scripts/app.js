@@ -37,12 +37,16 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
         };
     });
     
-    // Create directive to output link to GitHub
-    app.run(['$rootScope', function ($rootScope) {
-        $rootScope.githubLink = function (Url) {
-            return "https://github.com/marcoslin/angularAMD/blob/master/www/" + Url;
+    
+    // Add support for pretty print
+    app.directive('prettyprint', function() {
+        return {
+            restrict: 'C',
+            link: function postLink(scope, element, attrs) {
+                  element.html(prettyPrint(scope.dom));
+            }
         };
-    }]);
+    });
         
     // Bootstrap Angular when DOM is ready
     angularAMD.bootstrap(app);

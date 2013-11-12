@@ -5,7 +5,9 @@ define(['app', 'service/picturesService', 'ngload!ui-bootstrap', 'directive/navM
         
         $scope.$watch('cityModel', function (newValue) {
             if (newValue) {
-                $scope.rows = Pictures.query(newValue);
+                Pictures.query(newValue).then(function (result) {
+                    $scope.rows = result;
+                });
             }
         });
         

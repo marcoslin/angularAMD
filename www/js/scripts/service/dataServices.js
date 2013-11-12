@@ -3,6 +3,7 @@ angular.module("dataServices", [])
 .factory("DeferredObject", ['$timeout','$q', 'ServiceName', function ($timeout, $q, ServiceName) {
     return {
         get: function (message, delay_in_ms) {
+            //console.log("DeferredObject.get ServiceName: ", ServiceName);
             var d = $q.defer();
             $timeout(function () {
                 d.resolve({label: ServiceName, message: message});
@@ -22,13 +23,13 @@ angular.module("dataServices", [])
     }
 }])
 .config(['$rootScope','$timeout', function ($rootScope, $timeout) {
-    console.log("Calling moreServices.config.  $rootScope.$id: " + $rootScope.$id);
+    //console.log("Calling moreServices.config.  $rootScope.$id: " + $rootScope.$id);
     $timeout(function () {
         $rootScope.config_block_message = "And config works";
     }, 4000);
 }])
 .run(['$rootScope','$timeout', function ($rootScope, $timeout) {
-    console.log("Calling moreServices.run.  $rootScope.$id: " + $rootScope.$id);
+    //console.log("Calling moreServices.run.  $rootScope.$id: " + $rootScope.$id);
     $timeout(function () {
         $rootScope.run_block_message = "Greetings from .run";
     }, 3000);
