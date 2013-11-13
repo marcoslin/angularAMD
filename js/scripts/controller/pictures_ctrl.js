@@ -1,1 +1,1 @@
-define(["app","service/picturesService","directive/ui-bootstrapAMD","directive/navMenu"],function(a){a.register.controller("PicturesController",["$scope","Pictures",function(a,b){a.slideChangeInterval=4e3,a.$watch("cityModel",function(c){c&&(a.rows=b.query(c))})}])});
+define(["app","service/picturesService","ngload!ui-bootstrap","directive/navMenu"],function(a){a.register.controller("PicturesController",["$scope","Pictures",function(a,b){a.slideChangeInterval=4e3,a.$watch("cityModel",function(c){c&&b.query(c).then(function(b){a.rows=b})})}])});

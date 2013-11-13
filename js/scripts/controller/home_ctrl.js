@@ -1,1 +1,1 @@
-define(["app","directive/navMenu"],function(a){a.register.controller("HomeController",["$scope","$log",function(a){a.title="Welcome"}])});
+define(["app","directive/navMenu","prettify"],function(a){a.register.controller("HomeController",["$scope","$window",function(a,b){a.title="angularAMD",a.openGitHubPage=function(){b._gaq.push(["_trackEvent","angularAMD","ViewGitHub","Clicked on View on GitHub button"]),b.open("https://github.com/marcoslin/angularAMD","_blank")}}])});
