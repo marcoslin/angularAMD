@@ -21,6 +21,10 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
             .otherwise({redirectTo: '/home'})
     }]);
     
+    // Define constant to be used by Google Analytics
+    app.constant("SiteName", "/angularAMD");
+    
+    
     // Create function to link to GitHub
     app.directive('ghLink', function () {
         return {
@@ -36,7 +40,6 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
             }]
         };
     });
-    
     
     // Add support for pretty print
     app.directive('prettyprint', function() {
