@@ -92,7 +92,15 @@ module.exports = function (grunt) {
                     {
                         src: 'bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js',
                         dest: "<%= cvars.dist_www %>/js/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js"
-                    }
+                    },
+                    {
+                        expand: true, cwd: "bower_components/google-code-prettify-lite/",
+                        src: 'prettify.js', dest: "<%= cvars.dist_www %>/js/lib/google-code-prettify/"
+                    },
+                    {
+                        expand: true, cwd: "bower_components/google-code-prettify-lite/",
+                        src: 'prettify.css', dest: "<%= cvars.dist_www %>/css/"
+                    },
                 ]
             },
             "dist-bower" : {
@@ -223,9 +231,10 @@ module.exports = function (grunt) {
         cssmin: {
             "dist-www": {
                 files: {
-                    '<%= cvars.dist_www %>/css/style.css': 'www/css/style.css'
+                    '<%= cvars.dist_www %>/css/style.css': 'www/css/style.css',
+                    '<%= cvars.dist_www %>/css/prettify.css': 'www/css/prettify.css',
+                    '<%= cvars.dist_www %>/css/sons-of-obsidian.css': 'www/css/sons-of-obsidian.css'
                 }
-                
             }
         },
         htmlmin : {
