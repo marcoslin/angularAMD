@@ -130,7 +130,7 @@ npm install
 grunt build
 grunt serve-www
 ```
-* The default build will test angularAMD using following browsers: 'PhantomJS','Chrome','Firefox'
+* The default build will test angularAMD using following browsers: 'PhantomJS', 'Chrome' and 'Firefox'
 
 History
 ==========
@@ -144,7 +144,7 @@ without re-writting them.  After exhausive search with no satisfactory answer, I
 [Nikos Paraskevopoulos](http://stackoverflow.com/users/2764255/nikos-paraskevopoulos) was kind enough to share his
 solution with me but his implementation did not handle `.config` method calls and out of order definition in modules.
 However, his implementation gave me the foundation I needed to create `angularAMD` and his project is where the idea
-for `.getAlternateAngular()` came from.
+for `alt_angular` came from.
 
 
 References
