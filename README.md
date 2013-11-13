@@ -130,7 +130,7 @@ npm install
 grunt build
 grunt serve-www
 ```
-
+* The default build will test angularAMD using following browsers: 'PhantomJS','Chrome','Firefox'
 
 History
 ==========
