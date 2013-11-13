@@ -97,10 +97,6 @@ module.exports = function (grunt) {
                         expand: true, cwd: "bower_components/google-code-prettify-lite/",
                         src: 'prettify.js', dest: "<%= cvars.dist_www %>/js/lib/google-code-prettify/"
                     },
-                    {
-                        expand: true, cwd: "bower_components/google-code-prettify-lite/",
-                        src: 'prettify.css', dest: "<%= cvars.dist_www %>/css/"
-                    },
                 ]
             },
             "dist-bower" : {
