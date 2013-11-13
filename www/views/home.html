@@ -10,14 +10,14 @@
 <div class="main-content">
     <p class="lead text-justify">
         Integrating AngularJS and RequireJS shouldn't be complicated, and it isn't with angularAMD.
-        To see it in action, checkout the tabs above that show case the key features.  Make sure to
+        To see it in action, checkout this website that show case key features.  Make sure to
         load your favorite Developer Tools to see the on-demand loading of <code>*.js</code> files
         as you switch tabs.
     </p>
     
     <hr>
     
-    <p class="lead">A quick how-to:</p>
+    <p class="lead">A quick angularAMD how-to:</p>
     
     <h4>Step 1:</h4>
     Define components and dependencies in <code>main.js</code>:
@@ -26,9 +26,10 @@
     baseUrl: "js",    
     paths: {
         'angular': '.../angular.min',
+        'angular-route': '.../angular-route.min',
         'angularAMD': '.../angularAMD.min'
     },
-    shim: { 'angular-route': ['angular'] },
+    shim: { 'angularAMD': ['angular'], 'angular-route': ['angular'] },
     deps: ['app']
 });</pre>
     
