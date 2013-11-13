@@ -2,6 +2,7 @@
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
 module.exports = function(config) {
+    // THIS IS NOT CURRENTLY USED
   config.set({
     // base path, that will be used to resolve files and exclude
     basePath: '../..',
