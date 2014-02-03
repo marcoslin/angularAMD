@@ -33,7 +33,7 @@
         "grunt-usemin": "~0.1.11",
         "load-grunt-tasks": "~0.1.0",
         "karma": "~0.10.2",
-        "karma-ng-scenario": "~0.1.0"
+        "protractor": "~0.17.0"
     },
     "scripts": {
         "test": "grunt build-travis"
