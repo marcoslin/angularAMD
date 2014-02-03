@@ -42,11 +42,14 @@ describe('angularAMD', function() {
             ptor_get('#/modules');
         });
         
-        it("ng-write", function () {
-            "output-ng-write"
+        it("ng-write to output correct value", function () {
             expect($("#output-ng-write").getText()).toBe("Output from Directive");
-        })
-    
+            expect($("#output-deferred-string").getText()).toBe("Show case ngWrite with promise");
+            expect($("#output-deferred-object").getText()).toBe("This is defered response");
+            expect($("#output-run").getText()).toBe("Greetings from .run");
+            expect($("#output-config").getText()).toBe("And config works");
+        });
+        
     });
     
 });

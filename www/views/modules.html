@@ -21,24 +21,24 @@
     
     <dl class="dl-horizontal">
         <dt>Value set in <code>.config</code>:</dt>
-        <dd>{{config_block_message}}</dd>
+        <dd id="output-config">{{config_block_message}}</dd>
     </dl>
     
     <dl class="dl-horizontal">
         <dt>Value set in <code>.run</code>:</dt>
-        <dd>{{run_block_message}}</dd>
+        <dd id="output-run">{{run_block_message}}</dd>
     </dl>
     
     <dl class="dl-horizontal">
         <dt><code>DeferredObject</code>:</dt>
-        <dd>{{obj_response.message}}</dd>
+        <dd id="output-deferred-object">{{obj_response.message}}</dd>
         <dt><code>.label</code>:</dt>
         <dd>{{obj_response.label}}</dd>
     </dl>
         
     <dl class="dl-horizontal">
         <dt><code>DeferredString</code>:</dt>
-        <dd><span ng-write="str_response"></span></dd>
+        <dd><span id="output-deferred-string" ng-write="str_response"></span></dd>
     </dl>
 
 </div>
