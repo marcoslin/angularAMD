@@ -7,4 +7,7 @@ build/
 # Ignore css sourced from bower
 www/css/prettify.css
 
+# Other
+phantomjsdriver.log
+
 

@@ -8,15 +8,15 @@
 <div class="main-content">
     <span class="lead"><strong>Show pictures from:</strong>&nbsp;</span>
     <div class="btn-group">
-        <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'London'">London</button>
-        <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Paris'">Paris</button>
-        <button type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Rome'">Rome</button>
+        <button id="btn-london" type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'London'">London</button>
+        <button id="btn-paris" type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Paris'">Paris</button>
+        <button id="btn-rome" type="button" class="btn btn-primary" ng-model="cityModel" btn-radio="'Rome'">Rome</button>
     </div>
     
     <p class="break"></p>
 
     <carousel id="slide-carousel" interval="slideChangeInterval">
-        <slide id="slide-image" ng-repeat="row in rows" active="row.active">
+        <slide class="slide-image" ng-repeat="row in rows" active="row.active">
             <a ng-href="{{row.link}}" target="_blank">
                 <img ng-src="{{row.media.m}}" style="margin:auto;">
             </a>

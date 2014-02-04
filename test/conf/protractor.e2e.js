@@ -5,7 +5,8 @@ exports.config = {
     
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
-        'browserName': 'chrome'
+        'browserName': 'phantomjs',
+        'phantomjs.binary.path': './node_modules/karma-phantomjs-launcher/node_modules/phantomjs/bin/phantomjs'
     },
     
     baseUrl: 'http://localhost:8444',
