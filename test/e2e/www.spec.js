@@ -69,12 +69,8 @@ describe('angularAMD', function() {
             ptor_get('#/pictures');
         });
         
-        it("tab should be active", function () {            
-            ptor.wait(function () {
-                return $('#nav-pictures').getAttribute("class").then(function (class_value) {
-                    return class_value == "active";
-                });
-            }, 1000, "Taking too long for pictures tab to become active")
+        it("tab should be active", function () {
+            expect($('#nav-pictures').getAttribute("class")).toBe("active");
         });
     })
     
@@ -83,6 +79,7 @@ describe('angularAMD', function() {
             ptor_get('#/map');
         });
         
+        // As map tab takes a bit longer to become active, probably due to the work to load google map
         it("tab should be active", function () {            
             ptor.wait(function () {
                 return $('#nav-map').getAttribute("class").then(function (class_value) {
@@ -91,8 +88,15 @@ describe('angularAMD', function() {
             }, 1000, "Taking too long for map tab to become active")
         });
         
+        
+        // As map takes a bit to load, give it up to 5 secs for it to load
         it("map should be loaded", function () {
-
+            ptor.wait(function () {
+                return $('#map-canvas').getText().then(function (text_value) {
+                    return text_value != "";
+                });
+            }, 5000, "Taking too long to load Google Map");
+            
             expect($('#map-canvas .gm-style').getAttribute("style")).toBeDefined();
         });
         
