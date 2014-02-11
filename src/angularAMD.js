@@ -74,9 +74,7 @@ define(function () {
     
     
     // Constructor
-    function angularAMD() {
-        var that = this;
-    }
+    function angularAMD() {}
     
     
     /**
