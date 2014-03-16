@@ -21,6 +21,21 @@ module.exports = function (grunt) {
                 options: { install: true, copy: false }
             }
         },
+        watch: {
+            'watch-setup': {
+                files: [
+                    '**/*.js'
+                ],
+                tasks: [
+                    'copy:setup-www'
+                ],
+                options: {
+                    cwd: 'src/',
+                    interrupt: true,
+                    spawn: false
+                }
+            }
+        },
         copy: {
             "setup-www": {
                 files: [
@@ -288,6 +303,15 @@ module.exports = function (grunt) {
         'genTestTemplates',
         'uglify:build',
         'karma:build-travis'
+    ]);
+
+    /* Setup/Development watcher */
+    grunt.registerTask('watch-setup', [
+        'watch:watch-setup',
+        'genTestTemplates',
+        'karma:build',
+        'uglify:build',
+        'karma:build-min'
     ]);
 
     /* Run sample website */
