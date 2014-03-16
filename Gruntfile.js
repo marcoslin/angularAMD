@@ -21,7 +21,34 @@ module.exports = function (grunt) {
                 options: { install: true, copy: false }
             }
         },
+        watch: {
+            'watch-www': {
+                files: [
+                    '**/*.js'
+                ],
+                tasks: [
+                    'copy:watch-www'
+                ],
+                options: {
+                    cwd: 'src/',
+                    interrupt: true,
+                    spawn: false
+                },
+            },
+        },
         copy: {
+            "watch-www": {
+                files: [
+                    {
+                        expand: true, cwd: "src/",
+                        src: 'angularAMD.js', dest: "www/js/lib/requirejs/"
+                    },
+                    {
+                        expand: true, cwd: "src/",
+                        src: 'ngload.js', dest: "www/js/lib/requirejs/"
+                    },
+                ]
+            },
             "setup-www": {
                 files: [
                     {
@@ -288,6 +315,17 @@ module.exports = function (grunt) {
         'genTestTemplates',
         'uglify:build',
         'karma:build-travis'
+    ]);
+
+    /* Setup/Development watcher */
+    /* @note If tmux is used, try running grunt watch-www and grunt serve-www
+     * in different windows under one session. */
+    grunt.registerTask('watch-www', [
+        'watch:watch-www',
+        'genTestTemplates',
+        'karma:build',
+        'uglify:build',
+        'karma:build-min'
     ]);
 
     /* Run sample website */
