@@ -4,7 +4,7 @@
 module.exports = function (grunt) {
     'use strict';
     require('load-grunt-tasks')(grunt);
-    
+
     // Config variables
     var configVars = {
         "build": "build",
@@ -13,7 +13,7 @@ module.exports = function (grunt) {
         "www_port": "9768",
         "www_server": "localhost"
     };
-    
+
     grunt.initConfig({
         cvars: configVars,
         bower: {
@@ -53,11 +53,11 @@ module.exports = function (grunt) {
                         src: 'async.js', dest: "www/js/lib/requirejs/"
                     },
                     {
-                        expand: true, cwd: "bower_components/google-code-prettify-lite/",
+                        expand: true, cwd: "bower_components/google-code-prettify/src/",
                         src: 'prettify.js', dest: "www/js/lib/google-code-prettify/"
                     },
                     {
-                        expand: true, cwd: "bower_components/google-code-prettify-lite/",
+                        expand: true, cwd: "bower_components/google-code-prettify/src/",
                         src: 'prettify.css', dest: "www/css/"
                     },
                 ]
@@ -94,7 +94,7 @@ module.exports = function (grunt) {
                         dest: "<%= cvars.dist_www %>/js/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js"
                     },
                     {
-                        expand: true, cwd: "bower_components/google-code-prettify-lite/",
+                        expand: true, cwd: "bower_components/google-code-prettify/src/",
                         src: 'prettify.js', dest: "<%= cvars.dist_www %>/js/lib/google-code-prettify/"
                     },
                 ]
@@ -246,21 +246,21 @@ module.exports = function (grunt) {
             }
         }
     });
-    
-    
+
+
     /* BASIC TASKS */
     grunt.registerTask('setup', ['bower:setup']);
     grunt.registerTask('genTestTemplates', [
         'template:main-js','template:karma-js',
         'template:main-min-js','template:karma-min-js'
     ]);
-    
-    
+
+
     /*
     Designed to be used during the dev and contains 2 distinct tests:
       - unit
       - unit-no-ngload
-    
+
     The `grunt test` will kick off the `unit` test first, and after
     `ctrl-c` will kick off `unit-no-ngload` test.  This is needed as
     it was dificult to load 2 different instance of angularAMD.  The
@@ -274,7 +274,7 @@ module.exports = function (grunt) {
         'karma:unit-no-ngload'
     ]);
 
-    
+
     /* Done with dev, build it by creating a minified version */
     grunt.registerTask('build', [
         'setup',
@@ -289,14 +289,14 @@ module.exports = function (grunt) {
         'uglify:build',
         'karma:build-travis'
     ]);
-    
+
     /* Run sample website */
     grunt.registerTask('setup-www', ['copy:setup-www']);
     grunt.registerTask('serve-www', [
         'setup-www', 'open',
         'connect:serve-www'
     ]);
-    
+
     /* Create github pages */
     grunt.registerTask('dist-www', [
         'cssmin:dist-www',
@@ -307,7 +307,7 @@ module.exports = function (grunt) {
 
     /* Update bower repository -- must run build manually before this */
     grunt.registerTask('dist-bower', ['copy:dist-bower']);
-    
+
 };
 
 
