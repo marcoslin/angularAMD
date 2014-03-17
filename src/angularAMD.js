@@ -265,7 +265,6 @@ define(function () {
                     $provide: provide
                 };
 
-                console.log(provide);
                 // Create a app.register object
                 app.register = {
                     controller: controllerProvider.register,
