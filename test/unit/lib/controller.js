@@ -9,11 +9,11 @@ define(['app','ngload!services'], function (app) {
         $scope.utest_factory = UtestFactory;
         $scope.utest_service = UtestService;
     }]);
-    
+
     // Return expected unit test result
     app.__utest_ctrl_result = {
         "ctrl_name": ctrl_name
     };
-    
+
     return app;
 });
