@@ -280,7 +280,16 @@ module.exports = function (grunt) {
 
 
     /* BASIC TASKS */
-    grunt.registerTask('setup', ['bower:setup']);
+    grunt.registerTask('webdriver-manager-update', function () {
+        grunt.util.spawn({
+            cmd: 'node_modules/protractor/bin/webdriver-manager',
+            args: ['update']
+        });
+    });
+    grunt.registerTask('setup', [
+        'bower:setup',
+        'webdriver-manager-update'
+    ]);
     grunt.registerTask('genTestTemplates', [
         'template:main-js','template:karma-js',
         'template:main-min-js','template:karma-min-js'
@@ -309,6 +318,7 @@ module.exports = function (grunt) {
     ]);
     grunt.registerTask('test-e2e', [
         'test-base',
+        'setup-www',
         'connect:e2e-www',
         'protractor:e2e-www'
     ]);
@@ -327,6 +337,8 @@ module.exports = function (grunt) {
         'genTestTemplates',
         'uglify:build',
         'karma:build-travis',
+        'webdriver-manager-update',
+        'setup-www',
         'connect:e2e-www',
         'protractor:build-travis'
     ]);
