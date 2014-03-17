@@ -1,15 +1,15 @@
 // An example configuration file.
 exports.config = {
-    // The address of a running selenium server.
-    seleniumAddress: 'http://localhost:4444/wd/hub',
+    // Remove definition for `seleniumAddress` so that selenium is launched by protractor.
+    // seleniumAddress: 'http://localhost:4444/wd/hub',
     
-    // Capabilities to be passed to the webdriver instance.
+    //Capabilities to be passed to the webdriver instance.
     capabilities: {
         'browserName': 'phantomjs',
         'phantomjs.binary.path': './node_modules/karma-phantomjs-launcher/node_modules/phantomjs/bin/phantomjs'
     },
     
-    baseUrl: 'http://localhost:8444',
+    //baseUrl: 'http://localhost:8444',
     
     // Spec patterns are relative to the current working directly when
     // protractor is called.

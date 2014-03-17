@@ -43,7 +43,7 @@ describe('angularAMD', function() {
                 return $('#nav-map').getAttribute("class").then(function (class_value) {
                     return class_value == "active";
                 });
-            }, 1000, "Taking too long for map tab to become active")
+            }, 2000, "Taking too long for map tab to become active")
         });
         
         // As map takes a bit to load, give it up to 5 secs for it to load
