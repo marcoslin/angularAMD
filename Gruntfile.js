@@ -22,6 +22,14 @@ module.exports = function (grunt) {
                 options: { install: true, copy: false }
             }
         },
+        shell: {
+            'webdriver-manager-update': {
+                command: "node_modules/protractor/bin/webdriver-manager update",
+                options: {
+                    async: false
+                }
+            }
+        },
         copy: {
             "setup-www": {
                 files: [
@@ -280,15 +288,9 @@ module.exports = function (grunt) {
 
 
     /* BASIC TASKS */
-    grunt.registerTask('webdriver-manager-update', function () {
-        grunt.util.spawn({
-            cmd: 'node_modules/protractor/bin/webdriver-manager',
-            args: ['update']
-        });
-    });
     grunt.registerTask('setup', [
         'bower:setup',
-        'webdriver-manager-update'
+        'shell:webdriver-manager-update'
     ]);
     grunt.registerTask('genTestTemplates', [
         'template:main-js','template:karma-js',
