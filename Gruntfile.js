@@ -339,7 +339,6 @@ module.exports = function (grunt) {
         'genTestTemplates',
         'uglify:build',
         'karma:build-travis',
-        'webdriver-manager-update',
         'setup-www',
         'connect:e2e-www',
         'protractor:build-travis'
