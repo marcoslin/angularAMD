@@ -15,7 +15,7 @@ describe('angularAMD', function() {
                 var re = new RegExp(rel_path, "i");
                 return re.test(in_url);
             });
-        }, 2000, "Taking too long to load " + rel_path);
+        }, 5000, "Taking too long to load " + rel_path);
     }
     
     describe("home", function () {
@@ -43,7 +43,7 @@ describe('angularAMD', function() {
                 return $('#nav-map').getAttribute("class").then(function (class_value) {
                     return class_value == "active";
                 });
-            }, 2000, "Taking too long for map tab to become active")
+            }, 5000, "Taking too long for map tab to become active")
         });
         
         // As map takes a bit to load, give it up to 5 secs for it to load
@@ -121,7 +121,7 @@ describe('angularAMD', function() {
                                 return false;
                             }
                         });
-                    }, 2000, "Taking too long to load pictures");
+                    }, 5000, "Taking too long to load pictures");
                     
                     // Make sure that number of `slide_image` is the same as pictures_count
                     var slideimages = element.all(by.css('.slide-image'));
