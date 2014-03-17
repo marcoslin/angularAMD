@@ -2,14 +2,13 @@
   "name": "angularAMD",
   "version": "0.1.0",
   "dependencies": {
-    "angular": "~1.2.4",
-    "angular-route": "~1.2.4",
+    "angular": "~1.2.14",
+    "angular-route": "~1.2.14",
     "angular-ui-bootstrap-bower": "~0.6.0",
     "requirejs": "~2.1.9",
     "requirejs-plugins": "~1.0.2",
     "google-code-prettify": "~1.0.1"
   },
   "devDependencies": {
-    "angular-scenario": "~1.2.1"
   }
 }

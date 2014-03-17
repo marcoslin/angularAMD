@@ -7,10 +7,12 @@ describe('angularAMD', function() {
      * Function used to in place of `ptor.get` as the native version will not wait for manual bootstrapping.
      * It adds an 0.5 sec wait before checking that url has been correctly set.
      */
-    function ptor_get(rel_path) {
+    function ptor_get(rel_path, pause_by) {
         ptor.driver.get(url.resolve(ptor.baseUrl, rel_path));
         ptor.wait(function () {
-            //waits(500);
+            if (pause_by) {
+                waits(pause_by);
+            }
             return ptor.driver.getCurrentUrl().then(function(in_url) {
                 var re = new RegExp(rel_path, "i");
                 return re.test(in_url);
@@ -38,7 +40,7 @@ describe('angularAMD', function() {
     describe("map", function () {
         // As map tab takes a bit longer to become active, probably due to the work to load google map
         it("tab should be active", function () {
-            ptor_get('#/map');
+            ptor_get('#/map', 1000);
             ptor.wait(function () {
                 return $('#nav-map').getAttribute("class").then(function (class_value) {
                     return class_value == "active";
@@ -60,8 +62,12 @@ describe('angularAMD', function() {
     
     describe("module", function () {
         it("modules tab should be active", function () {
-            ptor_get('#/modules');
-            expect($('#nav-modules').getAttribute("class")).toBe("active");
+            ptor_get('#/modules', 1000);
+            ptor.wait(function () {
+                return $('#nav-modules').getAttribute("class").then(function (class_value) {
+                    return class_value == "active";
+                });
+            }, 5000, "Taking too long for map tab to become active")            
         });
         
         it("ng-write to output correct value", function () {
