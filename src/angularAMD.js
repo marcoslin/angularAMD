@@ -271,6 +271,7 @@ define(function () {
                     directive: compileProvider.directive,
                     filter: filterProvider.register,
                     factory: provide.factory,
+                    provider: provide.provider,
                     service: provide.service,
                     constant: provide.constant,
                     value: provide.value,
