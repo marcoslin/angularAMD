@@ -1,23 +1,31 @@
 var url = require("url");
 
 describe('angularAMD', function() {
-    var ptor = protractor.getInstance();
+    var ptor = protractor.getInstance(),
+        default_wait_ms = 10000;
     
     /**
      * Function used to in place of `ptor.get` as the native version will not wait for manual bootstrapping.
      * It adds an 0.5 sec wait before checking that url has been correctly set.
      */
-    function ptor_get(rel_path, pause_by) {
+    function ptor_get(rel_path) {
         ptor.driver.get(url.resolve(ptor.baseUrl, rel_path));
         ptor.wait(function () {
-            if (pause_by) {
-                waits(pause_by);
-            }
             return ptor.driver.getCurrentUrl().then(function(in_url) {
                 var re = new RegExp(rel_path, "i");
                 return re.test(in_url);
             });
-        }, 5000, "Taking too long to load " + rel_path);
+        }, default_wait_ms, "Taking too long to load " + rel_path);
+    }
+    
+    function ptor_waitForElementById(nameId) {
+        ptor.wait(function () {
+            //console.log("Checking if " + nameId + " exists");
+            return ptor.driver.isElementPresent(by.id(nameId)).then(function (is_present) {
+                return is_present;
+            });
+        }, default_wait_ms, "Taking too long waiting for element id '" + nameId + "' to be present.");
+        return element(by.id(nameId));
     }
     
     describe("home", function () {
@@ -40,34 +48,31 @@ describe('angularAMD', function() {
     describe("map", function () {
         // As map tab takes a bit longer to become active, probably due to the work to load google map
         it("tab should be active", function () {
-            ptor_get('#/map', 1000);
+            ptor_get('#/map');
+            var navElem = ptor_waitForElementById("nav-map");
             ptor.wait(function () {
-                return $('#nav-map').getAttribute("class").then(function (class_value) {
+                return navElem.getAttribute("class").then(function (class_value) {
                     return class_value == "active";
                 });
-            }, 5000, "Taking too long for map tab to become active")
+            }, 5000, "Taking too long for map tab to become active");
         });
         
         // As map takes a bit to load, give it up to 5 secs for it to load
         it("map should be loaded", function () {
-            ptor.wait(function () {
-                return $('#map-canvas').getText().then(function (text_value) {
-                    return text_value != "";
-                });
-            }, 5000, "Taking too long to load Google Map");
-            
+            ptor_waitForElementById("map-canvas");
             expect($('#map-canvas .gm-style').getAttribute("style")).toBeDefined();
         });
     })
     
     describe("module", function () {
         it("modules tab should be active", function () {
-            ptor_get('#/modules', 1000);
+            ptor_get('#/modules');
+            var navElem = ptor_waitForElementById("nav-modules");
             ptor.wait(function () {
-                return $('#nav-modules').getAttribute("class").then(function (class_value) {
+                return navElem.getAttribute("class").then(function (class_value) {
                     return class_value == "active";
                 });
-            }, 5000, "Taking too long for map tab to become active")            
+            }, 5000, "Taking too long for map tab to become active");        
         });
         
         it("ng-write to output correct value", function () {
@@ -97,7 +102,12 @@ describe('angularAMD', function() {
     describe("pictures", function () {
         it("tab should be active", function () {
             ptor_get('#/pictures');
-            expect($('#nav-pictures').getAttribute("class")).toBe("active");
+            var navElem = ptor_waitForElementById("nav-pictures");
+            ptor.wait(function () {
+                return navElem.getAttribute("class").then(function (class_value) {
+                    return class_value == "active";
+                });
+            }, 5000, "Taking too long for pictures tab to become active");   
         });
 
         // Ignoring sync due to use of $timer in ui-bootstrap to change pictures
