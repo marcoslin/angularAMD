@@ -34,7 +34,7 @@
         "grunt-usemin": "~0.1.11",
         "load-grunt-tasks": "~0.1.0",
         "karma": "~0.10.2",
-        "protractor": "~0.17.0",
+        "protractor": "~0.21.0",
         "grunt-protractor-runner": "~0.2.4"
     },
     "scripts": {
