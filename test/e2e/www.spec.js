@@ -31,8 +31,9 @@ describe('angularAMD', function() {
     describe("home", function () {
         it('tab should be active', function() {
             ptor_get('#/home');
+            var navElem = ptor_waitForElementById("nav-home");
+            expect(navElem.getAttribute("class")).toBe("active");
             expect(ptor.getCurrentUrl()).toContain('#/home');
-            expect($('#nav-home').getAttribute("class")).toBe("active");       
         });
         
         it("View on GitHub button should exists", function () {
