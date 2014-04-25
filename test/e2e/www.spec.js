@@ -2,7 +2,7 @@ var url = require("url");
 
 describe('angularAMD', function() {
     var ptor = protractor.getInstance(),
-        default_wait_ms = 10000;
+        default_wait_ms = 15000;
     
     /**
      * Function used to in place of `ptor.get` as the native version will not wait for manual bootstrapping.
@@ -55,7 +55,7 @@ describe('angularAMD', function() {
                 return navElem.getAttribute("class").then(function (class_value) {
                     return class_value == "active";
                 });
-            }, 5000, "Taking too long for map tab to become active");
+            }, default_wait_ms, "Taking too long for map tab to become active");
         });
         
         // As map takes a bit to load, give it up to 5 secs for it to load
@@ -73,7 +73,7 @@ describe('angularAMD', function() {
                 return navElem.getAttribute("class").then(function (class_value) {
                     return class_value == "active";
                 });
-            }, 5000, "Taking too long for map tab to become active");        
+            }, default_wait_ms, "Taking too long for map tab to become active");        
         });
         
         it("ng-write to output correct value", function () {
@@ -108,7 +108,7 @@ describe('angularAMD', function() {
                 return navElem.getAttribute("class").then(function (class_value) {
                     return class_value == "active";
                 });
-            }, 5000, "Taking too long for pictures tab to become active");   
+            }, default_wait_ms, "Taking too long for pictures tab to become active");   
         });
 
         // Ignoring sync due to use of $timer in ui-bootstrap to change pictures
@@ -138,7 +138,7 @@ describe('angularAMD', function() {
                                 return false;
                             }
                         });
-                    }, 5000, "Taking too long to load pictures");
+                    }, default_wait_ms, "Taking too long to load pictures");
                     
                     // Make sure that number of `slide_image` is the same as pictures_count
                     var slideimages = element.all(by.css('.slide-image'));
