@@ -1,5 +1,5 @@
 // convert Google Maps into an AMD module
-define(['app', 'async!http://maps.google.com/maps/api/js?v=3&sensor=false'], function (app) {
+define(['app', 'async!//maps.google.com/maps/api/js?v=3&sensor=false'], function (app) {
     app.register.service('MapService', function () {
         var gmaps =  window.google.maps,
             mapOptions = {
