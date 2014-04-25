@@ -123,6 +123,10 @@ In this case, all depdencies will be queued up and when `.processQueue()` is cal
 Running Sample Project
 ==========
 
+Prerequisites:
+* node and npm
+* grunt-cli installed globally as per [Grunt Getting started](http://gruntjs.com/getting-started).
+
 Run the following command after cloning this project:
 
 ```bash
