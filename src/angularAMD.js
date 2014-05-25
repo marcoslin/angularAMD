@@ -7,7 +7,8 @@ define(function () {
         alternate_queue = [],
         app_name,
         app_injector,
-        app_cached_providers = {};
+        app_cached_providers = {},
+        providerInjector;
     
     // Private method to check if angularAMD has been initialized
     function checkAngularAMDInitialized() {
@@ -164,7 +165,7 @@ define(function () {
                     args = q[2];
                 
                 if (app_cached_providers.hasOwnProperty(provider)) {
-                    var cachedProvider = app_cached_providers[provider];
+                    var cachedProvider = provider == "$injector" ? providerInjector : app_cached_providers[provider];
                     //console.log("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
                     cachedProvider[method].apply(null, args);
                 } else {
@@ -255,8 +256,9 @@ define(function () {
         
         // Cache provider needed
         app.config(
-            ['$controllerProvider', '$compileProvider', '$filterProvider', '$animateProvider', '$provide', function (controllerProvider, compileProvider, filterProvider, animateProvider, provide) {
+            ['$controllerProvider', '$compileProvider', '$filterProvider', '$animateProvider', '$provide', '$injector', function (controllerProvider, compileProvider, filterProvider, animateProvider, provide, injector) {
                 // Cache Providers
+                providerInjector = injector;
                 app_cached_providers = {
                     $controllerProvider: controllerProvider,
                     $compileProvider: compileProvider,
