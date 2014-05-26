@@ -7,13 +7,10 @@
     // Services coded using regular angular approach
     var services = angular.module("utestServices", []),
         utest_result = {};
-
+    
     utest_result.config_name = "services.config SDkWRXOgII";
-    // Do something with some arbitrary built-in provider ($filterProvider)
-    // in order to to test that a provider is injected properly.
-    services.config(function ($filterProvider) {
-        // Add a testfilter to $filterProvider.  Later, $filter('testfilter') is invoked.
-        $filterProvider.register("testfilter", function() { return utest_result.config_name; })
+    services.config(function ($rootScope) {
+        $rootScope.config_name = utest_result.config_name;
     });
     
     utest_result.run_name = "services.run sOdq6GNsaW";
