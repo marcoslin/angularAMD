@@ -341,7 +341,7 @@ module.exports = function (grunt) {
         'karma:build-travis',
         'setup-www',
         'connect:e2e-www',
-        'protractor:build-travis'
+        // 'protractor:build-travis'
     ]);
 
     /* Run sample website */

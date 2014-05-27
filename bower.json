@@ -2,8 +2,8 @@
   "name": "angularAMD",
   "version": "0.1.0",
   "dependencies": {
-    "angular": "~1.2.14",
-    "angular-route": "~1.2.14",
+    "angular": "~1.2.16",
+    "angular-route": "~1.2.16",
     "angular-ui-bootstrap-bower": "~0.6.0",
     "requirejs": "~2.1.9",
     "requirejs-plugins": "~1.0.2",
