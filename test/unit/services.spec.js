@@ -22,8 +22,9 @@ define(['angularAMD', 'ngload!services'], function (angularAMD) {
             expect(results).toBeDefined();
         });
         
-        it(".config check.", inject(function ($rootScope) {
-            expect($rootScope.config_name).toBe(results.config_name);
+        it(".config check.", inject(function (configUtestResult) {
+            console.log("configUtestResult:", configUtestResult);
+            expect(configUtestResult).toBe(results.config_name);
         }));
         
         it(".run check.", inject(function ($rootScope) {

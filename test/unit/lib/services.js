@@ -7,12 +7,30 @@
     // Services coded using regular angular approach
     var services = angular.module("utestServices", []),
         utest_result = {};
-    
-    utest_result.config_name = "services.config SDkWRXOgII";
-    services.config(function ($rootScope) {
-        $rootScope.config_name = utest_result.config_name;
+
+    // Make sure provider works
+    services.provider("configUtest", function () {
+        var config_value = "NXtMQruSLB";
+        
+        this.configureValue = function(value) {
+            config_value = value;
+        };
+        
+        this.$get = function () {
+            return {
+                getValue: function () {
+                    return config_value;
+                }
+            }
+        };
     });
     
+    // Use provider to store the value in the config phase
+    utest_result.config_name = "services.config SDkWRXOgII";
+    services.config(function (configUtestProvider) {
+        configUtestProvider.configureValue(utest_result.config_name);
+    });
+
     utest_result.run_name = "services.run sOdq6GNsaW";
     services.run(function ($rootScope) {
         $rootScope.run_name = utest_result.run_name;
@@ -58,6 +76,12 @@
     // Return the result in a factory
     services.factory('UtestServiceResult', function () {
         return utest_result;
+    });
+    
+    
+    // Return the result of Utester
+    services.factory('configUtestResult', function (configUtest) {
+        return configUtest.getValue();
     });
     
 }());
