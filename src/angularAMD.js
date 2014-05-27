@@ -8,8 +8,7 @@ define(function () {
         app_name,
         app_injector,
         app_cached_providers = {},
-        providerInjector, // store the captured providerInjector (config-time injector)
-        configArgs = []; // store .config() block arguments
+        config_injector; // store the captured providerInjector (config-time injector)
     
     // Private method to check if angularAMD has been initialized
     function checkAngularAMDInitialized() {
@@ -67,16 +66,6 @@ define(function () {
                     item = { name: name, module: orig_mod};
                 alternate_queue.push(item);
                 alternateModules[name] = orig_mod;
-
-                var orig_config = orig_mod.config;
-                orig_mod.config = function() {
-                    // .config() is special; it needs to use the providerInjector, not the runtime $injector
-                    // to make sure we only replace $injector with providerInjector for .config blocks, capture
-                    // the parameters (including function block to be injected) in an array and compare to it later.
-                    configArgs.push(arguments);
-                    orig_config.apply(null, arguments);
-                };
-
                 return orig_mod;
             }
         };
@@ -176,17 +165,11 @@ define(function () {
                     args = q[2];
                 
                 if (app_cached_providers.hasOwnProperty(provider)) {
-                    var cachedProvider = app_cached_providers[provider];
-                    // non-config blocks can be filtered quickly by checking provider and method.
+                    var cachedProvider;
                     if (provider === "$injector" && method === "invoke") {
-                        for (var i = 0; i < configArgs.length; i++) {
-                            // If this is one of the config blocks captured earlier
-                            if (angular.equals(args, configArgs[i])) {
-                                // Found a captured config block.  Replace $injector with providerInjector
-                                cachedProvider = providerInjector;
-                                configArgs = configArgs.splice(i, 1);
-                            }
-                        }
+                        cachedProvider = config_injector;
+                    } else {
+                        cachedProvider = app_cached_providers[provider];
                     }
                     //console.log("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
                     cachedProvider[method].apply(null, args);
@@ -280,7 +263,7 @@ define(function () {
         app.config(
             ['$controllerProvider', '$compileProvider', '$filterProvider', '$animateProvider', '$provide', '$injector', function (controllerProvider, compileProvider, filterProvider, animateProvider, provide, injector) {
                 // Cache Providers
-                providerInjector = injector;
+                config_injector = injector;
                 app_cached_providers = {
                     $controllerProvider: controllerProvider,
                     $compileProvider: compileProvider,
