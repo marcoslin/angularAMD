@@ -12,6 +12,21 @@ angular.module("dataServices", [])
         }
     }
 }])
+.provider("configValue", function () {
+    var config_value;
+
+    this.set = function(value) {
+        config_value = value;
+    };
+
+    this.$get = function () {
+        return {
+            get: function () {
+                return config_value;
+            }
+        }
+    };
+})
 .constant("ServiceName", "dataServices")
 .service("DeferredString", ['$timeout','$q', function ($timeout, $q) {
     this.get = function (message, delay_in_ms) {
@@ -22,16 +37,15 @@ angular.module("dataServices", [])
         return d.promise;
     }
 }])
-.config(['$rootScope','$timeout', function ($rootScope, $timeout) {
-    //console.log("Calling moreServices.config.  $rootScope.$id: " + $rootScope.$id);
-    $timeout(function () {
-        $rootScope.config_block_message = "And config works";
-    }, 4000);
+.config(['configValueProvider', function (configValueProvider) {
+    configValueProvider.set("And config works");
 }])
-.run(['$rootScope','$timeout', function ($rootScope, $timeout) {
-    //console.log("Calling moreServices.run.  $rootScope.$id: " + $rootScope.$id);
+.run(['configValue', '$rootScope','$timeout', function (configValue, $rootScope, $timeout) {
     $timeout(function () {
         $rootScope.run_block_message = "Greetings from .run";
     }, 3000);
+    $timeout(function () {
+        $rootScope.config_block_message = configValue.get();
+    }, 4000);
 }])
 ;
