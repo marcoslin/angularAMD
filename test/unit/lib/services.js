@@ -72,12 +72,10 @@
         };
     });
     
-    
     // Return the result in a factory
     services.factory('UtestServiceResult', function () {
         return utest_result;
     });
-    
     
     // Return the result of Utester
     services.factory('configUtestResult', function (configUtest) {

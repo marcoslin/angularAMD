@@ -14,7 +14,8 @@ require.config({
         'app_no_ngload': 'test/unit/lib/app_no_ngload',
         'services': 'test/unit/lib/services',
         'regServices': 'test/unit/lib/regServices',
-        'controller': 'test/unit/lib/controller'
+        'controller': 'test/unit/lib/controller',
+        'regController': 'test/unit/lib/regController'
     },
 
     shim: {
@@ -32,8 +33,8 @@ require.config({
         */
         'test/unit/regServices.spec': ['test/unit/app.spec'],
         'test/unit/services.spec': ['test/unit/regServices.spec'],
-        'test/unit/controller.spec': ['test/unit/services.spec']
-        
+        'test/unit/regController.spec': ['test/unit/services.spec'],
+        'test/unit/controller.spec': ['test/unit/regController.spec'],
         
     },
     

@@ -50,6 +50,11 @@ define(['app', 'angularAMD'], function(app, angularAMD) {
         };
     });
     
+    // Return the result in a factory
+    services.factory('UtestRegServiceResult', function () {
+        return utest_reg_result;
+    });
+    
     // Return expected unit test result
     app.__utest_regserv_result = utest_reg_result;
     
