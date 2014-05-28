@@ -1,3 +1,9 @@
+/*
+ angularAMD v<%= cvars.proj_version %>
+ (c) 2013-2014 Marcos Lin https://github.com/marcoslin/
+ License: MIT
+*/
+
 /*jslint node: true, vars: true, nomen: true */
 /*globals define, angular */
 
