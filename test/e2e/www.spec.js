@@ -59,7 +59,7 @@ describe('angularAMD', function() {
         });
         
         // As map takes a bit to load, give it up to 5 secs for it to load
-        it("map should be loaded", function () {
+        it("should be loaded", function () {
             ptor_waitForElementById("map-canvas");
             expect($('#map-canvas .gm-style').getAttribute("style")).toBeDefined();
         });
