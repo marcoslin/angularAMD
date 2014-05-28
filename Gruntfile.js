@@ -14,6 +14,11 @@ module.exports = function (grunt) {
         "www_port": "9768",
         "e2e_port": "9769"
     };
+    
+    // Read version and banner files
+    configVars.proj_version = grunt.file.read("src/version.txt");
+    configVars.proj_banner = grunt.file.read("src/banner.txt");
+    
 
     grunt.initConfig({
         cvars: configVars,
@@ -111,20 +116,9 @@ module.exports = function (grunt) {
             "dist-bower" : {
                 files: [
                     {
-                        src: 'src/angularAMD.js',
-                        dest: "<%= cvars.dist_bower %>/angularAMD.js"
-                    },
-                    {
-                        src: '<%= cvars.build %>/angularAMD.min.js',
-                        dest: "<%= cvars.dist_bower %>/angularAMD.min.js"
-                    },
-                    {
-                        src: 'src/ngload.js',
-                        dest: "<%= cvars.dist_bower %>/ngload.js"
-                    },
-                    {
-                        src: '<%= cvars.build %>/ngload.min.js',
-                        dest: "<%= cvars.dist_bower %>/ngload.min.js"
+                        expand: true, cwd: "<%= cvars.build %>",
+                        src: ['*.js','*.map'],
+                        dest: "<%= cvars.dist_bower %>/"
                     }
                 ]
             }
@@ -232,10 +226,25 @@ module.exports = function (grunt) {
                 }
             }
         },
-        uglify: {
-            build: {
+        concat: {
+            "build": {
                 options: {
-                    'report': true
+                    'banner': configVars.proj_banner,
+                    'stripBanners': true
+                },
+                files: {
+                    '<%= cvars.build %>/angularAMD.js': ['src/angularAMD.js'],
+                    '<%= cvars.build %>/ngload.js': ['src/ngload.js']
+                }
+            }
+        },
+        uglify: {
+            "build": {
+                options: {
+                     'report': true,
+                     'banner': configVars.proj_banner,
+                     'stripBanners': true,
+                     'sourceMap': true
                 },
                 files: {
                     '<%= cvars.build %>/angularAMD.min.js': ['src/angularAMD.js'],
@@ -332,12 +341,14 @@ module.exports = function (grunt) {
         'genTestTemplates',
         'karma:build',
         'uglify:build',
+        'concat:build',
         'karma:build-min'
     ]);
     grunt.registerTask('build-travis', [
         'setup',
         'genTestTemplates',
         'uglify:build',
+        'concat:build',
         'karma:build-travis',
         'setup-www',
         'connect:e2e-www',
