@@ -9,7 +9,7 @@ define(['regController', 'angularAMD'], function (app, angularAMD) {
     'use strict';
     describe('Utest RegController', function () {
         //console.log("Running controllerSpec.js");
-        var ctrl_name = app.__utest_ctrl_result.ctrl_name,
+        var ctrl_name = app.__utest_regctrl_result.ctrl_name,
             scope, service_results, ctrl;
 
         angularAMD.inject(function ($rootScope, $controller, UtestRegServiceResult) {

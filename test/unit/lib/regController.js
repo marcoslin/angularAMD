@@ -11,7 +11,7 @@ define(['app','regServices'], function (app) {
     }]);
     
     // Return expected unit test result
-    app.__utest_ctrl_result = {
+    app.__utest_regctrl_result = {
         "ctrl_name": ctrl_name
     };
     
