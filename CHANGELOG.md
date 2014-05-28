@@ -3,21 +3,22 @@
 
 ## Bug Fixes
 
+- **ngload**: On-demand loading of animation now works
+  ([eae2e56](https://github.com/marcoslin/angularAMD/commit/eae2e5623d742bc0ef1e6c10eb74da7ae9e367a0)
+   [#31](https://github.com/marcoslin/angularAMD/issues/31))
+- **.bootstrap** Fixed Firefox Right-Click bug in Html5Mode
+   [as per this post](https://groups.google.com/d/msg/angular/LAk9oZqRx24/mPXPj495WlEJ)
+  ([9ce8ca1](https://github.com/marcoslin/angularAMD/commit/9ce8ca18d2b69b4779714bb6a49feee784450458)
+   [#41](https://github.com/marcoslin/angularAMD/issues/41))
 - **www**: As result of
   [40a6dd0](https://github.com/marcoslin/angularAMD/commit/40a6dd0c89f49926fc4f5be4c5450f9eb61dcd42),
   removed `$rootScope` from `.config` block and replaced with custom `configValue` provider.
   ([6e4f7d1](https://github.com/marcoslin/angularAMD/commit/6e4f7d154879abd11c8292ded2e947e55e580347)
    [#60](https://github.com/marcoslin/angularAMD/issues/60))
-- **ngload**: On-demand loading of animation now works
-  ([eae2e56](https://github.com/marcoslin/angularAMD/commit/eae2e5623d742bc0ef1e6c10eb74da7ae9e367a0)
-   [#31](https://github.com/marcoslin/angularAMD/issues/31))
 - **www**: Sample Plunk doesn't execute due to MIME type error.  Switched to use `jsdelivr` instead of `raw.github.com` and from Plunker to `bl.ocks.org`
   ([cf8c0ff](https://github.com/marcoslin/angularAMD/commit/cf8c0fffdc47fe2e85d36dfaf46365ed2d6ec66f)
    [#59](https://github.com/marcoslin/angularAMD/issues/59)
    [#54](https://github.com/marcoslin/angularAMD/issues/54))
-- **.bootstrap** Fixed Firefox Right-Click bug in Html5Mode [as per this post](https://groups.google.com/d/msg/angular/LAk9oZqRx24/mPXPj495WlEJ)
-  ([9ce8ca1](https://github.com/marcoslin/angularAMD/commit/9ce8ca18d2b69b4779714bb6a49feee784450458)
-   [#41](https://github.com/marcoslin/angularAMD/issues/41))
 
 ## Features
 
