@@ -12,7 +12,7 @@ module.exports = function (config) {
         
         // list of files / patterns to load in the browser
         files: [
-            {pattern: 'bower_components/angular/*.js', watched: false, included: false},
+            {pattern: 'bower_components/**/*.js', watched: false, included: false},
             {pattern: 'build/*.js', watched: true, included: false},
             {pattern: 'src/*.js', watched: true, included: false},
             {pattern: 'test/unit/*.spec.js', watched: true, included: false},

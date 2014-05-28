@@ -50,6 +50,24 @@ define(['app', 'angularAMD'], function(app, angularAMD) {
         };
     });
     
+    // Create Animation
+    services.animation('.service-reg-animation', function ($log, $interval) {
+        return {
+            addClass : function(element, className, done) {
+                if ( className === "custom-hide") {
+                    element.css('opacity',0);
+                    done();
+                }
+            },
+            removeClass : function(element, className, done) {
+                if ( className === "custom-hide") {
+                    element.css('opacity',1);
+                    done();
+                }
+            }
+        }
+    });
+    
     // Return the result in a factory
     services.factory('UtestRegServiceResult', function () {
         return utest_reg_result;

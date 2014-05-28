@@ -97,9 +97,7 @@ Here is the list of methods supported by `app.register`:
 * `.value`
 * `.directive`
 * `.filter`
-* `.animation` **
-
-** `.animation` is not covered in unit test for now
+* `.animation`
 
 ### 3rd Party AngularJS Modules
 

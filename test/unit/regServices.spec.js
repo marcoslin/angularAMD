@@ -4,12 +4,12 @@
 /**
  * Test to ensure that services can be created using app.register method.
  */
-define(['regServices','angularAMD'], function (app, angularAMD) {
+define(['regServices','angularAMD', 'angular-mocks'], function (app, angularAMD) {
     'use strict';
+    var inject = angularAMD.inject;
     describe('Utest Registered Services', function () {
         //console.log("Running serviceSpec.js");
-        var results = app.__utest_regserv_result,
-            inject = angularAMD.inject;
+        var results = app.__utest_regserv_result;
 
         it(".reg_constant check.", function () {
             inject(function (reg_constant_name) {
@@ -55,7 +55,31 @@ define(['regServices','angularAMD'], function (app, angularAMD) {
                 expect(ufilter("hello")).toBe("hello " + results.reg_filter_name);
             });
         });
-
-        
     });
+    
+    describe("Utest Registered Animation", function () {
+        var scope, animate, elem;
+        
+        beforeEach(function () {
+            module("ngAnimateMock");
+            inject(function ($rootScope, $compile, $rootElement, $animate) {
+                var html_text = "<div ng-class='AnimationClass' class='service-reg-animation'></div>";
+                scope = $rootScope;
+                animate = $animate;
+                elem = $compile(html_text)(scope);
+                $rootElement.append(elem);
+            });
+        });
+                
+        it(".animation check.", function () {
+            animate.addClass(elem, "custom-hide");           
+            scope.$digest();
+            expect(elem.css("opacity")).toBe("0");
+            
+            animate.removeClass(elem, "custom-hide");
+            scope.$digest();
+            expect(elem.css("opacity")).toBe("1");
+        });
+    });
+
 });

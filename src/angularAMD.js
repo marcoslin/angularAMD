@@ -281,7 +281,7 @@ define(function () {
                     service: provide.service,
                     constant: provide.constant,
                     value: provide.value,
-                    animation: animateProvider.register
+                    animation: angular.bind(animateProvider, animateProvider.register)
                 };
             
             }]
