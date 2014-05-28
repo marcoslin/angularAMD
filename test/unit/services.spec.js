@@ -23,7 +23,6 @@ define(['angularAMD', 'ngload!services'], function (angularAMD) {
         });
         
         it(".config check.", inject(function (configUtestResult) {
-            console.log("configUtestResult:", configUtestResult);
             expect(configUtestResult).toBe(results.config_name);
         }));
         
