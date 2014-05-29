@@ -5,7 +5,12 @@ of 3rd party modules such as [angular-ui](git@github.com:marcoslin/bower-angular
 
 Installation
 ==========
+
+### bower
     bower install angularAMD
+
+### cdn
+    //cdn.jsdelivr.net/angular.amd/0.1.1/angularAMD.min.js
 
 Usage
 ==========
