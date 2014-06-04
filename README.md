@@ -5,7 +5,12 @@ of 3rd party modules such as [angular-ui](git@github.com:marcoslin/bower-angular
 
 Installation
 ==========
+
+### bower
     bower install angularAMD
+
+### cdn
+    //cdn.jsdelivr.net/angular.amd/0.1.1/angularAMD.min.js
 
 Usage
 ==========
@@ -21,7 +26,7 @@ Starting point for any RequireJS app is a `main.js`, which should be used to def
 require.config({
     baseUrl: "js",
     paths: {
-        'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min',
+        'angular': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min',
         'angularAMD': 'lib/angularAMD.min',
         'ngload': 'lib/ngload.min'
     },
