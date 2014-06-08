@@ -14,7 +14,8 @@ require.config({
     },
 
     shim: {
-        'angularAMD': ['angular']       
+        'angularAMD': ['angular'],
+        'angular': { exports: 'angular' }
     },
     
     // controllerSpec is at the end of dependency tree so kicking it off will start entire test
