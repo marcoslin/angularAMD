@@ -1,6 +1,6 @@
 // customDirectives
 define(['app'], function (app) {
-    app.register.directive('ngWrite', ['$timeout', '$log', function ($timeout, $log) {
+    app.directive('ngWrite', ['$timeout', '$log', function ($timeout, $log) {
         return {
             restrict: 'A',
             //require: "^ngController",
