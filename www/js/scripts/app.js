@@ -4,7 +4,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
     /**
      * Configure Angular ngApp with route and cache the needed providers
      */
-    app.config(['$routeProvider', function ($routeProvider) {
+    app.config(function ($routeProvider) {
         $routeProvider
             .when("/home", angularAMD.route({
                 templateUrl: 'views/home.html', controller: 'HomeController', navTab: "home"
@@ -19,7 +19,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
                 templateUrl: 'views/map.html', controller: 'MapController', navTab: "map"
             }))
             .otherwise({redirectTo: '/home'})
-    }]);
+    });
     
     // Define constant to be used by Google Analytics
     app.constant("SiteName", "/angularAMD");
@@ -31,13 +31,13 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
             restrict: 'A',
             scope: true,
             template: '<a href="{{fullpath}}" target="_blank">{{filename}}</a>',
-            controller: ['$scope', '$attrs', function (scope, attrs) {
+            controller: function ($scope, $attrs) {
                 var gh_root = "https://github.com/marcoslin/angularAMD/blob/master/www/",
-                    relfile = attrs.ghLink,
+                    relfile = $attrs.ghLink,
                     fullpath = gh_root + relfile;
-                scope.fullpath = fullpath;
-                scope.filename = relfile.replace(/^.*[\\\/]/, '');
-            }]
+                $scope.fullpath = fullpath;
+                $scope.filename = relfile.replace(/^.*[\\\/]/, '');
+            }
         };
     });
     

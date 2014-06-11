@@ -1,6 +1,6 @@
 // Services coded using regular angular approach
 angular.module("dataServices", [])
-.factory("DeferredObject", ['$timeout','$q', 'ServiceName', function ($timeout, $q, ServiceName) {
+.factory("DeferredObject", function ($timeout, $q, ServiceName) {
     return {
         get: function (message, delay_in_ms) {
             //console.log("DeferredObject.get ServiceName: ", ServiceName);
@@ -11,7 +11,7 @@ angular.module("dataServices", [])
             return d.promise;
         }
     }
-}])
+})
 .provider("configValue", function () {
     var config_value;
 
@@ -28,7 +28,7 @@ angular.module("dataServices", [])
     };
 })
 .constant("ServiceName", "dataServices")
-.service("DeferredString", ['$timeout','$q', function ($timeout, $q) {
+.service("DeferredString", function ($timeout, $q) {
     this.get = function (message, delay_in_ms) {
         var d = $q.defer();
         $timeout(function () {
@@ -36,16 +36,16 @@ angular.module("dataServices", [])
         }, delay_in_ms);
         return d.promise;
     }
-}])
-.config(['configValueProvider', function (configValueProvider) {
+})
+.config(function (configValueProvider) {
     configValueProvider.set("And config works");
-}])
-.run(['configValue', '$rootScope','$timeout', function (configValue, $rootScope, $timeout) {
+})
+.run(function (configValue, $rootScope, $timeout) {
     $timeout(function () {
         $rootScope.run_block_message = "Greetings from .run";
     }, 3000);
     $timeout(function () {
         $rootScope.config_block_message = configValue.get();
     }, 4000);
-}])
+})
 ;

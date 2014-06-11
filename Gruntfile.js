@@ -238,6 +238,16 @@ module.exports = function (grunt) {
                 }
             }
         },
+        ngAnnotate: {
+            "dist-www": {
+                files: [{
+                    expand: true,
+                    cwd: "www/js/scripts/",
+                    src: '**/*.js',
+                    dest: "<%= cvars.dist_www %>/js/scripts/"
+                }]
+            }
+        },
         uglify: {
             "build": {
                 options: {
@@ -258,7 +268,7 @@ module.exports = function (grunt) {
                         src: 'main.js', dest: "<%= cvars.dist_www %>/js/"
                     },
                     {
-                        expand: true, cwd: "www/js/scripts/",
+                        expand: true, cwd: "<%= cvars.dist_www %>/js/scripts/",
                         src: '**/*.js', dest: "<%= cvars.dist_www %>/js/scripts/"
                     },
                     {
@@ -364,6 +374,7 @@ module.exports = function (grunt) {
 
     /* Create github pages */
     grunt.registerTask('dist-www', [
+        'ngAnnotate:dist-www',
         'cssmin:dist-www',
         'uglify:dist-www',
         'htmlmin:dist-www',
