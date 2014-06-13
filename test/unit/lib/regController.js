@@ -4,7 +4,7 @@
 define(['app','regServices'], function (app) {
     'use strict';
     var ctrl_name = "RegController";
-    app.register.controller(ctrl_name, ['$scope', 'UtestRegFactory', 'UtestRegService', function ($scope, UtestRegFactory, UtestRegService) {
+    app.controller(ctrl_name, ['$scope', 'UtestRegFactory', 'UtestRegService', function ($scope, UtestRegFactory, UtestRegService) {
         $scope.ctrl_name = ctrl_name;
         $scope.utest_reg_factory = UtestRegFactory;
         $scope.utest_reg_service = UtestRegService;

@@ -1,5 +1,5 @@
 define(['app', 'directive/navMenu','prettify'], function (app) {
-    app.register.controller('HomeController', ['$scope', '$window', function ($scope, $window) {
+    app.controller('HomeController', ['$scope', '$window', function ($scope, $window) {
         $scope.title = "angularAMD";
         $scope.openGitHubPage = function () {
             //console.log("trackEvent: ViewGitHub");

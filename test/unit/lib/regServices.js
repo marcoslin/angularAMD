@@ -10,31 +10,30 @@ define(['app', 'angularAMD'], function(app, angularAMD) {
     'use strict';
 
     // Services coded using regular angular approach
-    var services = app.register,
-        inject = angularAMD.inject,
+    var inject = angularAMD.inject,
         utest_reg_result = {};
     
     utest_reg_result.reg_constant_name = "regServices.reg_constant_name QSiNx5JlLP";
-    services.constant("reg_constant_name", utest_reg_result.reg_constant_name);
+    app.constant("reg_constant_name", utest_reg_result.reg_constant_name);
     
     utest_reg_result.factory_name = "UtestRegFactory.name OVw2nHyfO7";
-    services.factory("UtestRegFactory", function (reg_constant_name) {
+    app.factory("UtestRegFactory", function (reg_constant_name) {
         // Make sure that constant_name is setup after this factory.
         return { name: utest_reg_result.factory_name, "const_name": reg_constant_name };
     });
     
     utest_reg_result.reg_value_name = "regServices.reg_value_name PMlzn3kISG";
-    services.value("reg_value_name", utest_reg_result.reg_value_name);
+    app.value("reg_value_name", utest_reg_result.reg_value_name);
     
     utest_reg_result.service_name = "UtestRegService.name xrA1xp5wrF";
-    services.service("UtestRegService", function (reg_value_name) {
+    app.service("UtestRegService", function (reg_value_name) {
         // Make sure that value_name is defined after this service
         this.name = utest_reg_result.service_name;
         this.val_name = reg_value_name;
     });
 
     utest_reg_result.directive_name = "regServices.directive_name 1LSC3LPxLG";
-    services.directive('utestRegDirective', function () {
+    app.directive('utestRegDirective', function () {
         return {
             restrict: 'A',
             link: function (scope, elm, attr) {
@@ -44,14 +43,14 @@ define(['app', 'angularAMD'], function(app, angularAMD) {
     });
 
     utest_reg_result.reg_filter_name = "regServices.reg_filter_name ABOmVXJZQH";
-    services.filter('utestRegFilter', function () {
+    app.filter('utestRegFilter', function () {
         return function (input) {
             return input + " " + utest_reg_result.reg_filter_name;
         };
     });
     
     // Create Animation
-    services.animation('.service-reg-animation', function ($log, $interval) {
+    app.animation('.service-reg-animation', function ($log, $interval) {
         return {
             addClass : function(element, className, done) {
                 if ( className === "custom-hide") {
@@ -69,7 +68,7 @@ define(['app', 'angularAMD'], function(app, angularAMD) {
     });
     
     // Return the result in a factory
-    services.factory('UtestRegServiceResult', function () {
+    app.factory('UtestRegServiceResult', function () {
         return utest_reg_result;
     });
     

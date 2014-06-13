@@ -1,5 +1,5 @@
 define(['app', 'ngload!service/dataServices', 'directive/write', 'directive/navMenu'], function (app) {
-    app.register.controller('ModulesController', ['$scope', '$log', 'DeferredObject', 'DeferredString', '$rootScope', function ($scope, $log, DeferredObject, DeferredString, $rootScope) {
+    app.controller('ModulesController', ['$scope', '$log', 'DeferredObject', 'DeferredString', '$rootScope', function ($scope, $log, DeferredObject, DeferredString, $rootScope) {
         DeferredObject.get("This is defered response", 2000).then(function (result) {
             $scope.obj_response = result;
         });

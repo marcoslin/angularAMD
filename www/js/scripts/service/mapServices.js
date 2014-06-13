@@ -1,6 +1,6 @@
 // convert Google Maps into an AMD module
 define(['app', 'async!//maps.google.com/maps/api/js?v=3&sensor=false'], function (app) {
-    app.register.service('MapService', function () {
+    app.service('MapService', function () {
         var gmaps =  window.google.maps,
             mapOptions = {
                 zoom: 15,

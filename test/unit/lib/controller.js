@@ -4,7 +4,7 @@
 define(['app','ngload!services'], function (app) {
     'use strict';
     var ctrl_name = "MainController";
-    app.register.controller(ctrl_name, ['$scope', 'UtestFactory', 'UtestService', function ($scope, UtestFactory, UtestService) {
+    app.controller(ctrl_name, ['$scope', 'UtestFactory', 'UtestService', function ($scope, UtestFactory, UtestService) {
         $scope.ctrl_name = ctrl_name;
         $scope.utest_factory = UtestFactory;
         $scope.utest_service = UtestService;

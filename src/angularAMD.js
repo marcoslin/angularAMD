@@ -278,17 +278,39 @@ define(function () {
                     $provide: provide
                 };
                 
+                angular.extend(app, {
+                  controller : function(name, constructor) {
+                    controllerProvider.register(name, constructor);
+                    return this;
+                  },
+                  directive : function(name, constructor) {
+                    compileProvider.directive(name, constructor);
+                    return this;
+                  },
+                  filter : function(name, constructor) {
+                    filterProvider.register(name, constructor);
+                    return this;
+                  },
+                  factory : function(name, constructor) {
+                    provide.factory(name, constructor);
+                    return this;
+                  },
+                  service : function(name, constructor) {
+                    provide.service(name, constructor);
+                    return this;
+                  },
+                  constant : function(name, constructor) {
+                    provide.constant(name, constructor);
+                    return this;
+                  },
+                  value : function(name, constructor) {
+                    provide.value(name, constructor);
+                    return this;
+                  },
+                  animation: angular.bind(animateProvider, animateProvider.register)
+                });
+                
                 // Create a app.register object
-                app.register = {
-                    controller: controllerProvider.register,
-                    directive: compileProvider.directive,
-                    filter: filterProvider.register,
-                    factory: provide.factory,
-                    service: provide.service,
-                    constant: provide.constant,
-                    value: provide.value,
-                    animation: angular.bind(animateProvider, animateProvider.register)
-                };
             
             }]
         );
