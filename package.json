@@ -32,6 +32,7 @@
         "grunt-shell-spawn": "~0.3.0",
         "grunt-open": "~0.2.2",
         "grunt-usemin": "~0.1.11",
+        "grunt-ng-annotate": "~0.2.2",
         "load-grunt-tasks": "~0.1.0",
         "karma": "~0.10.2",
         "protractor": "~0.21.0",

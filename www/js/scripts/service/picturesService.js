@@ -1,6 +1,6 @@
 // dataServices
 define(['app'], function (app) {
-    app.factory('Pictures', ['$http', '$q', '$log', function ($http, $q, $log) {
+    app.factory('Pictures', function ($http, $q, $log) {
         var feed_url = "http://ycpi.api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=JSON_CALLBACK&tags=";
         return {
             query: function (tag_name) {
@@ -20,7 +20,7 @@ define(['app'], function (app) {
                 return d.promise;
             }
         };
-    }]);
+    });
 
 });
 
