@@ -16,6 +16,7 @@ describe('angularAMD', function() {
                 return re.test(in_url);
             });
         }, default_wait_ms, "Taking too long to load " + rel_path);
+        ptor.sleep(1000);
     }
     
     function ptor_waitForElementById(nameId) {
