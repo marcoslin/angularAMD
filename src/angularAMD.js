@@ -278,6 +278,7 @@ define(function () {
                     $provide: provide
                 };
                 
+                // Substitue provider methods from app call the cached provider
                 angular.extend(app, {
                   controller : function(name, constructor) {
                     controllerProvider.register(name, constructor);
@@ -310,7 +311,17 @@ define(function () {
                   animation: angular.bind(animateProvider, animateProvider.register)
                 });
                 
-                // Create a app.register object
+                // Create a app.register object to keep backward compatibility
+                app.register = {
+                    controller: controllerProvider.register,
+                    directive: compileProvider.directive,
+                    filter: filterProvider.register,
+                    factory: provide.factory,
+                    service: provide.service,
+                    constant: provide.constant,
+                    value: provide.value,
+                    animation: angular.bind(animateProvider, animateProvider.register)
+                };
             
             }]
         );
