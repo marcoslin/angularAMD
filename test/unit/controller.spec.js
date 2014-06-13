@@ -37,6 +37,11 @@ define(['controller', 'angularAMD'], function (app, angularAMD) {
             expect(s.name).toBe(service_results.service_name);
             expect(s.val_name).toBe(service_results.value_name);
         });
+        
+        it("scope.subModule check", function () {
+            // console.log("scope.subModule check", service_results.sub_module);
+            expect(scope.utest_sub_module()).toBe(service_results.sub_module);
+        });
 
     });
 });

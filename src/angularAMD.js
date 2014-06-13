@@ -10,6 +10,8 @@
 define(function () {
     var orig_angular,
         alt_angular,
+        alternateModules = {},
+        alternateModulesTracker = {},
         alternate_queue = [],
         app_name,
         app_injector,
@@ -36,13 +38,11 @@ define(function () {
      * object into the current ng-app.  As result, if there are subsequent call to retrieve the
      * module post processQueue, it would retrieve a module that is not integrated into the ng-app.
      * 
-     * Therefore, any subsequent angular.module call to retrieve the module created with alternate
-     * angular will return undefined.
-     * 
+     * Therefore, any subsequent to call to angular.module after processQueue should return undefined
+     * to prevent obtaining a duplicated object.  However, it is critical that angular.module return
+     * appropriate object *during* processQueue.
      */
     function setAlternateAngular() {
-        var alternateModules = {};
-        
         // This method cannot be called more than once
         if (alt_angular) {
             throw Error("setAlternateAngular can only be called once.");
@@ -58,11 +58,10 @@ define(function () {
         
         // Custom version of angular.module used as cache
         alt_angular.module = function (name, requires) {
-            
             if (typeof requires === "undefined") {
-                // Return undefined if module was created using the alt_angular
-                if (alternateModules.hasOwnProperty(name)) {
-                    return undefined;
+                // Return module from alternateModules if it was created using the alt_angular
+                if (alternateModulesTracker.hasOwnProperty(name)) {
+                    return alternateModules[name];
                 } else {
                     return orig_angular.module(name);
                 }
@@ -71,7 +70,16 @@ define(function () {
                 var orig_mod = orig_angular.module.apply(null, arguments),
                     item = { name: name, module: orig_mod};
                 alternate_queue.push(item);
+                
+                /*
+                Use `alternateModulesTracker` to track which module has been created by alt_angular
+                but use `alternateModules` to cache the module created.  This is to simplify the
+                removal of cached modules after .processQueue.
+                */
+                alternateModulesTracker[name] = true;
                 alternateModules[name] = orig_mod;
+                
+                // Return created module
                 return orig_mod;
             }
         };
@@ -81,7 +89,7 @@ define(function () {
     
     
     // Constructor
-    function angularAMD() {}
+    function angularAMD() {};
     
     
     /**
@@ -193,8 +201,11 @@ define(function () {
                 });
             }
             
-            // How to remove the module??? 
-            orig_angular.module(item.name, [], orig_angular.noop);
+            /*
+            Clear the cached modules created by alt_angular so that subsequent call to
+            angular.module will return undefined.
+            */
+            alternateModules = {};
         }
 
     };

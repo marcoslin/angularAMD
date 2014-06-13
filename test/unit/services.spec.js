@@ -63,5 +63,13 @@ define(['angularAMD', 'ngload!services'], function (angularAMD) {
             expect(ufilter("hello")).toBe("hello " + results.filter_name);
         }));
         
+        it("sub module check.", inject(function (UtestSubModule) {
+            expect(UtestSubModule()).toBe(results.sub_module);
+        }));
+        
+        it("sub module check module.", function () {
+            expect(angular.module("subModuleServices")).toBeUndefined();
+        });
+        
     });
 });

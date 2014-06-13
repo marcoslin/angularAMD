@@ -1,12 +1,19 @@
 /*jslint node: true, nomen: true */
 /*globals angular */
 
-(function () {
+!function () {
     'use strict';
-
     // Services coded using regular angular approach
-    var services = angular.module("utestServices", []),
+    var sub_module = angular.module("subModuleServices", []),
+        services = angular.module("utestServices", ['subModuleServices']),
         utest_result = {};
+    
+    // Define a simple subModule
+    angular.module("subModuleServices").factory("SubConfigValue", function () {
+        return function () {
+            return "JwU9YSJMJS-HhRz4nhBuY";
+        };
+    });
 
     // Make sure provider works
     services.provider("configUtest", function () {
@@ -30,7 +37,7 @@
     services.config(function (configUtestProvider) {
         configUtestProvider.configureValue(utest_result.config_name);
     });
-
+    
     utest_result.run_name = "services.run sOdq6GNsaW";
     services.run(function ($rootScope) {
         $rootScope.run_name = utest_result.run_name;
@@ -72,6 +79,13 @@
         };
     });
     
+    utest_result.sub_module = "utestServices.sub_config_value JwU9YSJMJS-HhRz4nhBuY";
+    services.factory('UtestSubModule', function (SubConfigValue) {
+        return function () {
+            return "utestServices.sub_config_value " + SubConfigValue();
+        };
+    });
+    
     // Return the result in a factory
     services.factory('UtestServiceResult', function () {
         return utest_result;
@@ -82,5 +96,5 @@
         return configUtest.getValue();
     });
     
-}());
+}();
 
