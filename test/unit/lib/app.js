@@ -18,9 +18,7 @@ define(['angularAMD', 'angular-animate'], function (angularAMD) {
 
     /*
     var elem = document.body;
-    angularAMD.bootstrap(app, undefined, elem);
+    angularAMD.bootstrap(app, elem);
     */
-    angularAMD.bootstrap(app);
-
-    return app;
+    return angularAMD.bootstrap(app);
 });

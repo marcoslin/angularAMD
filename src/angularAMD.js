@@ -4,23 +4,24 @@
  License: MIT
 */
 
-/*jslint node: true, vars: true, nomen: true */
-/*globals define, angular */
-
 define(function () {
-    var orig_angular,
+    var bootstrapped = false,
+        orig_angular,
         alt_angular,
+        orig_app,
+        alt_app,
         alternateModules = {},
         alternateModulesTracker = {},
         alternate_queue = [],
         app_name,
-        app_injector,
-        app_cached_providers = {},
-        config_injector; // store the captured providerInjector (config-time injector)
+        run_injector,
+        config_injector,
+        app_cached_providers = {};
+
     
     // Private method to check if angularAMD has been initialized
-    function checkAngularAMDInitialized() {
-        if ( typeof orig_angular === 'undefined' ) {
+    function checkBootstrapped() {
+        if ( !bootstrapped ) {
             throw Error("angularAMD not initialized.  Need to call angularAMD.bootstrap(app) first.");
         }
     }
@@ -49,9 +50,9 @@ define(function () {
         } else {
             alt_angular = {};
         }
-        
+
         // Make sure that bootstrap has been called
-        checkAngularAMDInitialized();
+        checkBootstrapped();
 
         // Createa a copy of orig_angular
         orig_angular.extend(alt_angular, orig_angular);
@@ -85,11 +86,11 @@ define(function () {
         };
                 
         window.angular = alt_angular;
-    };
+    }
     
     
     // Constructor
-    function angularAMD() {};
+    function angularAMD() {}
     
     
     /**
@@ -130,7 +131,7 @@ define(function () {
                     $rootScope.$apply();
                 });
                 return defer.promise;
-            }]
+            }];
             config.resolve = resolve;
         }
         
@@ -143,7 +144,7 @@ define(function () {
      * Expose name of the app that has been bootstraped
      */
     angularAMD.prototype.appname = function () {
-        checkAngularAMDInitialized();
+        checkBootstrapped();
         return app_name;
     };
     
@@ -159,7 +160,7 @@ define(function () {
      * and _runBlock private variable.  Must test carefully with each release of angular.
      */
     angularAMD.prototype.processQueue = function () {
-        checkAngularAMDInitialized();
+        checkBootstrapped();
         
         if (typeof alt_angular === 'undefined') {
             throw Error("Alternate angular not set.  Make sure that `enable_ngload` option has been set when calling angularAMD.bootstrap");
@@ -197,7 +198,7 @@ define(function () {
             if (item.module._runBlocks) {
                 angular.forEach(item.module._runBlocks, function processRunBlock(block) {
                     //console.log("'" + item.name + "': executing run block: ", run_block);
-                    app_injector.invoke(block);
+                    run_injector.invoke(block);
                 });
             }
             
@@ -215,12 +216,16 @@ define(function () {
      * Return cached app provider
      */
     angularAMD.prototype.getCachedProvider = function (provider_name) {
-        checkAngularAMDInitialized();
+        checkBootstrapped();
         // Hack used for unit testing that orig_angular has been captured
         if (provider_name === "__orig_angular") {
             return orig_angular;
         } else if (provider_name === "__alt_angular") {
             return alt_angular;
+        } else if (provider_name === "__orig_app") {
+            return orig_app;
+        } else if (provider_name === "__alt_app") {
+            return alt_app;
         } else {
             return app_cached_providers[provider_name];
         }
@@ -231,8 +236,8 @@ define(function () {
      * Designed primarly to be used during unit testing.
      */
     angularAMD.prototype.inject = function () {
-        checkAngularAMDInitialized();
-        return app_injector.invoke.apply(null, arguments);
+        checkBootstrapped();
+        return run_injector.invoke.apply(null, arguments);
     };
     
     /**
@@ -245,17 +250,25 @@ define(function () {
         
         // Restore original angular instance
         window.angular = orig_angular;
-        
-        // Clear private variables
+
+        // Clear stored app
+        orig_app = undefined;
+        alt_app = undefined;
+
+        // Clear original angular
         alt_angular = undefined;
+        orig_angular = undefined;
+
+        // Clear private variables
         alternate_queue = [];
         app_name = undefined;
-        app_injector = undefined;
+        run_injector = undefined;
+        config_injector = undefined;
         app_cached_providers = {};
-        
-        // Clear original angular
-        orig_angular = undefined;
-    }
+
+        // Clear bootstrap flag but there is no way to un-bootstrap AngularJS
+        bootstrapped = false;
+    };
     
     /**
      * Initialization of angularAMD that bootstraps AngularJS.  The objective is to cache the
@@ -265,15 +278,23 @@ define(function () {
      */
     angularAMD.prototype.bootstrap = function (app, enable_ngload, elem) {
         // Prevent bootstrap from being called multiple times
-        if (typeof orig_angular !== 'undefined') {
+        if (bootstrapped) {
             throw Error("bootstrap can only be called once.");
         }
-        
-        // Store reference to original angular which also used to check if bootstrap has take place.
-        orig_angular = angular;
+
         if (typeof enable_ngload === 'undefined') {
             enable_ngload = true;
         }
+
+        // Store reference to original angular and app
+        orig_angular = angular;
+
+        // Create new version of app
+        orig_app = app;
+        alt_app = {};
+        orig_angular.extend(alt_app, orig_app);
+
+        // Determine element to bootstrap angular
         elem = elem || document.documentElement;
         
         // Cache provider needed
@@ -288,9 +309,9 @@ define(function () {
                     $animateProvider: animateProvider,
                     $provide: provide
                 };
-                
+
                 // Substitue provider methods from app call the cached provider
-                angular.extend(app, {
+                angular.extend(alt_app, {
                   controller : function(name, constructor) {
                     controllerProvider.register(name, constructor);
                     return this;
@@ -333,32 +354,87 @@ define(function () {
                     value: provide.value,
                     animation: angular.bind(animateProvider, animateProvider.register)
                 };
-            
+                alt_app.register = app.register;
             }]
         );
         
         // Get the injector for the app
         app.run(['$injector', function ($injector) {
             // $injector must be obtained in .run instead of .config
-            app_injector = $injector;
-            app_cached_providers.$injector = app_injector;
+            run_injector = $injector;
+            app_cached_providers.$injector = run_injector;
         }]);
         
         // Store the app name needed by .bootstrap function.
         app_name = app.name;
-        
+
         // Bootstrap Angular
         orig_angular.element(document).ready(function () {
-            orig_angular.bootstrap(elem, [app_name]); 
+            orig_angular.bootstrap(elem, [app_name]);
+
         });
-        
+
+        // Indicate bootstrap completed
+        bootstrapped = true;
+
         // Replace angular.module
         if (enable_ngload) {
             //console.log("Setting alternate angular");
             setAlternateAngular();
         }
-    };  
-    
+
+
+
+        // Return app
+        return alt_app;
+    };
+
+    // Define provider
+    function executeProvider(provider, name, constructor) {
+        provider(name, constructor);
+        return this;
+    }
+
+    // .controller
+    angularAMD.prototype.controller = function (name, constructor) {
+        return executeProvider(alt_app.controller, name, constructor);
+    };
+
+    // .directive
+    angularAMD.prototype.directive = function (name, constructor) {
+        return executeProvider(alt_app.directive, name, constructor);
+    };
+
+    // .filter
+    angularAMD.prototype.filter = function (name, constructor) {
+        return executeProvider(alt_app.filter, name, constructor);
+    };
+
+    // .factory
+    angularAMD.prototype.factory = function (name, constructor) {
+        return executeProvider(alt_app.factory, name, constructor);
+    };
+
+    // .service
+    angularAMD.prototype.service = function (name, constructor) {
+        return executeProvider(alt_app.service, name, constructor);
+    };
+
+    // .constant
+    angularAMD.prototype.constant = function (name, constructor) {
+        return executeProvider(alt_app.constant, name, constructor);
+    };
+
+    // .value
+    angularAMD.prototype.value = function (name, constructor) {
+        return executeProvider(alt_app.value, name, constructor);
+    };
+
+    // .animation
+    angularAMD.prototype.animation = function (name, constructor) {
+        return executeProvider(alt_app.animation, name, constructor);
+    };
+
     // Create a new instance and return
     return new angularAMD();
     

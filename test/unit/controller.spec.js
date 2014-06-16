@@ -40,7 +40,7 @@ define(['controller', 'angularAMD'], function (app, angularAMD) {
         
         it("scope.subModule check", function () {
             // console.log("scope.subModule check", service_results.sub_module);
-            expect(scope.utest_sub_module()).toBe(service_results.sub_module);
+            expect(scope.utest_sub_module.get()).toBe(service_results.sub_module);
         });
 
     });

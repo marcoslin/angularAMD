@@ -1,0 +1,21 @@
+{
+    "nonew": true,
+    "plusplus": true,
+    "curly": true,
+    "noarg": true,
+    "trailing": true,
+    "forin": true,
+    "noempty": true,
+    "eqeqeq": true,
+    "undef": true,
+    "bitwise": true,
+    "browser": true,
+    "node": true,
+    "globals": {
+        /* AngularJS */
+        "angular": true,
+        /* RequireJS */
+        "define": true,
+        "require": true
+    }
+}

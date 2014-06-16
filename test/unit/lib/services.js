@@ -1,8 +1,8 @@
-/*jslint node: true, nomen: true */
-/*globals angular */
+/**
+ * Test angular provider created using
+ */
 
 !function () {
-    'use strict';
     // Services coded using regular angular approach
     var sub_module = angular.module("subModuleServices", []),
         services = angular.module("utestServices", ['subModuleServices']),
@@ -10,14 +10,12 @@
     
     // Define a simple subModule
     angular.module("subModuleServices").factory("SubConfigValue", function () {
-        return function () {
-            return "JwU9YSJMJS-HhRz4nhBuY";
-        };
+        return "JwU9YSJMJS-HhRz4nhBuY";
     });
 
     // Make sure provider works
-    services.provider("configUtest", function () {
-        var config_value = "NXtMQruSLB";
+    services.provider("UtestStore", function () {
+        var config_value;
         
         this.configureValue = function(value) {
             config_value = value;
@@ -28,14 +26,14 @@
                 getValue: function () {
                     return config_value;
                 }
-            }
+            };
         };
     });
     
     // Use provider to store the value in the config phase
     utest_result.config_name = "services.config SDkWRXOgII";
-    services.config(function (configUtestProvider) {
-        configUtestProvider.configureValue(utest_result.config_name);
+    services.config(function (UtestStoreProvider) {
+        UtestStoreProvider.configureValue(utest_result.config_name);
     });
     
     utest_result.run_name = "services.run sOdq6GNsaW";
@@ -81,8 +79,10 @@
     
     utest_result.sub_module = "utestServices.sub_config_value JwU9YSJMJS-HhRz4nhBuY";
     services.factory('UtestSubModule', function (SubConfigValue) {
-        return function () {
-            return "utestServices.sub_config_value " + SubConfigValue();
+        return {
+            get: function () {
+                return "utestServices.sub_config_value " + SubConfigValue;
+            }
         };
     });
     
@@ -92,8 +92,8 @@
     });
     
     // Return the result of Utester
-    services.factory('configUtestResult', function (configUtest) {
-        return configUtest.getValue();
+    services.factory('UtestStoreResult', function (UtestStore) {
+        return UtestStore.getValue();
     });
     
 }();

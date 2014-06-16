@@ -22,8 +22,8 @@ define(['angularAMD', 'ngload!services'], function (angularAMD) {
             expect(results).toBeDefined();
         });
         
-        it(".config check.", inject(function (configUtestResult) {
-            expect(configUtestResult).toBe(results.config_name);
+        it(".config check.", inject(function (UtestStoreResult) {
+            expect(UtestStoreResult).toBe(results.config_name);
         }));
         
         it(".run check.", inject(function ($rootScope) {
@@ -64,7 +64,7 @@ define(['angularAMD', 'ngload!services'], function (angularAMD) {
         }));
         
         it("sub module check.", inject(function (UtestSubModule) {
-            expect(UtestSubModule()).toBe(results.sub_module);
+            expect(UtestSubModule.get()).toBe(results.sub_module);
         }));
         
         it("sub module check module.", function () {

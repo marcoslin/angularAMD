@@ -1,7 +1,3 @@
-/*jslint node: true, nomen: true */
-/*globals angular */
-
-
 /**
  * A copy of services.js but created using app.register instead.
  * Note that sequence of definition does matter in this case
@@ -12,7 +8,7 @@ define(['app', 'angularAMD'], function(app, angularAMD) {
     // Services coded using regular angular approach
     var inject = angularAMD.inject,
         utest_reg_result = {};
-    
+
     utest_reg_result.reg_constant_name = "regServices.reg_constant_name QSiNx5JlLP";
     app.constant("reg_constant_name", utest_reg_result.reg_constant_name);
     
@@ -64,7 +60,7 @@ define(['app', 'angularAMD'], function(app, angularAMD) {
                     done();
                 }
             }
-        }
+        };
     });
     
     // Return the result in a factory
