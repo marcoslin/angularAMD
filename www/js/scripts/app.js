@@ -52,7 +52,6 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
     });
         
     // Bootstrap Angular when DOM is ready
-    angularAMD.bootstrap(app);
+    return angularAMD.bootstrap(app);
 
-    return app;
 });
