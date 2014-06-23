@@ -17,7 +17,8 @@ require.config({
         'services': 'test/unit/lib/services',
         'regServices': 'test/unit/lib/regServices',
         'controller': 'test/unit/lib/controller',
-        'regController': 'test/unit/lib/regController'
+        'regController': 'test/unit/lib/regController',
+        'regServices_Deco': 'test/unit/lib/regServices_Deco'
     },
 
     shim: {
@@ -37,7 +38,8 @@ require.config({
         Define the *Spec.js dependencies so that it can be executed in order
         */
         'test/unit/regServices.spec': ['test/unit/app.spec'],
-        'test/unit/services.spec': ['test/unit/regServices.spec'],
+        'test/unit/regServices_Deco.spec': ['test/unit/regServices.spec'],
+        'test/unit/services.spec': ['test/unit/regServices_Deco.spec'],
         'test/unit/regController.spec': ['test/unit/services.spec'],
         'test/unit/controllerFn.spec': ['test/unit/regController.spec'],
         'test/unit/controller.spec': ['test/unit/controllerFn.spec']

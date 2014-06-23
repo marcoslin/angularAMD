@@ -19,6 +19,9 @@ define(function () {
         orig_angular,
         alt_angular,
 
+        // Object that wrap the provider methods that enables lazy loading
+        onDemandLoader,
+
         // Used in setAlternateAngular() and .processQueue
         alternate_modules = {},
         alternate_modules_tracker = {},
@@ -95,8 +98,7 @@ define(function () {
                 
         window.angular = alt_angular;
     }
-    
-    
+
     // Constructor
     function angularAMD() {}
     
@@ -297,6 +299,7 @@ define(function () {
         // Clear original angular
         alt_angular = undefined;
         orig_angular = undefined;
+        onDemandLoader = undefined;
 
         // Clear private variables
         alternate_queue = [];
@@ -350,50 +353,43 @@ define(function () {
                 };
 
                 // Substitue provider methods from app call the cached provider
-                angular.extend(alt_app, {
-                  controller : function(name, constructor) {
-                    controllerProvider.register(name, constructor);
-                    return this;
-                  },
-                  directive : function(name, constructor) {
-                    compileProvider.directive(name, constructor);
-                    return this;
-                  },
-                  filter : function(name, constructor) {
-                    filterProvider.register(name, constructor);
-                    return this;
-                  },
-                  factory : function(name, constructor) {
-                    provide.factory(name, constructor);
-                    return this;
-                  },
-                  service : function(name, constructor) {
-                    provide.service(name, constructor);
-                    return this;
-                  },
-                  constant : function(name, constructor) {
-                    provide.constant(name, constructor);
-                    return this;
-                  },
-                  value : function(name, constructor) {
-                    provide.value(name, constructor);
-                    return this;
-                  },
-                  animation: angular.bind(animateProvider, animateProvider.register)
-                });
-                
-                // Create a app.register object to keep backward compatibility
-                app.register = {
-                    controller: controllerProvider.register,
-                    directive: compileProvider.directive,
-                    filter: filterProvider.register,
-                    factory: provide.factory,
-                    service: provide.service,
-                    constant: provide.constant,
-                    value: provide.value,
+                onDemandLoader = {
+                    controller : function(name, constructor) {
+                        controllerProvider.register(name, constructor);
+                        return this;
+                    },
+                    directive : function(name, constructor) {
+                        compileProvider.directive(name, constructor);
+                        return this;
+                    },
+                    filter : function(name, constructor) {
+                        filterProvider.register(name, constructor);
+                        return this;
+                    },
+                    factory : function(name, constructor) {
+                        provide.factory(name, constructor);
+                        return this;
+                    },
+                    service : function(name, constructor) {
+                        provide.service(name, constructor);
+                        return this;
+                    },
+                    constant : function(name, constructor) {
+                        provide.constant(name, constructor);
+                        return this;
+                    },
+                    value : function(name, constructor) {
+                        provide.value(name, constructor);
+                        return this;
+                    },
                     animation: angular.bind(animateProvider, animateProvider.register)
                 };
-                alt_app.register = app.register;
+
+                angular.extend(alt_app, onDemandLoader);
+                
+                // Create a app.register object to keep backward compatibility
+                app.register = onDemandLoader;
+
             }]
         );
         
