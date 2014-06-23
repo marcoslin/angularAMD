@@ -14,7 +14,6 @@ require.config({
 
         'HomeController': 'controller/home_ctrl',
         'MapController': 'controller/map_ctrl',
-        'PicturesController': 'controller/pictures_ctrl',
         'ModulesController': 'controller/modules_ctrl'
     },
 

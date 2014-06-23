@@ -73,7 +73,7 @@ define(['app','angularAMD'], function (app, angularAMD) {
                 });
                 
                 it('resolve should have been populated.', function () {
-                    expect(r.resolve["__load"]).toBeDefined();
+                    expect(r.resolve["__AAMDCtrl"]).toBeDefined();
                 });             
             });
             
@@ -89,7 +89,7 @@ define(['app','angularAMD'], function (app, angularAMD) {
                 });
     
                 it('resolve should have been populated.', function () {
-                    expect(r.resolve["__load"]).toBeDefined();
+                    expect(r.resolve["__AAMDCtrl"]).toBeDefined();
                 });             
             });
         });

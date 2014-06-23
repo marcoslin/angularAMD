@@ -7,6 +7,7 @@ require.config({
     // alias libraries paths
     paths: {
         'angular': 'bower_components/angular/angular',
+        'angular-route': 'bower_components/angular-route/angular-route',
         'angular-animate': 'bower_components/angular-animate/angular-animate',
         'angular-mocks': 'bower_components/angular-mocks/angular-mocks',
         'angularAMD': '{{{angularAMD-js-file}}}',
@@ -21,6 +22,7 @@ require.config({
 
     shim: {
         'angularAMD': ['angular'],
+        'angular-route': ['angular'],
         'angular-animate': ['angular'],
         'angular-mocks': ['angular'],
         
@@ -33,19 +35,18 @@ require.config({
         
         /*
         Define the *Spec.js dependencies so that it can be executed in order
-        'test/unit/regServices.spec': ['test/unit/app.spec'],
         */
         'test/unit/regServices.spec': ['test/unit/app.spec'],
         'test/unit/services.spec': ['test/unit/regServices.spec'],
         'test/unit/regController.spec': ['test/unit/services.spec'],
-        'test/unit/controller.spec': ['test/unit/regController.spec'],
+        'test/unit/controllerFn.spec': ['test/unit/regController.spec'],
+        'test/unit/controller.spec': ['test/unit/controllerFn.spec']
         
     },
     
     // controllerSpec is at the end of dependency tree so kicking it off will start entire test
     deps: ['test/unit/controller.spec'],
-    //deps: ['test/unit/app_no_ngload.spec'],
-    
+
     // start test run, once Require.js is done
     callback: window.__karma__.start
 });

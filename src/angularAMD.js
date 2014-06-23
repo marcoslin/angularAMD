@@ -118,13 +118,26 @@ define(function () {
         var load_controller;
 
         /*
-        If controllerUrl is provided, load the provided Url using requirejs. Otherwise,
-        attempt to load the controller using the controller name.  In the later case,
-        controller name is expected to be defined as one of 'paths' in main.js. 
+        If `controllerUrl` is provided, load the provided Url using requirejs.  If `controller` is not provided
+        but `controllerUrl` is, assume that module to be loaded will return a function to act as controller.
+
+        Otherwise, attempt to load the controller using the controller name.  In the later case, controller name
+        is expected to be defined as one of 'paths' in main.js.
         */
         if ( config.hasOwnProperty("controllerUrl") ) {
             load_controller = config.controllerUrl;
             delete config.controllerUrl;
+            if (typeof config.controller === "undefined") {
+                // Only controllerUrl is defined.  Attempt to set the controller to return value of package loaded.
+                config.controller = [
+                    "$scope", "__AAMDCtrl", "$injector",
+                    function ($scope, __AAMDCtrl, $injector) {
+                        if (typeof __AAMDCtrl !== "undefined" ) {
+                            $injector.invoke(__AAMDCtrl, this, { "$scope": $scope });
+                        }
+                    }
+                ];
+            }
         } else if (typeof config.controller === 'string') {
             load_controller = config.controller;
         }
@@ -132,10 +145,10 @@ define(function () {
         // If controller needs to be loaded, append to the resolve property
         if (load_controller) {
             var resolve = config.resolve || {};
-            resolve['__load'] = ['$q', '$rootScope', function ($q, $rootScope) {
+            resolve['__AAMDCtrl'] = ['$q', '$rootScope', function ($q, $rootScope) {
                 var defer = $q.defer();
-                require([load_controller], function () {
-                    defer.resolve();
+                require([load_controller], function (ctrl) {
+                    defer.resolve(ctrl);
                     $rootScope.$apply();
                 });
                 return defer.promise;

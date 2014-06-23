@@ -1,7 +1,7 @@
 /*jslint browser: true, devel: true, node: true, vars: true, nomen: true */
 /*globals define, angular */
 
-define(['angularAMD', 'angular-animate'], function (angularAMD) {
+define(['angularAMD', 'angular-route', 'angular-animate'], function (angularAMD) {
     'use strict';
 
     /**
@@ -9,12 +9,20 @@ define(['angularAMD', 'angular-animate'], function (angularAMD) {
      * Replicating what would normally take place in app.js
      */
     var app_name = "unitest-app",
-        app = angular.module(app_name, ['ngAnimate']);
+        app = angular.module(app_name, ['ngRoute','ngAnimate']);
     
     // Add property for unit test
     app.__appname = app_name;
     app.__origAngular = window.angular;
-    
+
+    // Define route for unit test
+    app.config(function ($routeProvider) {
+        $routeProvider.when("/controllerFn", angularAMD.route({
+            utestParam: "controllerFn",
+            template: "<div>{{message}}</div>",
+            controllerUrl: "test/unit/lib/controllerFn"
+        }));
+    });
 
     /*
     var elem = document.body;

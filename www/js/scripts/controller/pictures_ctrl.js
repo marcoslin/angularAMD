@@ -1,6 +1,6 @@
 define(['app', 'service/picturesService', 'ngload!ui-bootstrap', 'directive/navMenu'], function (app) {
         
-    app.controller('PicturesController', function ($scope, Pictures) {
+    return function ($scope, Pictures) {
         $scope.slideChangeInterval = 4000;
         
         $scope.$watch('cityModel', function (newValue) {
@@ -11,6 +11,6 @@ define(['app', 'service/picturesService', 'ngload!ui-bootstrap', 'directive/navM
             }
         });
         
-    });
+    };
 
-}); 
+});

@@ -10,7 +10,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
                 templateUrl: 'views/home.html', controller: 'HomeController', navTab: "home"
             }))
             .when("/pictures", angularAMD.route({
-                templateUrl: 'views/pictures.html', controller: 'PicturesController', navTab: "pictures"
+                templateUrl: 'views/pictures.html', controllerUrl: 'controller/pictures_ctrl', navTab: "pictures"
             }))
             .when("/modules", angularAMD.route({
                 templateUrl: 'views/modules.html', controller: 'ModulesController', navTab: "modules"
@@ -19,6 +19,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
                 templateUrl: 'views/map.html', controller: 'MapController', navTab: "map"
             }))
             .otherwise({redirectTo: '/home'})
+        ;
     });
     
     // Define constant to be used by Google Analytics
