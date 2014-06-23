@@ -4,9 +4,6 @@
  License: MIT
 */
 
-/*jslint node: true, vars: true, nomen: true */
-/*globals define */
-
 'use strict';
 define({
     load: function (name, req, onload, config) {

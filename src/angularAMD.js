@@ -6,18 +6,26 @@
 
 define(function () {
     var bootstrapped = false,
-        orig_angular,
-        alt_angular,
+
+        // Used in .bootstrap
+        app_name,
         orig_app,
         alt_app,
-        alternateModules = {},
-        alternateModulesTracker = {},
-        alternate_queue = [],
-        app_name,
         run_injector,
         config_injector,
-        app_cached_providers = {};
+        app_cached_providers = {},
 
+        // Used in setAlternateAngular(), alt_angular is set to become angular.module
+        orig_angular,
+        alt_angular,
+
+        // Used in setAlternateAngular() and .processQueue
+        alternate_modules = {},
+        alternate_modules_tracker = {},
+        alternate_queue = [],
+
+        // Used by angularAMD provider methods and .bootstrap
+        deferred_providers = [];
     
     // Private method to check if angularAMD has been initialized
     function checkBootstrapped() {
@@ -54,15 +62,15 @@ define(function () {
         // Make sure that bootstrap has been called
         checkBootstrapped();
 
-        // Createa a copy of orig_angular
+        // Create a a copy of orig_angular
         orig_angular.extend(alt_angular, orig_angular);
         
         // Custom version of angular.module used as cache
         alt_angular.module = function (name, requires) {
             if (typeof requires === "undefined") {
-                // Return module from alternateModules if it was created using the alt_angular
-                if (alternateModulesTracker.hasOwnProperty(name)) {
-                    return alternateModules[name];
+                // Return module from alternate_modules if it was created using the alt_angular
+                if (alternate_modules_tracker.hasOwnProperty(name)) {
+                    return alternate_modules[name];
                 } else {
                     return orig_angular.module(name);
                 }
@@ -73,12 +81,12 @@ define(function () {
                 alternate_queue.push(item);
                 
                 /*
-                Use `alternateModulesTracker` to track which module has been created by alt_angular
-                but use `alternateModules` to cache the module created.  This is to simplify the
+                Use `alternate_modules_tracker` to track which module has been created by alt_angular
+                but use `alternate_modules` to cache the module created.  This is to simplify the
                 removal of cached modules after .processQueue.
                 */
-                alternateModulesTracker[name] = true;
-                alternateModules[name] = orig_mod;
+                alternate_modules_tracker[name] = true;
+                alternate_modules[name] = orig_mod;
                 
                 // Return created module
                 return orig_mod;
@@ -134,14 +142,13 @@ define(function () {
             }];
             config.resolve = resolve;
         }
-        
-        
+
         return config;
     };
     
     
     /**
-     * Expose name of the app that has been bootstraped
+     * Expose name of the app that has been bootstrapped
      */
     angularAMD.prototype.appname = function () {
         checkBootstrapped();
@@ -206,7 +213,7 @@ define(function () {
             Clear the cached modules created by alt_angular so that subsequent call to
             angular.module will return undefined.
             */
-            alternateModules = {};
+            alternate_modules = {};
         }
 
     };
@@ -218,17 +225,26 @@ define(function () {
     angularAMD.prototype.getCachedProvider = function (provider_name) {
         checkBootstrapped();
         // Hack used for unit testing that orig_angular has been captured
-        if (provider_name === "__orig_angular") {
-            return orig_angular;
-        } else if (provider_name === "__alt_angular") {
-            return alt_angular;
-        } else if (provider_name === "__orig_app") {
-            return orig_app;
-        } else if (provider_name === "__alt_app") {
-            return alt_app;
-        } else {
-            return app_cached_providers[provider_name];
+        var cachedProvider;
+
+        switch(provider_name) {
+            case "__orig_angular":
+                cachedProvider = orig_angular;
+                break;
+            case "__alt_angular":
+                cachedProvider = alt_angular;
+                break;
+            case "__orig_app":
+                cachedProvider = orig_app;
+                break;
+            case "__alt_app":
+                cachedProvider = alt_app;
+                break;
+            default:
+                cachedProvider = app_cached_providers[provider_name];
         }
+
+        return cachedProvider;
     };
     
     /**
@@ -238,6 +254,16 @@ define(function () {
     angularAMD.prototype.inject = function () {
         checkBootstrapped();
         return run_injector.invoke.apply(null, arguments);
+    };
+
+
+    /**
+     * Create config function that uses cached config_injector.
+     * Designed to simulate app.config.
+     */
+    angularAMD.prototype.config = function () {
+        checkBootstrapped();
+        return config_injector.invoke.apply(null, arguments);
     };
     
     /**
@@ -382,8 +408,6 @@ define(function () {
             //console.log("Setting alternate angular");
             setAlternateAngular();
         }
-
-
 
         // Return app
         return alt_app;

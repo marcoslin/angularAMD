@@ -62,6 +62,17 @@ define(['angularAMD', 'ngload!services'], function (angularAMD) {
             expect(ufilter).toBeDefined();
             expect(ufilter("hello")).toBe("hello " + results.filter_name);
         }));
+
+        it("angularAMD.config check.", function () {
+            var configVal = "B9NmTuDAeU-JO0S1yjKXc";
+            angularAMD.config(function (UtestStoreProvider) {
+                UtestStoreProvider.configureValue(configVal);
+            });
+            inject(function (UtestStore) {
+                expect(UtestStore.getValue()).toBe(configVal);
+            });
+
+        });
         
         it("sub module check.", inject(function (UtestSubModule) {
             expect(UtestSubModule.get()).toBe(results.sub_module);
