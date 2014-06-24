@@ -1,54 +1,75 @@
 /*jslint browser: true, node: true, nomen: true */
 
-require.config({
-    // The baseUrl depends on what is defined in karma.unit.js:basePath
-    baseUrl: "/base",
-    
-    // alias libraries paths
-    paths: {
-        'angular': 'bower_components/angular/angular',
-        'angular-route': 'bower_components/angular-route/angular-route',
-        'angular-animate': 'bower_components/angular-animate/angular-animate',
-        'angular-mocks': 'bower_components/angular-mocks/angular-mocks',
-        'angularAMD': '{{{angularAMD-js-file}}}',
-        'ngload': '{{{ngload-js-file}}}',
-        'app': 'test/unit/lib/app',
-        'app_no_ngload': 'test/unit/lib/app_no_ngload',
-        'services': 'test/unit/lib/services',
-        'regServices': 'test/unit/lib/regServices',
-        'controller': 'test/unit/lib/controller',
-        'regController': 'test/unit/lib/regController',
-        'regServices_Deco': 'test/unit/lib/regServices_Deco'
-    },
+!function () {
+    // Create basic requirejs config
+    var rconfig = {
+        // The baseUrl depends on what is defined in karma.unit.js:basePath
+        baseUrl: "/base",
 
-    shim: {
-        'angularAMD': ['angular'],
-        'angular-route': ['angular'],
-        'angular-animate': ['angular'],
-        'angular-mocks': ['angular'],
-        
-        /*
-        'services' in this case is a regular angular.js module and therefore non-requirejs module so 
-        must be defined in shim.  This is critical as 'services' depends on processing in 'app' to
-        support loading of regular angular.js modules.
-        */
-        'services': ['app'],
-        
-        /*
-        Define the *Spec.js dependencies so that it can be executed in order
-        */
-        'test/unit/regServices.spec': ['test/unit/app.spec'],
-        'test/unit/regServices_Deco.spec': ['test/unit/regServices.spec'],
-        'test/unit/services.spec': ['test/unit/regServices_Deco.spec'],
-        'test/unit/regController.spec': ['test/unit/services.spec'],
-        'test/unit/controllerFn.spec': ['test/unit/regController.spec'],
-        'test/unit/controller.spec': ['test/unit/controllerFn.spec']
-        
-    },
-    
-    // controllerSpec is at the end of dependency tree so kicking it off will start entire test
-    deps: ['test/unit/controller.spec'],
+        // alias libraries paths
+        paths: {
+            'angular': 'bower_components/angular/angular',
+            'angular-route': 'bower_components/angular-route/angular-route',
+            'angular-animate': 'bower_components/angular-animate/angular-animate',
+            'angular-mocks': 'bower_components/angular-mocks/angular-mocks',
+            'angularAMD': '{{{angularAMD-js-file}}}',
+            'ngload': '{{{ngload-js-file}}}',
+            'app': 'test/unit/lib/app',
+            'app_no_ngload': 'test/unit/lib/app_no_ngload',
+            'services': 'test/unit/lib/services',
+            'regServices': 'test/unit/lib/regServices',
+            'controller': 'test/unit/lib/controller',
+            'regController': 'test/unit/lib/regController',
+            'regServices_Deco': 'test/unit/lib/regServices_Deco'
+        },
 
-    // start test run, once Require.js is done
-    callback: window.__karma__.start
-});
+        shim: {
+            'app': ['angular'],
+            'angularAMD': ['angular'],
+            'angular-route': ['angular'],
+            'angular-animate': ['angular'],
+            'angular-mocks': ['angular'],
+
+            /*
+            'services' in this case is a regular angular.js module and therefore non-requirejs module so
+            must be defined in shim.  This is critical as 'services' depends on processing in 'app' to
+            support loading of regular angular.js modules.
+            */
+            'services': ['app']
+        },
+
+        // start test run, once Require.js is done
+        callback: window.__karma__.start
+    };
+
+
+    // Look for .spec.js files and created linked dependencies starting with app.spec to one spec at a time
+    var prevSpec = "test/unit/app.spec",
+        reSkip = new RegExp("app\\.spec\\.js|app_no_ngload\\.spec\\.js"),
+        reSpec = new RegExp("^\\/base\\/(\\S+\\.spec)\\.js$");
+
+    for (var file in window.__karma__.files) {
+        // Ignore the app and app_no_ngload files
+        if (reSkip.test(file)) {
+            continue;
+        }
+
+        // Find the *.spec.js files and extract just the name without initial "/base/" and ending ".js"
+        if (window.__karma__.files.hasOwnProperty(file)) {
+            var matches = reSpec.exec(file);
+            if(matches && matches.length > 1) {
+                var curSpec = matches[1];
+                rconfig.shim[curSpec] = [prevSpec];
+                prevSpec = curSpec;
+            }
+        }
+    }
+
+    // Kick off the test from the last spec.js file
+    rconfig.deps = [prevSpec];
+
+    // Update requirejs config
+    require.config(rconfig);
+}();
+
+
