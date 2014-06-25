@@ -1,100 +1,37 @@
 /**
- * Test angular provider created using
+ * Simulate a 3rd party service.  This package loads the 'test/unit/factory/module' using requirejs' sync
+ * call so it must be pre-loaded by caller first.
  */
 
 !function () {
     // Services coded using regular angular approach
     var sub_module = angular.module("subModuleServices", []),
         services = angular.module("utestServices", ['subModuleServices']),
-        utest_result = {};
+        moduleFactory = require("test/unit/factory/module");
     
     // Define a simple subModule
     angular.module("subModuleServices").factory("SubConfigValue", function () {
         return "JwU9YSJMJS-HhRz4nhBuY";
     });
 
-    // Make sure provider works
-    services.provider("UtestStore", function () {
-        var config_value;
-        
-        this.configureValue = function(value) {
-            config_value = value;
-        };
-        
-        this.$get = function () {
-            return {
-                getValue: function () {
-                    return config_value;
-                }
-            };
-        };
-    });
-    
-    // Use provider to store the value in the config phase
-    utest_result.config_name = "services.config SDkWRXOgII";
-    services.config(function (UtestStoreProvider) {
-        UtestStoreProvider.configureValue(utest_result.config_name);
-    });
-    
-    utest_result.run_name = "services.run sOdq6GNsaW";
-    services.run(function ($rootScope) {
-        $rootScope.run_name = utest_result.run_name;
-    });
-    
-    utest_result.factory_name = "UtestFactory.name nSg56eHrWo";
-    services.factory("UtestFactory", function (constant_name) {
-        // Make sure that constant_name is setup after this factory.
-        return { name: utest_result.factory_name, "const_name": constant_name };
-    });
 
-    utest_result.service_name = "UtestService.name ySg56eHrWo";
-    services.service("UtestService", function (value_name) {
-        // Make sure that value_name is defined after this service
-        this.name = utest_result.service_name;
-        this.val_name = value_name;
-    });
-    
-    utest_result.constant_name = "utestServices.constant_name xHf71eVzxd";
-    services.constant("constant_name", utest_result.constant_name);
-    
-    utest_result.value_name = "utestServices.value_name ih3zRvZofo";
-    services.value("value_name", utest_result.value_name);
-    
-    utest_result.directive_name = "utestServices.directive_name Krloe7G1CH";
-    services.directive('utestDirective', function () {
-        return {
-            restrict: 'A',
-            link: function (scope, elm, attr) {
-                elm.text(utest_result.directive_name);
-            }
-        };
-    });
+    // Load module factory
+    var result = moduleFactory(services, "Ng");
 
-    utest_result.filter_name = "utestServices.filter_name 0WWb0usFCB";
-    services.filter('utestFilter', function () {
-        return function (input) {
-            return input + " " + utest_result.filter_name;
-        };
-    });
-    
-    utest_result.sub_module = "utestServices.sub_config_value JwU9YSJMJS-HhRz4nhBuY";
-    services.factory('UtestSubModule', function (SubConfigValue) {
+    // Add sub-module test
+    result.UtestSubModule = "UtestSubModule" + result.suffix;
+    result.sub_module = "utestServices.sub_config_value JwU9YSJMJS-HhRz4nhBuY";
+    services.factory(result.UtestSubModule, function (SubConfigValue) {
         return {
             get: function () {
                 return "utestServices.sub_config_value " + SubConfigValue;
             }
         };
     });
-    
-    // Return the result in a factory
+
     services.factory('UtestServiceResult', function () {
-        return utest_result;
+        return result;
     });
-    
-    // Return the result of Utester
-    services.factory('UtestStoreResult', function (UtestStore) {
-        return UtestStore.getValue();
-    });
-    
+
 }();
 

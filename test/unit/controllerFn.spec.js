@@ -1,12 +1,9 @@
-/*jslint browser: true, devel: true, node: true, nomen: true */
-/*globals define, angular, describe, expect, it */
-
 /**
  * Testing declaration of controller following require.js spec and make sure
  * it's dependecies are loaded.
  */
 define(['angularAMD'], function (angularAMD) {
-    'use strict';
+    console.log("* Running controllerFn.spec.js");
     describe('Utest Controller', function () {
         //console.log("Running controllerSpec.js");
         var route, location, rootScope;

@@ -1,20 +1,17 @@
-/*jslint browser: true, devel: true, node: true, nomen: true */
-/*globals define, angular, describe, expect, it */
-
 /**
  * Testing declaration of controller following require.js spec and make sure
  * it's dependecies are loaded.
  */
-define(['controller', 'angularAMD'], function (app, angularAMD) {
-    'use strict';
+define(['app', 'controller', 'angularAMD'], function (app, controller, angularAMD) {
+    console.log("* Running controller.spec.js");
     describe('Utest Controller', function () {
         //console.log("Running controllerSpec.js");
-        var ctrl_name = app.__utest_ctrl_result.ctrl_name,
-            scope, service_results, ctrl;
+        var ctrl_name = controller.ctrl_name,
+            service_results = controller.result,
+            scope, ctrl;
 
-        angularAMD.inject(function ($rootScope, $controller, UtestServiceResult) {
+        angularAMD.inject(function ($rootScope, $controller) {
             scope = $rootScope.$new();
-            service_results = UtestServiceResult;
             ctrl = $controller(ctrl_name, { $scope: scope });
         });
         

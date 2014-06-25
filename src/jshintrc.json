@@ -13,9 +13,17 @@
     "node": true,
     "globals": {
         /* AngularJS */
-        "angular": true,
+        "angular": false,
         /* RequireJS */
-        "define": true,
-        "require": true
+        "define": false,
+        "require": false,
+        /* Jasmine */
+        "describe"   : false,
+        "it"         : false,
+        "before"     : false,
+        "beforeEach" : false,
+        "after"      : false,
+        "afterEach"  : false,
+        "expect"     : false
     }
 }

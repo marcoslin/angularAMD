@@ -1,19 +1,18 @@
 /*jslint nomen: true */
 /*globals define, angular */
 
-define(['app','regServices'], function (app) {
+define(['app','regServices'], function (app, utestResult) {
     'use strict';
     var ctrl_name = "RegController";
-    app.controller(ctrl_name, ['$scope', 'UtestRegFactory', 'UtestRegService', function ($scope, UtestRegFactory, UtestRegService) {
+
+    app.controller(ctrl_name, ['$scope', utestResult.UtestFactory, utestResult.UtestService, function ($scope, UtestFactory, UtestService) {
         $scope.ctrl_name = ctrl_name;
-        $scope.utest_reg_factory = UtestRegFactory;
-        $scope.utest_reg_service = UtestRegService;
+        $scope.utest_factory = UtestFactory;
+        $scope.utest_service = UtestService;
     }]);
-    
-    // Return expected unit test result
-    app.__utest_regctrl_result = {
-        "ctrl_name": ctrl_name
+
+    return {
+        "ctrl_name": ctrl_name,
+        "result": utestResult
     };
-    
-    return app;
 });

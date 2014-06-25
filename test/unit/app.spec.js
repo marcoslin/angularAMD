@@ -1,29 +1,31 @@
-/*jslint browser: true, devel: true, node: true, nomen: true */
-/*globals define, angular, describe, expect, it */
-
 /**
  * Test focusing on setup of ngAMD making sure that cached provider are defined.
  */
-define(['app','angularAMD'], function (app, angularAMD) {
-    'use strict';
+define(['app','angularAMD', 'test/unit/factory/utestProvider'], function (app, angularAMD, utestProvider) {
+    console.log("* Running app.spec.js");
+
     describe('angularAMD', function () {
-        //console.log("Running app.spec.js");
-        
-        it('is created.', function () {
-            expect(angularAMD).toBeDefined();
-        });
-        it('app is defined.', function () {
-            expect(app.name).toBe(angularAMD.appname());
-        });
-        it('app.__origAngular is defined.', function () {
-            var orig_angular = angularAMD.getCachedProvider('__orig_angular');
-            expect(app.__origAngular).toBeDefined();
-            expect(app.__origAngular).toBe(orig_angular);
-        });
-        it('alternate angular should be defined.', function () {
-            var alt_angular = angularAMD.getCachedProvider('__alt_angular');
-            expect(alt_angular).toBeDefined();
-            expect(window.angular).toBe(alt_angular);
+
+        describe("basics", function () {
+            it('should be defined.', function () {
+                expect(angularAMD).toBeDefined();
+            });
+            it('app should be defined.', function () {
+                expect(app.name).toBe(angularAMD.appname());
+            });
+            it('app.__origAngular should be defined.', function () {
+                var orig_angular = angularAMD.getCachedProvider('__orig_angular');
+                expect(app.__origAngular).toBeDefined();
+                expect(app.__origAngular).toBe(orig_angular);
+            });
+            it('app.__preServiceResult should be defined.', function () {
+                expect(app.__preServiceResult).toBeDefined();
+            });
+            it('alternate angular should be defined.', function () {
+                var alt_angular = angularAMD.getCachedProvider('__alt_angular');
+                expect(alt_angular).toBeDefined();
+                expect(window.angular).toBe(alt_angular);
+            });
         });
         
         describe('cached property', function () {
@@ -73,10 +75,9 @@ define(['app','angularAMD'], function (app, angularAMD) {
                 });
                 
                 it('resolve should have been populated.', function () {
-                    expect(r.resolve["__AAMDCtrl"]).toBeDefined();
-                });             
+                    expect(r.resolve["__AAMDCtrl"]).toBeDefined(); //jshint ignore:line
+                });
             });
-            
             
             describe('with controller param: ', function () {
                 var tabName = "ioOc7ZIofT", r;
@@ -89,11 +90,14 @@ define(['app','angularAMD'], function (app, angularAMD) {
                 });
     
                 it('resolve should have been populated.', function () {
-                    expect(r.resolve["__AAMDCtrl"]).toBeDefined();
-                });             
+                    expect(r.resolve["__AAMDCtrl"]).toBeDefined(); //jshint ignore:line
+                });
             });
         });
-        
+
+        // Perform test to ensure preService loaded before bootstrap works.
+        utestProvider(app.__preServiceResult);
+
     });
 
 });

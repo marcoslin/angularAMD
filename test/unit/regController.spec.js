@@ -1,25 +1,22 @@
-/*jslint browser: true, devel: true, node: true, nomen: true */
-/*globals define, angular, describe, expect, it */
-
 /**
  * Testing declaration of controller following require.js spec and make sure
  * it's dependecies are loaded.
  */
-define(['regController', 'angularAMD'], function (app, angularAMD) {
-    'use strict';
+define(['app', 'angularAMD', 'regController'], function (app, angularAMD, regController) {
+    console.log("* Running regController.spec.js");
     describe('Utest RegController', function () {
         //console.log("Running controllerSpec.js");
-        var ctrl_name = app.__utest_regctrl_result.ctrl_name,
-            scope, service_results, ctrl;
+        var ctrl_name = regController.ctrl_name,
+            result = regController.result,
+            scope, ctrl;
 
-        angularAMD.inject(function ($rootScope, $controller, UtestRegServiceResult) {
+        angularAMD.inject(function ($rootScope, $controller) {
             scope = $rootScope.$new();
-            service_results = UtestRegServiceResult;
             ctrl = $controller(ctrl_name, { $scope: scope });
         });
         
-        it("service_results should exists.", function () {
-            expect(service_results).toBeDefined();
+        it("utestResult should exists.", function () {
+            expect(result).toBeDefined();
         });
         
         it("scope.ctrl_name check", function () {
@@ -27,15 +24,15 @@ define(['regController', 'angularAMD'], function (app, angularAMD) {
         });
         
         it("scope.utest_factory check", function () {
-            var f = scope.utest_reg_factory;
-            expect(f.name).toBe(service_results.factory_name);
-            expect(f.const_name).toBe(service_results.reg_constant_name);
+            var f = scope.utest_factory;
+            expect(f.name).toBe(result.factory_name);
+            expect(f.const_name).toBe(result.constant_name);
         });
         
         it("scope.utest_service check", function () {
-            var s = scope.utest_reg_service;
-            expect(s.name).toBe(service_results.service_name);
-            expect(s.val_name).toBe(service_results.reg_value_name);
+            var s = scope.utest_service;
+            expect(s.name).toBe(result.service_name);
+            expect(s.val_name).toBe(result.value_name);
         });
 
     });

@@ -1,13 +1,10 @@
-/*jslint browser: true, devel: true, node: true, nomen: true */
-/*globals define, angular, describe, expect, it */
-
 /**
  * Test focusing on making sure that window.angular has not been modified and
  * that .processQueue raises error when enable_ngload is set to false in
  * .bootstrap
  */
 define(['app_no_ngload','angularAMD'], function (app, angularAMD) {
-    'use strict';
+    console.log("* Running app_no_ngload.spec.js");
     describe('angularAMD_no_ngload', function () {
         //console.log("Running app_no_ngload.spec.js");
         

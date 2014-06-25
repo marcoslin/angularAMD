@@ -1,7 +1,7 @@
 /*jslint browser: true, devel: true, node: true, vars: true, nomen: true */
 /*globals define, angular */
 
-define(['angularAMD', 'angular-route', 'angular-animate'], function (angularAMD) {
+define(['angularAMD', 'test/unit/lib/preService', 'angular-route', 'angular-animate'], function (angularAMD, preService) {
     'use strict';
 
     /**
@@ -14,6 +14,7 @@ define(['angularAMD', 'angular-route', 'angular-animate'], function (angularAMD)
     // Add property for unit test
     app.__appname = app_name;
     app.__origAngular = window.angular;
+    app.__preServiceResult = preService;
 
     // Define route for unit test
     app.config(function ($routeProvider) {

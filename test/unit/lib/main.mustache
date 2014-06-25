@@ -20,7 +20,7 @@
             'regServices': 'test/unit/lib/regServices',
             'controller': 'test/unit/lib/controller',
             'regController': 'test/unit/lib/regController',
-            'regServices_Deco': 'test/unit/lib/regServices_Deco'
+            'decoServices': 'test/unit/lib/decoServices'
         },
 
         shim: {
@@ -31,11 +31,10 @@
             'angular-mocks': ['angular'],
 
             /*
-            'services' in this case is a regular angular.js module and therefore non-requirejs module so
-            must be defined in shim.  This is critical as 'services' depends on processing in 'app' to
-            support loading of regular angular.js modules.
+            'services' in this case is a regular angular.js module which calls moduleFactory using
+            requirejs' sync method.  As result, test/unit/factory/module must be called first.
             */
-            'services': ['app']
+            'services': ['test/unit/factory/module']
         },
 
         // start test run, once Require.js is done
@@ -48,6 +47,7 @@
         reSkip = new RegExp("app\\.spec\\.js|app_no_ngload\\.spec\\.js"),
         reSpec = new RegExp("^\\/base\\/(\\S+\\.spec)\\.js$");
 
+    console.log("* Setting unit test sequence:");
     for (var file in window.__karma__.files) {
         // Ignore the app and app_no_ngload files
         if (reSkip.test(file)) {
@@ -60,6 +60,7 @@
             if(matches && matches.length > 1) {
                 var curSpec = matches[1];
                 rconfig.shim[curSpec] = [prevSpec];
+                console.log(" - " + curSpec + ": " + prevSpec);
                 prevSpec = curSpec;
             }
         }
@@ -67,6 +68,7 @@
 
     // Kick off the test from the last spec.js file
     rconfig.deps = [prevSpec];
+    console.log(" - " + prevSpec + " [KICK-OFF]");
 
     // Update requirejs config
     require.config(rconfig);

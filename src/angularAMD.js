@@ -20,7 +20,8 @@ define(function () {
         alt_angular,
 
         // Object that wrap the provider methods that enables lazy loading
-        onDemandLoader,
+        onDemandLoader = {},
+        preBootstrapLoaderQueue = [],
 
         // Used in setAlternateAngular() and .processQueue
         alternate_modules = {},
@@ -65,9 +66,9 @@ define(function () {
         // Make sure that bootstrap has been called
         checkBootstrapped();
 
-        // Create a a copy of orig_angular
+        // Create a a copy of orig_angular with on demand loading capability
         orig_angular.extend(alt_angular, orig_angular);
-        
+
         // Custom version of angular.module used as cache
         alt_angular.module = function (name, requires) {
             if (typeof requires === "undefined") {
@@ -78,10 +79,10 @@ define(function () {
                     return orig_angular.module(name);
                 }
             } else {
-                //console.log("alt_angular.module START for '" + name + "': ", arguments);
                 var orig_mod = orig_angular.module.apply(null, arguments),
                     item = { name: name, module: orig_mod};
                 alternate_queue.push(item);
+                orig_angular.extend(orig_mod, onDemandLoader);
                 
                 /*
                 Use `alternate_modules_tracker` to track which module has been created by alt_angular
@@ -147,7 +148,7 @@ define(function () {
         // If controller needs to be loaded, append to the resolve property
         if (load_controller) {
             var resolve = config.resolve || {};
-            resolve['__AAMDCtrl'] = ['$q', '$rootScope', function ($q, $rootScope) {
+            resolve['__AAMDCtrl'] = ['$q', '$rootScope', function ($q, $rootScope) { // jshint ignore:line
                 var defer = $q.defer();
                 require([load_controller], function (ctrl) {
                     defer.resolve(ctrl);
@@ -189,11 +190,16 @@ define(function () {
         }
         
         // Process alternate queue in FIFO fashion
+        function processRunBlock(block) {
+            //console.info("'" + item.name + "': executing run block: ", run_block);
+            run_injector.invoke(block);
+        }
+
         while (alternate_queue.length) {
             var item = alternate_queue.shift(),
                 invokeQueue = item.module._invokeQueue,
                 y;
-        
+
             // Setup the providers define in the module
             for (y = 0; y < invokeQueue.length; y += 1) {
                 var q = invokeQueue[y],
@@ -208,7 +214,7 @@ define(function () {
                     } else {
                         cachedProvider = app_cached_providers[provider];
                     }
-                    //console.log("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
+                    // console.info("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
                     cachedProvider[method].apply(null, args);
                 } else {
                     console.error("'" + provider + "' not found!!!");
@@ -218,10 +224,7 @@ define(function () {
             
             // Execute the run block of the module
             if (item.module._runBlocks) {
-                angular.forEach(item.module._runBlocks, function processRunBlock(block) {
-                    //console.log("'" + item.name + "': executing run block: ", run_block);
-                    run_injector.invoke(block);
-                });
+                angular.forEach(item.module._runBlocks, processRunBlock);
             }
             
             /*
@@ -299,7 +302,8 @@ define(function () {
         // Clear original angular
         alt_angular = undefined;
         orig_angular = undefined;
-        onDemandLoader = undefined;
+        onDemandLoader = {};
+        preBootstrapLoaderQueue = [];
 
         // Clear private variables
         alternate_queue = [];
@@ -353,7 +357,11 @@ define(function () {
                 };
 
                 // Substitue provider methods from app call the cached provider
-                onDemandLoader = {
+                angular.extend(onDemandLoader, {
+                    provider : function(name, constructor) {
+                        provide.provider(name, constructor);
+                        return this;
+                    },
                     controller : function(name, constructor) {
                         controllerProvider.register(name, constructor);
                         return this;
@@ -367,6 +375,7 @@ define(function () {
                         return this;
                     },
                     factory : function(name, constructor) {
+                        // console.log("onDemandLoader.factory called for " + name);
                         provide.factory(name, constructor);
                         return this;
                     },
@@ -383,12 +392,8 @@ define(function () {
                         return this;
                     },
                     animation: angular.bind(animateProvider, animateProvider.register)
-                };
-
+                });
                 angular.extend(alt_app, onDemandLoader);
-                
-                // Create a app.register object to keep backward compatibility
-                app.register = onDemandLoader;
 
             }]
         );
@@ -403,70 +408,70 @@ define(function () {
         // Store the app name needed by .bootstrap function.
         app_name = app.name;
 
+        // If there are angular provider recipe queued up, process it
+        if (preBootstrapLoaderQueue.length > 0) {
+            for (var iq = 0; iq < preBootstrapLoaderQueue.length; iq += 1) {
+                var item = preBootstrapLoaderQueue[iq];
+                orig_app[item.recipe](item.name, item.const);
+            }
+            preBootstrapLoaderQueue = [];
+        }
+
+        // Create a app.register object to keep backward compatibility
+        orig_app.register = onDemandLoader;
+
         // Bootstrap Angular
         orig_angular.element(document).ready(function () {
             orig_angular.bootstrap(elem, [app_name]);
+            // Indicate bootstrap completed
+            bootstrapped = true;
 
+            // Replace angular.module
+            if (enable_ngload) {
+                //console.info("Setting alternate angular");
+                setAlternateAngular();
+            }
         });
-
-        // Indicate bootstrap completed
-        bootstrapped = true;
-
-        // Replace angular.module
-        if (enable_ngload) {
-            //console.log("Setting alternate angular");
-            setAlternateAngular();
-        }
 
         // Return app
         return alt_app;
     };
 
     // Define provider
-    function executeProvider(provider, name, constructor) {
-        provider(name, constructor);
-        return this;
+    function executeProvider(providerRecipe) {
+        return function (name, constructor) {
+            if (bootstrapped) {
+                onDemandLoader[providerRecipe](name, constructor);
+            } else {
+                // Queue up the request to be used during .bootstrap
+                preBootstrapLoaderQueue.push({
+                    "recipe": providerRecipe,
+                    "name": name,
+                    "const": constructor
+                });
+            }
+            return this;
+        };
     }
 
+    // .provider
+    angularAMD.prototype.provider = executeProvider("provider");
     // .controller
-    angularAMD.prototype.controller = function (name, constructor) {
-        return executeProvider(alt_app.controller, name, constructor);
-    };
-
+    angularAMD.prototype.controller = executeProvider("controller");
     // .directive
-    angularAMD.prototype.directive = function (name, constructor) {
-        return executeProvider(alt_app.directive, name, constructor);
-    };
-
+    angularAMD.prototype.directive = executeProvider("directive");
     // .filter
-    angularAMD.prototype.filter = function (name, constructor) {
-        return executeProvider(alt_app.filter, name, constructor);
-    };
-
+    angularAMD.prototype.filter = executeProvider("filter");
     // .factory
-    angularAMD.prototype.factory = function (name, constructor) {
-        return executeProvider(alt_app.factory, name, constructor);
-    };
-
+    angularAMD.prototype.factory = executeProvider("factory");
     // .service
-    angularAMD.prototype.service = function (name, constructor) {
-        return executeProvider(alt_app.service, name, constructor);
-    };
-
+    angularAMD.prototype.service = executeProvider("service");
     // .constant
-    angularAMD.prototype.constant = function (name, constructor) {
-        return executeProvider(alt_app.constant, name, constructor);
-    };
-
+    angularAMD.prototype.constant = executeProvider("constant");
     // .value
-    angularAMD.prototype.value = function (name, constructor) {
-        return executeProvider(alt_app.value, name, constructor);
-    };
-
+    angularAMD.prototype.value = executeProvider("value");
     // .animation
-    angularAMD.prototype.animation = function (name, constructor) {
-        return executeProvider(alt_app.animation, name, constructor);
-    };
+    angularAMD.prototype.animation = executeProvider("animation");
 
     // Create a new instance and return
     return new angularAMD();
