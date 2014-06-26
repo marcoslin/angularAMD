@@ -20,7 +20,8 @@ can be found in the `www/` directory of this project.
 
 ### RequireJS data-main
 
-Starting point for any RequireJS app is a `main.js`, which should be used to define the components and their dependencies.  Use `deps` to kick off `app.js`:
+Starting point for any RequireJS app is a `main.js`, which should be used to define the components and their
+dependencies.  Use `deps` to kick off `app.js`:
 
 ```Javascript
 require.config({
@@ -46,8 +47,7 @@ Once components' dependencies has been defined, use a `app.js` to create Angular
 define(['angularAMD'], function (angularAMD) {
     var app = angular.module(app_name, ['webapp']);
     ... // Setup app here. E.g.: run .config with $routeProvider
-    angularAMD.bootstrap(app);
-    return app;
+    return angularAMD.bootstrap(app);
 });
 ```
 
@@ -59,16 +59,21 @@ Use `angularAMD.route` when configuring routes using `$routeProvider` to enable 
 
 ```Javascript
 app.config(function ($routeProvider) {
-$routeProvider.when(
-    "/home",
-    angularAMD.route({
-        templateUrl: 'views/home.html',
-        controller: 'HomeController',
-        controllerUrl: 'scripts/controller.js'
-    })
-);
+    $routeProvider.when(
+        "/home",
+        angularAMD.route({
+            templateUrl: 'views/home.html',
+            controller: 'HomeController',
+            controllerUrl: 'scripts/controller.js'
+        })
+    );
 });
 ```
+
+The primary purpose of `angularAMD.route` is set `.resolve` property to load controller using `require` statement.
+Any attribute you pass into this method will simply be returned, with exception of `controllerUrl`. 
+
+#### route without `controllerUrl`
 
 You can avoid passing of `controllerUrl` if you define it in your `main.js` as:
 
@@ -76,25 +81,36 @@ You can avoid passing of `controllerUrl` if you define it in your `main.js` as:
 paths: { 'HomeController': 'scripts/controller.js' }
 ```
 
-The primary purpose of `angularAMD.route` is set `.resolve` property to load controller using `require` statement.
-Any attribute you pass into this method will simply be returned, with exception of `controllerUrl`. 
+
+#### route without `controller`
+
+When `controller` option is omitted, `angularAMD.route` assume that a function will be returned from the module defined
+by `controllerUrl`.  As result, you can avoid giving an explicit name to your controller by doing:
+
+```Javascript
+define(['app'], function (app) {
+    return ["$scope", function ($scope) {
+        ...
+    }];
+});
+```
 
 
 ### Creating a Module
 
-All subsquent module definition would simply need to require `app` dependency and use `app.register` property to create
-desired AngularJS services:
+All subsequent module definition would simply need to require `app` to create desired AngularJS services:
 
 ```Javascript
 define(['app'], function (app) {
-    app.register.factory('Pictures', function (...) {
+    app.factory('Pictures', function (...) {
         ...
     });
 });
 ```
 
-Here is the list of methods supported by `app.register`:
+Here is the list of methods supported:
 
+* `.provider` **
 * `.controller`
 * `.factory`
 * `.service`
@@ -104,15 +120,49 @@ Here is the list of methods supported by `app.register`:
 * `.filter`
 * `.animation`
 
+** Only as of 0.2.x
+
+#### Loading Application Wide Module
+
+Normally, an application wide feature are created as independent module and added as dependency to your `app`.
+ 3rd party packages such as [ui-bootstrap](http://angular-ui.github.io/bootstrap/) is perfect example.  However,
+ what if you have a single directive?  `angularAMD` simply such task by exposing the provider recipe so you can do
+ something like:
+
+**directive/navMenu.js**
+```Javascript
+define(['angularAMD'], function (angularAMD) {
+    angularAMD.directive('navMenu', function (...) {
+        ...
+    });
+});
+```
+
+**app.js**
+```Javascript
+define(['angularAMD', 'directive/navMenu'], function (angularAMD) {
+    var app = angular.module(app_name, ['webapp']);
+    ...
+    // `navMenu` is automatically registered bootstrap 
+    return angularAMD.bootstrap(app);
+});
+```
+
+In this case, `angularAMD.directive` will detect that boostrap hasn't taken place yet and it will queue up the
+directive creation request and apply that request directly on the `app` object passed to `angularAMD.bootstrap`.  If bootstrap has taken place already, it will essentially do the same thing `app.directive`.  As result, services created using `angularAMD.<<recipe>>` can be loaded before and after bootstrap.
+
 ### 3rd Party AngularJS Modules
 
-3rd party AngularJS module, meaning any module created using `angular.module` syntax, can be loaded as any normal JavaScript file *before* `angularAMD.bootstrap` is called.  After bootstraping, any AngularJS module must be loaded using the included `ngload` RequireJS plugin.
+3rd party AngularJS module, meaning any module created using `angular.module` syntax, can be loaded as any normal
+JavaScript file *before* `angularAMD.bootstrap` is called.  After bootstraping, any AngularJS module must be loaded
+using the included `ngload` RequireJS plugin.
 
 ```Javascript
 define(['app', 'ngload!dataServices'], function (app) {...});
 ```
 
-In case you need to load your module using RequireJS plugin or if you have complex dependecies, you can create a wrapper RequireJS module as below:
+In case you need to load your module using RequireJS plugin or if you have complex dependecies, you can create a wrapper
+RequireJS module as below:
 
 ```Javascript
 define(['angularAMD', 'ui-bootstrap'], function (angularAMD) {
@@ -120,8 +170,38 @@ define(['angularAMD', 'ui-bootstrap'], function (angularAMD) {
 });
 ```
 
-In this case, all depdencies will be queued up and when `.processQueue()` is called, it will go through the queued and copy them into current app using `app.register`:
+In this case, all dependencies will be queued up and when `.processQueue()` is called, it will go through the queued
+and copy them into current app using `app.register`:
 
+#### Module without `.run` or `.config`
+
+If you have your own module that does not use `.run` or `.config`, you can avoid the use of `ngload` as any module
+created after bootstrap will support on-demand loading.  For example:
+
+**common.js**
+```Javascript
+define(['ngload!restangular'], function() {
+    return angular.module('common', ['restangular']);
+});
+```
+
+**user.js**
+```Javascript
+define(['common'], function(common) {
+    common.factory("User", function () { ... });
+});
+```
+
+**controller/home_ctrl**
+```Javascript
+define(['app', 'user'], function(app) {
+    app.controller("HomeCtrl", ["$scope", "User", function ($scope, User) {
+        ...
+    }]);
+});
+```
+
+In this example, the `user` package does not need to be loaded in the `app.js` as it's loaded on demand when `HomeCtrl` is called.
 
 Running Sample Project
 ==========
