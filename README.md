@@ -73,7 +73,7 @@ $routeProvider.when(
 You can avoid passing of `controllerUrl` if you define it in your `main.js` as:
 
 ```Javascript
-paths: { 'HomeController': 'scripts/controller.js' }
+paths: { 'HomeController': 'scripts/controller' }
 ```
 
 The primary purpose of `angularAMD.route` is set `.resolve` property to load controller using `require` statement.
