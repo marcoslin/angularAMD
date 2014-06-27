@@ -78,7 +78,7 @@ Any attribute you pass into this method will simply be returned, with exception 
 You can avoid passing of `controllerUrl` if you define it in your `main.js` as:
 
 ```Javascript
-paths: { 'HomeController': 'scripts/controller.js' }
+paths: { 'HomeController': 'scripts/controller' }
 ```
 
 
