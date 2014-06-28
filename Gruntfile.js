@@ -8,6 +8,7 @@ module.exports = function (grunt) {
     // Config variables
     var configVars = {
         "build": "build",
+        "dist": "dist",
         "dist_www": "../gh-pages",
         "dist_bower": "../bower-repo",
         "www_server": "localhost",
@@ -73,7 +74,7 @@ module.exports = function (grunt) {
                     {
                         expand: true, cwd: "bower_components/google-code-prettify/src/",
                         src: 'prettify.css', dest: "www/css/"
-                    },
+                    }
                 ]
             },
             "build-www": {
@@ -110,11 +111,16 @@ module.exports = function (grunt) {
                     {
                         expand: true, cwd: "bower_components/google-code-prettify/src/",
                         src: 'prettify.js', dest: "<%= cvars.dist_www %>/js/lib/google-code-prettify/"
-                    },
+                    }
                 ]
             },
             "dist-bower" : {
                 files: [
+                    {
+                        expand: true, cwd: "<%= cvars.build %>",
+                        src: ['*.js','*.map'],
+                        dest: "<%= cvars.dist %>/"
+                    },
                     {
                         expand: true, cwd: "<%= cvars.build %>",
                         src: ['*.js','*.map'],
@@ -361,7 +367,7 @@ module.exports = function (grunt) {
         'concat:build',
         'karma:build-travis',
         'setup-www',
-        'connect:e2e-www',
+        'connect:e2e-www'
         // 'protractor:build-travis'
     ]);
 
@@ -382,7 +388,9 @@ module.exports = function (grunt) {
     ]);
 
     /* Update bower repository -- must run build manually before this */
-    grunt.registerTask('dist-bower', ['copy:dist-bower']);
+    grunt.registerTask('dist-bower', [
+        'copy:dist-bower'
+    ]);
 
 };
 
