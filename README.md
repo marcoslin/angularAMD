@@ -12,7 +12,7 @@ Installation
 ### cdn
     //cdn.jsdelivr.net/angular.amd/0.1.1/angularAMD.min.js
 
-_*Note*: Release Candidate versions (*-rc.*) not distributed._
+_*Note*: Release Candidate versions not distributed._
 
 Usage
 ==========
