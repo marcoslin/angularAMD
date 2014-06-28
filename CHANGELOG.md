@@ -1,3 +1,39 @@
+<a name="0.2.0-rc.1"></a>
+# 0.2.0-rc.1 (2014-06-28)
+
+## Bug Fixes
+
+- **ngload**: ngload now correctly load module that creates submodules internally
+  ([e8b74af](https://github.com/marcoslin/angularAMD/commit/e8b74afd8e8de40accd15d40ea58b2d4fbb53ca5)
+   [#67](https://github.com/marcoslin/angularAMD/issues/67))
+
+## Features
+
+- **angularAMD.<<recipe>>**: modules now can be defined before bootstrap using `angularAMD.factory`
+  ([81a5495](https://github.com/marcoslin/angularAMD/commit/81a54955080cff296118321ee993eb66d95507a5)
+   [#14](https://github.com/marcoslin/angularAMD/issues/14))
+
+- **.config**: New method allowing changing of configuration post bootstrap
+  ([d3ebfed](https://github.com/marcoslin/angularAMD/commit/d3ebfed13bc83fea326ef1dca98a82977782cd40)
+   [#71](https://github.com/marcoslin/angularAMD/issues/71))
+   
+- **.route**: `controller` parameter can now be omitted if module specified in `controllerUrl` returns
+  a function.
+  ([550cd28](https://github.com/marcoslin/angularAMD/commit/550cd2832d0bdeac73d9c50b1ec68e7c087e9d93)
+   [#72](https://github.com/marcoslin/angularAMD/issues/72))
+
+## Breaking Changes
+
+- **app.<<recipe>>**: `app.register` is now deprecated so a factory creation using `app.register.factory`
+  is now `app.factory`.  To support this, `.bootstrap` creates a alternate `app` that need to be used
+  instead of the `app` created using `angular.module(...)`.
+  ([54b5ec2](https://github.com/marcoslin/angularAMD/commit/54b5ec2d2553b30cff60dde94e9b06b0be5bf435)
+   [1c7922b](https://github.com/marcoslin/angularAMD/commit/1c7922b9ecd6b04f80f97085edf8debb346c83b8)
+   [#63](https://github.com/marcoslin/angularAMD/pull/63)
+   [#70](https://github.com/marcoslin/angularAMD/issues/70))
+  
+
+
 <a name="0.1.1"></a>
 # 0.1.1 (2014-05-28)
 
