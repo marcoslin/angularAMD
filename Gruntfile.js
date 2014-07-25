@@ -153,7 +153,7 @@ module.exports = function (grunt) {
         open: {
             "serve-www": {
                 path: 'http://<%= cvars.www_server %>:<%= cvars.www_port %>/www/',
-                app: 'Google Chrome Canary'
+                app: 'Google Chrome'
             }
         },
         karma: {
