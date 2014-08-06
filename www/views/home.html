@@ -49,14 +49,13 @@
             controllerUrl: 'ctrl/home'
         }))
     });
-    angularAMD.bootstrap(app);
-    return app;
+    return angularAMD.bootstrap(app);;
 });</pre>
 
     <h4>Step 3:</h4>
     Create controller using <code>app.register</code> method:   
 <pre class="prettyprint">define(['app'], function (app) {
-    app.register.controller('HomeCtrl', function ($scope) {
+    app.controller('HomeCtrl', function ($scope) {
         $scope.message = "Message from HomeCtrl"; 
     });
 });</pre>
