@@ -1,5 +1,5 @@
-/*
- angularAMD v0.1.1
+/*!
+ angularAMD v0.2.0
  (c) 2013-2014 Marcos Lin https://github.com/marcoslin/
  License: MIT
 */

@@ -1,1 +1,1 @@
-define(["app","service/mapServices","directive/navMenu"],function(a){a.register.controller("MapController",["$scope","MapService",function(a,b){a.title="Where is Colosseo?",a.latitude=41.8902,a.longitude=12.4923,b.initialize(a,"map-canvas")}])});
+define(["app","service/mapServices","directive/navMenu"],function(a){a.controller("MapController",["$scope","MapService",function(a,b){a.title="Where is Colosseo?",a.latitude=41.8902,a.longitude=12.4923,b.initialize(a,"map-canvas")}])});

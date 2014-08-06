@@ -17,10 +17,9 @@
             controllerUrl: 'ctrl/home'
         }))
     });
-    angularAMD.bootstrap(app);
-    return app;
+    return angularAMD.bootstrap(app);
 });</pre><h4>Step 3:</h4>Create controller using <code>app.register</code> method:<pre class="prettyprint">define(['app'], function (app) {
-    app.register.controller('HomeCtrl', function ($scope) {
+    app.controller('HomeCtrl', function ($scope) {
         $scope.message = "Message from HomeCtrl"; 
     });
 });</pre><p class="lead text-justify">Check out this <a href="http://bl.ocks.org/marcoslin/df4b741e92b2829eeae8" target="_blank">Gist</a> for a simple implementation. Then, head over to github for detail documentation.</p></div><hr><div class="text-center"><a id="view-on-github" class="btn btn-large" ng-click="openGitHubPage()"><i class="icon-github-sign"></i> View on GitHub</a></div>
