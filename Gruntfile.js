@@ -380,6 +380,7 @@ module.exports = function (grunt) {
 
     /* Create github pages */
     grunt.registerTask('dist-www', [
+        'test-e2e',
         'ngAnnotate:dist-www',
         'cssmin:dist-www',
         'uglify:dist-www',
