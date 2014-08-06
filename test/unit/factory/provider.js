@@ -106,17 +106,23 @@ define(function () {
 
         /*
          Create .animation
+         For some reason, addClass and removeClass no longer works in the unit test
+         in AngularJS 13.0.x (tested under 1.3.0-beta.17).  As the intent of this
+         test is to ensure that animation is loaded, changed to before* version.
+
+         Created following plunker to ensure that addClass/removeClass works inder 1.3.x
+         http://plnkr.co/edit/VsWfqqbAnqrr7cE3toYn
          */
         result.utestAnimation = ".animation-" + suffix.toLowerCase();
         module.animation(result.utestAnimation, function ($log, $interval) {
             return {
-                addClass : function(element, className, done) {
+                beforeAddClass : function(element, className, done) {
                     if ( className === "custom-hide") {
                         element.css('opacity',0);
                         done();
                     }
                 },
-                removeClass : function(element, className, done) {
+                beforeRemoveClass : function(element, className, done) {
                     if ( className === "custom-hide") {
                         element.css('opacity',1);
                         done();
