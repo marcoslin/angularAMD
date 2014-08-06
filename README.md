@@ -1,6 +1,6 @@
 angularAMD v0.2.0  [![Build Status](https://travis-ci.org/marcoslin/angularAMD.png)](https://travis-ci.org/marcoslin/angularAMD)
 ==========
-angularAMD is an utility that facilitate the use of RequireJS in AngularJS applications supporting on-demand loading
+angularAMD is an utility that facilitates the use of RequireJS in AngularJS applications supporting on-demand loading
 of 3rd party modules such as [angular-ui](git@github.com:marcoslin/bower-angularAMD.git).
 
 Installation
@@ -42,7 +42,7 @@ require.config({
 
 ### Bootstrapping AngularJS
 
-Once components' dependencies has been defined, use a `app.js` to create AngularJS application and perform bootstrapping:
+Once all component dependencies have been defined, use a `app.js` to create the AngularJS application and perform the bootstrapping:
 
 ```Javascript
 define(['angularAMD'], function (angularAMD) {
@@ -52,11 +52,11 @@ define(['angularAMD'], function (angularAMD) {
 });
 ```
 
-As bootstrapping is taking place manually, `ng-app` should not be used in HTML.  `angularAMD.bootstrap(app);` will take care of bootstraping AngularJS.
+Since bootstrapping is taking place manually, `ng-app` should not be used in HTML.  `angularAMD.bootstrap(app);` will take care of bootstraping AngularJS.
 
 ### On-Demand Loading of Controllers
 
-Use `angularAMD.route` when configuring routes using `$routeProvider` to enable on-demand loading of controllers:
+Use `angularAMD.route` when configuring routes using `$routeProvider` to enable the on-demand loading of controllers:
 
 ```Javascript
 app.config(function ($routeProvider) {
@@ -71,7 +71,7 @@ app.config(function ($routeProvider) {
 });
 ```
 
-The primary purpose of `angularAMD.route` is set `.resolve` property to load controller using `require` statement.
+The primary purpose of `angularAMD.route` is to set the `.resolve` property to load controller using a `require` statement.
 Any attribute you pass into this method will simply be returned, with exception of `controllerUrl`. 
 
 #### route without `controllerUrl`
@@ -85,8 +85,8 @@ paths: { 'HomeController': 'scripts/controller' }
 
 #### route without `controller`
 
-When `controller` option is omitted, `angularAMD.route` assume that a function will be returned from the module defined
-by `controllerUrl`.  As result, you can avoid giving an explicit name to your controller by doing:
+When the `controller` option is omitted, `angularAMD.route` assumes that a function will be returned from the module defined
+by `controllerUrl`.  As a result, you can avoid giving an explicit name to your controller by doing:
 
 ```Javascript
 define(['app'], function (app) {
@@ -99,7 +99,7 @@ define(['app'], function (app) {
 
 ### Creating a Module
 
-All subsequent module definition would simply need to require `app` to create desired AngularJS services:
+Any subsequent module definitions would simply need to require `app` to create the desired AngularJS services:
 
 ```Javascript
 define(['app'], function (app) {
@@ -125,10 +125,9 @@ Here is the list of methods supported:
 
 #### Loading Application Wide Module
 
-Normally, an application wide feature are created as independent module and added as dependency to your `app`.
- 3rd party packages such as [ui-bootstrap](http://angular-ui.github.io/bootstrap/) is perfect example.  However,
- what if you have a single directive?  `angularAMD` simply such task by exposing the provider recipe so you can do
- something like:
+Normally, application wide features are created as independent modules and added as dependency to your `app`.
+ 3rd party packages such as [ui-bootstrap](http://angular-ui.github.io/bootstrap/) is a perfect example.  However,
+ what if you have a single directive?  `angularAMD` simplifies such tasks by exposing the provider recipe so you can do something like:
 
 **directive/navMenu.js**
 ```Javascript
@@ -149,12 +148,12 @@ define(['angularAMD', 'directive/navMenu'], function (angularAMD) {
 });
 ```
 
-In this case, `angularAMD.directive` will detect that boostrap hasn't taken place yet and it will queue up the
-directive creation request and apply that request directly on the `app` object passed to `angularAMD.bootstrap`.  If bootstrap has taken place already, it will essentially do the same thing `app.directive`.  As result, services created using `angularAMD.<<recipe>>` can be loaded before and after bootstrap.
+In this case, `angularAMD.directive` will detect that boostraping hasn't taken place yet and it will queue up the
+directive creation request and apply that request directly on the `app` object passed to `angularAMD.bootstrap`.  If bootstraping has taken place already, it will essentially do the same thing `app.directive`.  As a result, services created using `angularAMD.<<recipe>>` can be loaded before and after bootstraping.
 
 ### 3rd Party AngularJS Modules
 
-3rd party AngularJS module, meaning any module created using `angular.module` syntax, can be loaded as any normal
+3rd party AngularJS modules, meaning any module created using `angular.module` syntax, can be loaded as any normal
 JavaScript file *before* `angularAMD.bootstrap` is called.  After bootstraping, any AngularJS module must be loaded
 using the included `ngload` RequireJS plugin.
 
@@ -162,8 +161,7 @@ using the included `ngload` RequireJS plugin.
 define(['app', 'ngload!dataServices'], function (app) {...});
 ```
 
-In case you need to load your module using RequireJS plugin or if you have complex dependecies, you can create a wrapper
-RequireJS module as below:
+In case you need to load your module using the RequireJS plugin or if you have complex dependecies, you can create a wrapper RequireJS module as below:
 
 ```Javascript
 define(['angularAMD', 'ui-bootstrap'], function (angularAMD) {
@@ -171,8 +169,7 @@ define(['angularAMD', 'ui-bootstrap'], function (angularAMD) {
 });
 ```
 
-In this case, all dependencies will be queued up and when `.processQueue()` is called, it will go through the queued
-and copy them into current app using `app.register`:
+In this case, all dependencies will be queued up and when `.processQueue()` is called, it will go through the queue and copy them into current app using `app.register`:
 
 #### Module without `.run` or `.config`
 
@@ -226,13 +223,9 @@ This project was inpired by [Dan Wahlin's blog](http://weblogs.asp.net/dwahlin/a
 where he explained the core concept of what is needed to make RequireJS works with AngularJS.  It is a *must* read
 if you wish to better understand implementation detail of `angularAMD`.
 
-As I started to implement RequireJS in my own project, I got stuck trying to figure out how to load my existing modules
-without re-writting them.  After exhausive search with no satisfactory answer, I posted following question on 
-[StackOverflow](http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs).
+As I started to implement RequireJS in my own project, I got stuck trying to figure out how to load my existing modules without re-writting them.  After exhausive search with no satisfactory answer, I posted following question on [StackOverflow](http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs).
 [Nikos Paraskevopoulos](http://stackoverflow.com/users/2764255/nikos-paraskevopoulos) was kind enough to share his
-solution with me but his implementation did not handle `.config` method calls and out of order definition in modules.
-However, his implementation gave me the foundation I needed to create `angularAMD` and his project is where the idea
-for `alt_angular` came from.
+solution with me but his implementation did not handle `.config` method calls and out of order definition in modules. However, his implementation gave me the foundation I needed to create `angularAMD` and his project is where the idea for `alt_angular` came from.
 
 
 References
