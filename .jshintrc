@@ -1,0 +1,28 @@
+{
+    "globals": {
+        /* Jasmine */
+        "describe"   : false,
+        "it"         : false,
+        "before"     : false,
+        "beforeEach" : false,
+        "after"      : false,
+        "afterEach"  : false,
+        /* RequireJS */
+        "require"    : false,
+        "define"     : false,
+        /* AngularJS */
+        "angular"    : false
+    },
+    "bitwise"  : true,
+    "curly"    : true,
+    "eqeqeq"   : true,
+    "immed"    : true,
+    "latedef"  : true,
+    "newcap"   : false,
+    "noarg"    : true,
+    "quotmark" : "single",
+    "undef"    : true,
+    "unused"   : true,
+    "strict"   : true,
+    "browser"  : true
+}
