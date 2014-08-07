@@ -14,8 +14,8 @@ define(["test/unit/factory/provider"], function (providerFactory) {
          Use the .config block to set the test provider's value
          Use the .run block to set value for $rootScope.run_name
          */
-        result.config_name = "module.config SDkWRXOgII" + suffix;
-        result.run_name = "module.run sOdq6GNsaW"  + suffix;
+        result.config_name = "module.config YzmACpEVW9" + suffix;
+        result.run_name = "module.run YzmACpEVW9"  + suffix;
         module
             .config([result.UtestStoreProvider, function (UtestStoreProvider) {
                 UtestStoreProvider.configureValue(result.config_name);
