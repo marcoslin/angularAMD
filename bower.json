@@ -1,16 +1,16 @@
 {
-  "name": "angularAMD",
-  "version": "0.2.0",
-  "dependencies": {
-    "angular": "1.2.20",
-    "angular-route": "1.2.20",
-    "angular-animate": "1.2.20",
-    "angular-mocks": "1.2.20",
-    "angular-ui-bootstrap-bower": "~0.6.0",
-    "requirejs": "~2.1.9",
-    "requirejs-plugins": "~1.0.2",
-    "google-code-prettify": "~1.0.1"
-  },
-  "devDependencies": {
-  }
+    "name": "angularAMD",
+    "version": "0.2.1",
+    "dependencies": {
+        "angular": "1.2.21",
+        "requirejs": "~2.1.9"
+    },
+    "devDependencies": {
+        "angular-route": "1.2.21",
+        "angular-animate": "1.2.21",
+        "angular-mocks": "1.2.21",
+        "angular-ui-bootstrap-bower": "~0.6.0",
+        "requirejs-plugins": "~1.0.2",
+        "google-code-prettify": "~1.0.1"
+    }
 }
