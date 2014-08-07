@@ -1,4 +1,4 @@
-angularAMD v0.2.0  [![Build Status](https://travis-ci.org/marcoslin/angularAMD.png)](https://travis-ci.org/marcoslin/angularAMD)
+angularAMD v0.2.1  [![Build Status](https://travis-ci.org/marcoslin/angularAMD.png)](https://travis-ci.org/marcoslin/angularAMD)
 ==========
 angularAMD is an utility that facilitates the use of RequireJS in AngularJS applications supporting on-demand loading
 of 3rd party modules such as [angular-ui](git@github.com:marcoslin/bower-angularAMD.git).

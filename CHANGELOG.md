@@ -1,5 +1,19 @@
-<a name="0.2.0-rc.1"></a>
-# 0.2.0-rc.1 (2014-06-28)
+<a name="0.2.1"></a>
+# 0.2.1 (2014-08-08)
+
+## Bug Fixes
+
+- **AngularJS 1.3.x**: Animation unit test now works and added fix for `.processQueue`
+  ([e0ded6f](https://github.com/marcoslin/angularAMD/commit/e0ded6ffd290299322a721f7c669867151e9d435)
+   [#80](https://github.com/marcoslin/angularAMD/issues/80))
+
+- **IE8**: Removed the use of `.const` breaking IE8.
+  ([e0ded6f](https://github.com/marcoslin/angularAMD/commit/e0ded6ffd290299322a721f7c669867151e9d435)
+   [#84](https://github.com/marcoslin/angularAMD/issues/84))
+
+<a name="0.2.0"></a>
+# 0.2.0 (2014-07-23)
+*0.2.0-rc.1 (2014-06-28)*
 
 ## Bug Fixes
 

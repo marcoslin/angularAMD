@@ -4,6 +4,7 @@
  License: MIT
 */
 define(function () {
+    'use strict';
     var bootstrapped = false,
 
         // Used in .bootstrap
@@ -33,7 +34,7 @@ define(function () {
     // Private method to check if angularAMD has been initialized
     function checkBootstrapped() {
         if ( !bootstrapped ) {
-            throw Error("angularAMD not initialized.  Need to call angularAMD.bootstrap(app) first.");
+            throw new Error('angularAMD not initialized.  Need to call angularAMD.bootstrap(app) first.');
         }
     }
 
@@ -57,7 +58,7 @@ define(function () {
     function setAlternateAngular() {
         // This method cannot be called more than once
         if (alt_angular) {
-            throw Error("setAlternateAngular can only be called once.");
+            throw new Error('setAlternateAngular can only be called once.');
         } else {
             alt_angular = {};
         }
@@ -70,7 +71,7 @@ define(function () {
 
         // Custom version of angular.module used as cache
         alt_angular.module = function (name, requires) {
-            if (typeof requires === "undefined") {
+            if (typeof requires === 'undefined') {
                 // Return module from alternate_modules if it was created using the alt_angular
                 if (alternate_modules_tracker.hasOwnProperty(name)) {
                     return alternate_modules[name];
@@ -126,16 +127,16 @@ define(function () {
         Otherwise, attempt to load the controller using the controller name.  In the later case, controller name
         is expected to be defined as one of 'paths' in main.js.
         */
-        if ( config.hasOwnProperty("controllerUrl") ) {
+        if ( config.hasOwnProperty('controllerUrl') ) {
             load_controller = config.controllerUrl;
             delete config.controllerUrl;
-            if (typeof config.controller === "undefined") {
+            if (typeof config.controller === 'undefined') {
                 // Only controllerUrl is defined.  Attempt to set the controller to return value of package loaded.
                 config.controller = [
-                    "$scope", "__AAMDCtrl", "$injector",
+                    '$scope', '__AAMDCtrl', '$injector',
                     function ($scope, __AAMDCtrl, $injector) {
-                        if (typeof __AAMDCtrl !== "undefined" ) {
-                            $injector.invoke(__AAMDCtrl, this, { "$scope": $scope });
+                        if (typeof __AAMDCtrl !== 'undefined' ) {
+                            $injector.invoke(__AAMDCtrl, this, { '$scope': $scope });
                         }
                     }
                 ];
@@ -180,17 +181,21 @@ define(function () {
      * HACK ALERT:
      * This method relay on inner working of angular.module code, and access _invokeQueue
      * and _runBlock private variable.  Must test carefully with each release of angular.
+     *
+     * As of AngularJS 1.3.x, there is new _configBlocks that get populated with configuration
+     * blocks, thus replacing the need for "provider === '$injector' && method === 'invoke'"
+     * logic.
      */
     angularAMD.prototype.processQueue = function () {
         checkBootstrapped();
         
         if (typeof alt_angular === 'undefined') {
-            throw Error("Alternate angular not set.  Make sure that `enable_ngload` option has been set when calling angularAMD.bootstrap");
+            throw new Error('Alternate angular not set.  Make sure that `enable_ngload` option has been set when calling angularAMD.bootstrap');
         }
         
         // Process alternate queue in FIFO fashion
         function processRunBlock(block) {
-            //console.info("'" + item.name + "': executing run block: ", run_block);
+            //console.info('"' + item.name + '": executing run block: ', run_block);
             run_injector.invoke(block);
         }
 
@@ -200,26 +205,48 @@ define(function () {
                 y;
 
             // Setup the providers define in the module
+            // console.info('invokeQueue: ', invokeQueue);
             for (y = 0; y < invokeQueue.length; y += 1) {
                 var q = invokeQueue[y],
                     provider = q[0],
                     method = q[1],
                     args = q[2];
-                
+
+                // Make sure that provider exists.
                 if (app_cached_providers.hasOwnProperty(provider)) {
                     var cachedProvider;
-                    if (provider === "$injector" && method === "invoke") {
+                    if (provider === '$injector' && method === 'invoke') {
                         cachedProvider = config_injector;
                     } else {
                         cachedProvider = app_cached_providers[provider];
                     }
-                    // console.info("'" + item.name + "': applying " + provider + "." + method + " for args: ", args);
+                    // console.info('"' + item.name + '": applying ' + provider + '.' + method + ' for args: ', args);
                     cachedProvider[method].apply(null, args);
                 } else {
-                    console.error("'" + provider + "' not found!!!");
+                    // Make sure that console exists before calling it
+                    if ( window.console ) {
+                        window.console.error('"' + provider + '" not found!!!');
+                    }
                 }
-
             }
+
+            /*
+             As of AngularJS 1.3.x, the config block are now stored in a new _configBlocks private
+             variable.  Loop through the list and invoke the config block with config_injector
+             */
+            if (item.module._configBlocks) {
+                var configBlocks = item.module._configBlocks;
+
+                // console.info('configBlock: ', configBlocks);
+                for (y = 0; y < configBlocks.length; y += 1) {
+                    var cf = configBlocks[y],
+                        cf_method = cf[1],
+                        cf_args = cf[2];
+
+                    config_injector[cf_method].apply(null, cf_args);
+                }
+            }
+
             
             // Execute the run block of the module
             if (item.module._runBlocks) {
@@ -245,16 +272,16 @@ define(function () {
         var cachedProvider;
 
         switch(provider_name) {
-            case "__orig_angular":
+            case '__orig_angular':
                 cachedProvider = orig_angular;
                 break;
-            case "__alt_angular":
+            case '__alt_angular':
                 cachedProvider = alt_angular;
                 break;
-            case "__orig_app":
+            case '__orig_app':
                 cachedProvider = orig_app;
                 break;
-            case "__alt_app":
+            case '__alt_app':
                 cachedProvider = alt_app;
                 break;
             default:
@@ -324,7 +351,7 @@ define(function () {
     angularAMD.prototype.bootstrap = function (app, enable_ngload, elem) {
         // Prevent bootstrap from being called multiple times
         if (bootstrapped) {
-            throw Error("bootstrap can only be called once.");
+            throw Error('bootstrap can only be called once.');
         }
 
         if (typeof enable_ngload === 'undefined') {
@@ -374,7 +401,7 @@ define(function () {
                         return this;
                     },
                     factory : function(name, constructor) {
-                        // console.log("onDemandLoader.factory called for " + name);
+                        // console.log('onDemandLoader.factory called for ' + name);
                         provide.factory(name, constructor);
                         return this;
                     },
@@ -411,7 +438,7 @@ define(function () {
         if (preBootstrapLoaderQueue.length > 0) {
             for (var iq = 0; iq < preBootstrapLoaderQueue.length; iq += 1) {
                 var item = preBootstrapLoaderQueue[iq];
-                orig_app[item.recipe](item.name, item.const);
+                orig_app[item.recipe](item.name, item.constructor);
             }
             preBootstrapLoaderQueue = [];
         }
@@ -427,7 +454,7 @@ define(function () {
 
             // Replace angular.module
             if (enable_ngload) {
-                //console.info("Setting alternate angular");
+                //console.info('Setting alternate angular');
                 setAlternateAngular();
             }
         });
@@ -444,9 +471,9 @@ define(function () {
             } else {
                 // Queue up the request to be used during .bootstrap
                 preBootstrapLoaderQueue.push({
-                    "recipe": providerRecipe,
-                    "name": name,
-                    "const": constructor
+                    'recipe': providerRecipe,
+                    'name': name,
+                    'constructor': constructor
                 });
             }
             return this;
@@ -454,23 +481,23 @@ define(function () {
     }
 
     // .provider
-    angularAMD.prototype.provider = executeProvider("provider");
+    angularAMD.prototype.provider = executeProvider('provider');
     // .controller
-    angularAMD.prototype.controller = executeProvider("controller");
+    angularAMD.prototype.controller = executeProvider('controller');
     // .directive
-    angularAMD.prototype.directive = executeProvider("directive");
+    angularAMD.prototype.directive = executeProvider('directive');
     // .filter
-    angularAMD.prototype.filter = executeProvider("filter");
+    angularAMD.prototype.filter = executeProvider('filter');
     // .factory
-    angularAMD.prototype.factory = executeProvider("factory");
+    angularAMD.prototype.factory = executeProvider('factory');
     // .service
-    angularAMD.prototype.service = executeProvider("service");
+    angularAMD.prototype.service = executeProvider('service');
     // .constant
-    angularAMD.prototype.constant = executeProvider("constant");
+    angularAMD.prototype.constant = executeProvider('constant');
     // .value
-    angularAMD.prototype.value = executeProvider("value");
+    angularAMD.prototype.value = executeProvider('value');
     // .animation
-    angularAMD.prototype.animation = executeProvider("animation");
+    angularAMD.prototype.animation = executeProvider('animation');
 
     // Create a new instance and return
     return new angularAMD();
