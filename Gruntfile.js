@@ -7,18 +7,18 @@ module.exports = function (grunt) {
 
     // Config variables
     var configVars = {
-        "build": "build",
-        "dist": "dist",
-        "dist_www": "../gh-pages",
-        "dist_bower": "../bower-repo",
-        "www_server": "localhost",
-        "www_port": "9768",
-        "e2e_port": "9769"
+        'build': 'build',
+        'dist': 'dist',
+        'dist_www': '../gh-pages',
+        'dist_bower': '../bower-repo',
+        'www_server': 'localhost',
+        'www_port': '9768',
+        'e2e_port': '9769'
     };
     
     // Read version and banner files
-    configVars.proj_version = grunt.file.read("src/version.txt");
-    configVars.proj_banner = grunt.file.read("src/banner.txt");
+    configVars.proj_version = grunt.file.read('src/version.txt');
+    configVars.proj_banner = grunt.file.read('src/banner.txt');
     
 
     grunt.initConfig({
@@ -30,101 +30,101 @@ module.exports = function (grunt) {
         },
         shell: {
             'webdriver-manager-update': {
-                command: "node_modules/protractor/bin/webdriver-manager update",
+                command: 'node_modules/protractor/bin/webdriver-manager update',
                 options: {
                     async: false
                 }
             }
         },
         copy: {
-            "setup-www": {
+            'setup-www': {
                 files: [
                     {
-                        expand: true, cwd: "src/",
-                        src: 'angularAMD.js', dest: "www/js/lib/requirejs/"
+                        expand: true, cwd: 'src/',
+                        src: 'angularAMD.js', dest: 'www/js/lib/requirejs/'
                     },
                     {
-                        expand: true, cwd: "src/",
-                        src: 'ngload.js', dest: "www/js/lib/requirejs/"
+                        expand: true, cwd: 'src/',
+                        src: 'ngload.js', dest: 'www/js/lib/requirejs/'
                     },
                     {
-                        expand: true, cwd: "bower_components/angular/",
-                        src: 'angular.js', dest: "www/js/lib/angular/"
+                        expand: true, cwd: 'bower_components/angular/',
+                        src: 'angular.js', dest: 'www/js/lib/angular/'
                     },
                     {
-                        expand: true, cwd: "bower_components/angular-route/",
-                        src: 'angular-route.js', dest: "www/js/lib/angular/"
+                        expand: true, cwd: 'bower_components/angular-route/',
+                        src: 'angular-route.js', dest: 'www/js/lib/angular/'
                     },
                     {
-                        expand: true, cwd: "bower_components/angular-ui-bootstrap-bower/",
-                        src: ['ui-bootstrap-tpls.js'], dest: "www/js/lib/angular-ui-bootstrap/"
+                        expand: true, cwd: 'bower_components/angular-ui-bootstrap-bower/',
+                        src: ['ui-bootstrap-tpls.js'], dest: 'www/js/lib/angular-ui-bootstrap/'
                     },
                     {
-                        expand: true, cwd: "bower_components/requirejs/",
-                        src: 'require.js', dest: "www/js/lib/requirejs/"
+                        expand: true, cwd: 'bower_components/requirejs/',
+                        src: 'require.js', dest: 'www/js/lib/requirejs/'
                     },
                     {
-                        expand: true, cwd: "bower_components/requirejs-plugins/src/",
-                        src: 'async.js', dest: "www/js/lib/requirejs/"
+                        expand: true, cwd: 'bower_components/requirejs-plugins/src/',
+                        src: 'async.js', dest: 'www/js/lib/requirejs/'
                     },
                     {
-                        expand: true, cwd: "bower_components/google-code-prettify/src/",
-                        src: 'prettify.js', dest: "www/js/lib/google-code-prettify/"
+                        expand: true, cwd: 'bower_components/google-code-prettify/src/',
+                        src: 'prettify.js', dest: 'www/js/lib/google-code-prettify/'
                     },
                     {
-                        expand: true, cwd: "bower_components/google-code-prettify/src/",
-                        src: 'prettify.css', dest: "www/css/"
+                        expand: true, cwd: 'bower_components/google-code-prettify/src/',
+                        src: 'prettify.css', dest: 'www/css/'
                     }
                 ]
             },
-            "build-www": {
+            'build-www': {
                 files: [
                     {
-                        expand: true, cwd: "www/",
+                        expand: true, cwd: 'www/',
                         src: ['index.html','css/**', 'views/**', 'js/main.js', 'js/scripts/**'],
-                        dest: "<%= cvars.build %>/www/"
+                        dest: '<%= cvars.build %>/www/'
                     }
                 ]
             },
-            "dist-www": {
+            'dist-www': {
                 files: [
                     {
                         src: '<%= cvars.build %>/angularAMD.min.js',
-                        dest: "<%= cvars.dist_www %>/js/lib/requirejs/angularAMD.js"
+                        dest: '<%= cvars.dist_www %>/js/lib/requirejs/angularAMD.js'
                     },
                     {
                         src: '<%= cvars.build %>/ngload.min.js',
-                        dest: "<%= cvars.dist_www %>/js/lib/requirejs/ngload.js"
+                        dest: '<%= cvars.dist_www %>/js/lib/requirejs/ngload.js'
                     },
                     {
                         src: 'bower_components/angular/angular.min.js',
-                        dest: "<%= cvars.dist_www %>/js/lib/angular/angular.js"
+                        dest: '<%= cvars.dist_www %>/js/lib/angular/angular.js'
                     },
                     {
                         src: 'bower_components/angular-route/angular-route.min.js',
-                        dest: "<%= cvars.dist_www %>/js/lib/angular/angular-route.js"
+                        dest: '<%= cvars.dist_www %>/js/lib/angular/angular-route.js'
                     },
                     {
                         src: 'bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js',
-                        dest: "<%= cvars.dist_www %>/js/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js"
+                        dest: '<%= cvars.dist_www %>/js/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js'
                     },
                     {
-                        expand: true, cwd: "bower_components/google-code-prettify/src/",
-                        src: 'prettify.js', dest: "<%= cvars.dist_www %>/js/lib/google-code-prettify/"
+                        expand: true, cwd: 'bower_components/google-code-prettify/src/',
+                        src: 'prettify.js', dest: '<%= cvars.dist_www %>/js/lib/google-code-prettify/'
                     }
                 ]
             },
-            "dist-bower" : {
+            'dist-bower' : {
                 files: [
                     {
-                        expand: true, cwd: "<%= cvars.build %>",
+                        expand: true, cwd: '<%= cvars.build %>',
                         src: ['*.js','*.map'],
-                        dest: "<%= cvars.dist %>/"
+                        dest: '<%= cvars.dist %>/'
                     },
                     {
-                        expand: true, cwd: "<%= cvars.build %>",
+                        expand: true, cwd: '<%= cvars.build %>',
                         src: ['*.js','*.map'],
-                        dest: "<%= cvars.dist_bower %>/"
+                        dest: '<%= cvars.dist_bower %>/'
                     }
                 ]
             }
@@ -135,14 +135,14 @@ module.exports = function (grunt) {
             options : {
                 hostname: '<%= cvars.www_server %>'
             },
-            "serve-www": {
+            'serve-www': {
                 options : {
                     port: '<%= cvars.www_port %>',
                     base: '.',
                     keepalive: true
                 }
             },
-            "e2e-www": {
+            'e2e-www': {
                 options : {
                     port: '<%= cvars.e2e_port %>',
                     base: './www',
@@ -151,89 +151,89 @@ module.exports = function (grunt) {
             }
         },
         open: {
-            "serve-www": {
+            'serve-www': {
                 path: 'http://<%= cvars.www_server %>:<%= cvars.www_port %>/www/',
                 app: 'Google Chrome'
             }
         },
         karma: {
-            "unit": {
+            'unit': {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.js',
                 singleRun: false
             },
-            "unit-no-ngload": {
+            'unit-no-ngload': {
                 configFile: 'test/conf/karma.unit.no_ngload.js',
                 singleRun: false
             },
-            "build": {
+            'build': {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.js',
                 browsers: ['PhantomJS','Chrome','Firefox']
             },
-            "build-min": {
+            'build-min': {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.min.js',
                 browsers: ['PhantomJS','Chrome','Firefox']
             },
-            "build-travis": {
+            'build-travis': {
                 configFile: '<%= cvars.build %>/test/conf/karma.unit.min.js'
             }
         },
         protractor: {
             options: {
-                configFile: "test/conf/protractor.e2e.js"
+                configFile: 'test/conf/protractor.e2e.js'
             },
-            "e2e-www": {
+            'e2e-www': {
                 options: {
                     keepAlive: true,
                     args: {
-                        browser: "chrome",
-                        baseUrl: "http://<%= cvars.www_server %>:<%= cvars.e2e_port %>"
+                        browser: 'chrome',
+                        baseUrl: 'http://<%= cvars.www_server %>:<%= cvars.e2e_port %>'
                     }
                 }
             },
-            "build-travis": {
+            'build-travis': {
                 options: {
                     keepAlive: false,
                     args: {
-                        browser: "phantomjs",
-                        baseUrl: "http://<%= cvars.www_server %>:<%= cvars.e2e_port %>"
+                        browser: 'phantomjs',
+                        baseUrl: 'http://<%= cvars.www_server %>:<%= cvars.e2e_port %>'
                     }
                 }
             }
         },
         template: {
-            "main-js": {
+            'main-js': {
                 src: 'test/unit/lib/main.mustache',
                 dest: '<%= cvars.build %>/test/unit/lib/main.js',
                 variables: {
-                    "angularAMD-js-file": "src/angularAMD",
-                    "ngload-js-file": "src/ngload"
+                    'angularAMD-js-file': 'src/angularAMD',
+                    'ngload-js-file': 'src/ngload'
                 }
             },
-            "main-min-js": {
+            'main-min-js': {
                 src: 'test/unit/lib/main.mustache',
                 dest: '<%= cvars.build %>/test/unit/lib/main.min.js',
                 variables: {
-                    "angularAMD-js-file": "<%= cvars.build %>/angularAMD.min",
-                    "ngload-js-file": "<%= cvars.build %>/ngload.min"
+                    'angularAMD-js-file': '<%= cvars.build %>/angularAMD.min',
+                    'ngload-js-file': '<%= cvars.build %>/ngload.min'
                 }
             },
-            "karma-js": {
+            'karma-js': {
                 src: 'test/conf/karma.unit.mustache',
                 dest: '<%= cvars.build %>/test/conf/karma.unit.js',
                 variables: {
-                    "main-js-file": "<%= cvars.build %>/test/unit/lib/main.js"
+                    'main-js-file': '<%= cvars.build %>/test/unit/lib/main.js'
                 }
             },
-            "karma-min-js": {
+            'karma-min-js': {
                 src: 'test/conf/karma.unit.mustache',
                 dest: '<%= cvars.build %>/test/conf/karma.unit.min.js',
                 variables: {
-                    "main-js-file": "<%= cvars.build %>/test/unit/lib/main.min.js"
+                    'main-js-file': '<%= cvars.build %>/test/unit/lib/main.min.js'
                 }
             }
         },
         concat: {
-            "build": {
+            'build': {
                 options: {
                     'banner': configVars.proj_banner,
                     'stripBanners': true
@@ -245,17 +245,17 @@ module.exports = function (grunt) {
             }
         },
         ngAnnotate: {
-            "dist-www": {
+            'dist-www': {
                 files: [{
                     expand: true,
-                    cwd: "www/js/scripts/",
+                    cwd: 'www/js/scripts/',
                     src: '**/*.js',
-                    dest: "<%= cvars.dist_www %>/js/scripts/"
+                    dest: '<%= cvars.dist_www %>/js/scripts/'
                 }]
             }
         },
         uglify: {
-            "build": {
+            'build': {
                 options: {
                      'report': true,
                      'banner': configVars.proj_banner,
@@ -267,29 +267,29 @@ module.exports = function (grunt) {
                     '<%= cvars.build %>/ngload.min.js': ['src/ngload.js']
                 }
             },
-            "dist-www": {
+            'dist-www': {
                 files: [
                     {
-                        expand: true, cwd: "www/js/",
-                        src: 'main.js', dest: "<%= cvars.dist_www %>/js/"
+                        expand: true, cwd: 'www/js/',
+                        src: 'main.js', dest: '<%= cvars.dist_www %>/js/'
                     },
                     {
-                        expand: true, cwd: "<%= cvars.dist_www %>/js/scripts/",
-                        src: '**/*.js', dest: "<%= cvars.dist_www %>/js/scripts/"
+                        expand: true, cwd: '<%= cvars.dist_www %>/js/scripts/',
+                        src: '**/*.js', dest: '<%= cvars.dist_www %>/js/scripts/'
                     },
                     {
                         src: 'bower_components/requirejs/require.js',
-                        dest: "<%= cvars.dist_www %>/js/lib/requirejs/require.js"
+                        dest: '<%= cvars.dist_www %>/js/lib/requirejs/require.js'
                     },
                     {
-                        expand: true, cwd: "bower_components/requirejs-plugins/src/",
-                        src: 'async.js', dest: "<%= cvars.dist_www %>/js/lib/requirejs/"
+                        expand: true, cwd: 'bower_components/requirejs-plugins/src/',
+                        src: 'async.js', dest: '<%= cvars.dist_www %>/js/lib/requirejs/'
                     }
                 ]
             }
         },
         cssmin: {
-            "dist-www": {
+            'dist-www': {
                 files: {
                     '<%= cvars.dist_www %>/css/style.css': 'www/css/style.css',
                     '<%= cvars.dist_www %>/css/prettify.css': 'www/css/prettify.css',
@@ -298,14 +298,14 @@ module.exports = function (grunt) {
             }
         },
         htmlmin : {
-            "dist-www": {
+            'dist-www': {
                 options: {
                     removeComments: true,
                     collapseWhitespace: true
                 },
                 files: [{
-                    expand: true, cwd: "www/",
-                    src: '**/*.html', dest: "<%= cvars.dist_www %>/"
+                    expand: true, cwd: 'www/',
+                    src: '**/*.html', dest: '<%= cvars.dist_www %>/'
                 }]
             }
         }
