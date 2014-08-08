@@ -1,11 +1,11 @@
 /*!
- angularAMD v0.2.0
+ angularAMD v0.2.1
  (c) 2013-2014 Marcos Lin https://github.com/marcoslin/
  License: MIT
 */
-'use strict';
 define({
-    load: function (name, req, onload, config) {
+    load: function (name, req, onload) {
+        'use strict';
         //console.log("ngamd loaded: ", req.toUrl(name));
         req(['angularAMD', name], function (angularAMD, value) {
             //console.log("Processing queues.");
@@ -14,3 +14,5 @@ define({
         });
     }
 });
+
+
