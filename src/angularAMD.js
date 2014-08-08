@@ -27,10 +27,7 @@ define(function () {
         // Used in setAlternateAngular() and .processQueue
         alternate_modules = {},
         alternate_modules_tracker = {},
-        alternate_queue = [],
-
-        // Used by angularAMD provider methods and .bootstrap
-        deferred_providers = [];
+        alternate_queue = [];
     
     // Private method to check if angularAMD has been initialized
     function checkBootstrapped() {
@@ -102,7 +99,7 @@ define(function () {
     }
 
     // Constructor
-    function angularAMD() {}
+    function AngularAMD() {}
     
     
     /**
@@ -117,7 +114,7 @@ define(function () {
      * except for 'controllerUrl' attribute.
      *
      */
-    angularAMD.prototype.route = function (config) {
+    AngularAMD.prototype.route = function (config) {
         // Initialization not necessary to call this method.
         var load_controller;
 
@@ -167,7 +164,7 @@ define(function () {
     /**
      * Expose name of the app that has been bootstrapped
      */
-    angularAMD.prototype.appname = function () {
+    AngularAMD.prototype.appname = function () {
         checkBootstrapped();
         return app_name;
     };
@@ -187,7 +184,7 @@ define(function () {
      * blocks, thus replacing the need for "provider === '$injector' && method === 'invoke'"
      * logic.
      */
-    angularAMD.prototype.processQueue = function () {
+    AngularAMD.prototype.processQueue = function () {
         checkBootstrapped();
         
         if (typeof alt_angular === 'undefined') {
@@ -267,7 +264,7 @@ define(function () {
     /**
      * Return cached app provider
      */
-    angularAMD.prototype.getCachedProvider = function (provider_name) {
+    AngularAMD.prototype.getCachedProvider = function (provider_name) {
         checkBootstrapped();
         // Hack used for unit testing that orig_angular has been captured
         var cachedProvider;
@@ -296,7 +293,7 @@ define(function () {
      * Create inject function that uses cached $injector.
      * Designed primarly to be used during unit testing.
      */
-    angularAMD.prototype.inject = function () {
+    AngularAMD.prototype.inject = function () {
         checkBootstrapped();
         return run_injector.invoke.apply(null, arguments);
     };
@@ -306,7 +303,7 @@ define(function () {
      * Create config function that uses cached config_injector.
      * Designed to simulate app.config.
      */
-    angularAMD.prototype.config = function () {
+    AngularAMD.prototype.config = function () {
         checkBootstrapped();
         return config_injector.invoke.apply(null, arguments);
     };
@@ -314,7 +311,7 @@ define(function () {
     /**
      * Reset angularAMD for resuse
      */
-    angularAMD.prototype.reset = function () {
+    AngularAMD.prototype.reset = function () {
         if (typeof orig_angular === 'undefined') {
             return;
         }
@@ -349,7 +346,7 @@ define(function () {
      *
      * enable_ngload: 
      */
-    angularAMD.prototype.bootstrap = function (app, enable_ngload, elem) {
+    AngularAMD.prototype.bootstrap = function (app, enable_ngload, elem) {
         // Prevent bootstrap from being called multiple times
         if (bootstrapped) {
             throw Error('bootstrap can only be called once.');
@@ -482,25 +479,25 @@ define(function () {
     }
 
     // .provider
-    angularAMD.prototype.provider = executeProvider('provider');
+    AngularAMD.prototype.provider = executeProvider('provider');
     // .controller
-    angularAMD.prototype.controller = executeProvider('controller');
+    AngularAMD.prototype.controller = executeProvider('controller');
     // .directive
-    angularAMD.prototype.directive = executeProvider('directive');
+    AngularAMD.prototype.directive = executeProvider('directive');
     // .filter
-    angularAMD.prototype.filter = executeProvider('filter');
+    AngularAMD.prototype.filter = executeProvider('filter');
     // .factory
-    angularAMD.prototype.factory = executeProvider('factory');
+    AngularAMD.prototype.factory = executeProvider('factory');
     // .service
-    angularAMD.prototype.service = executeProvider('service');
+    AngularAMD.prototype.service = executeProvider('service');
     // .constant
-    angularAMD.prototype.constant = executeProvider('constant');
+    AngularAMD.prototype.constant = executeProvider('constant');
     // .value
-    angularAMD.prototype.value = executeProvider('value');
+    AngularAMD.prototype.value = executeProvider('value');
     // .animation
-    angularAMD.prototype.animation = executeProvider('animation');
+    AngularAMD.prototype.animation = executeProvider('animation');
 
     // Create a new instance and return
-    return new angularAMD();
+    return new AngularAMD();
     
 });

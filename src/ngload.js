@@ -4,9 +4,9 @@
  License: MIT
 */
 
-'use strict';
 define({
-    load: function (name, req, onload, config) {
+    load: function (name, req, onload) {
+        'use strict';
         //console.log("ngamd loaded: ", req.toUrl(name));
         req(['angularAMD', name], function (angularAMD, value) {
             //console.log("Processing queues.");
@@ -15,3 +15,5 @@ define({
         });
     }
 });
+
+
