@@ -10,7 +10,7 @@ Installation
     bower install angularAMD
 
 ### cdn
-    //cdn.jsdelivr.net/angular.amd/0.2.0/angularAMD.min.js
+    //cdn.jsdelivr.net/angular.amd/0.2/angularAMD.min.js
 
 
 Usage
