@@ -9,7 +9,7 @@ define(['app'], function (app) {
                 if (scope[attr.ngWrite]) {
                     // ngWrite is found in scope.  Check if promised has been returned
                     var inval = scope[attr.ngWrite];
-                    if (inval.hasOwnProperty("then")) {
+                    if ('then' in inval) {
                         inval.then(function (data) {
                             elm.text(data);
                         });
