@@ -19,6 +19,9 @@ Usage
 http://marcoslin.github.io/angularAMD/ has been created as a working demo for `angularAMD`.  The source code
 can be found in the `www/` directory of this project.
 
+Additional, the following project has been created to illustrate how to build an `r.js` optmized distribution:
+* https://github.com/marcoslin/angularAMD-sample
+
 ### RequireJS data-main
 
 Starting point for any RequireJS app is a `main.js`, which should be used to define the components and their
