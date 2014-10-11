@@ -4,5 +4,5 @@
  License: MIT
 */
 
-"use strict";define({load:function(a,b,c){b(["angularAMD",a],function(a,b){a.processQueue(),c(b)})}});
+define({load:function(a,b,c){"use strict";b(["angularAMD",a],function(a,b){a.processQueue(),c(b)})}});
 //# sourceMappingURL=ngload.min.map

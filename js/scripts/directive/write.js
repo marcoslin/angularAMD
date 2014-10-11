@@ -1,1 +1,1 @@
-define(["app"],function(a){a.directive("ngWrite",["$timeout","$log",function(){return{restrict:"A",link:function(a,b,c){if(a[c.ngWrite]){var d=a[c.ngWrite];d.hasOwnProperty("then")?d.then(function(a){b.text(a)}):b.text(d)}else b.text(c.ngWrite)}}}])});
+define(["app"],function(a){a.directive("ngWrite",["$timeout","$log",function(){return{restrict:"A",link:function(a,b,c){if(a[c.ngWrite]){var d=a[c.ngWrite];"then"in d?d.then(function(a){b.text(a)}):b.text(d)}else b.text(c.ngWrite)}}}])});
