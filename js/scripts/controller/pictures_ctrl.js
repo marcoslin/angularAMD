@@ -1,1 +1,1 @@
-define(["app","service/picturesService","ngload!ui-bootstrap","directive/navMenu"],function(){return function(a,b){a.slideChangeInterval=4e3,a.$watch("cityModel",function(c){c&&b.query(c).then(function(b){a.rows=b})})}});
+define(["app","service/picturesService","ngload!ui-bootstrap","directive/navMenu"],function(){return["$scope","Pictures",function(a,b){a.slideChangeInterval=4e3,a.$watch("cityModel",function(c){c&&b.query(c).then(function(b){a.rows=b})})}]});
