@@ -68,7 +68,7 @@ app.config(function ($routeProvider) {
         angularAMD.route({
             templateUrl: 'views/home.html',
             controller: 'HomeController',
-            controllerUrl: 'scripts/controller.js'
+            controllerUrl: 'scripts/controller'
         })
     );
 });
