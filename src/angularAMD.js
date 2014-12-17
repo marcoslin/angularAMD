@@ -96,6 +96,11 @@ define(function () {
         };
                 
         window.angular = alt_angular;
+
+        if (require.defined('angular')) {
+            require.undef('angular');
+            define('angular', [], alt_angular);
+        }
     }
 
     // Constructor
@@ -318,6 +323,10 @@ define(function () {
         
         // Restore original angular instance
         window.angular = orig_angular;
+        if (require.defined('angular')) {
+            require.undef('angular');
+            define('angular', [], orig_angular);
+        }
 
         // Clear stored app
         orig_app = undefined;
