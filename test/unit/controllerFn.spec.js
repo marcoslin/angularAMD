@@ -29,7 +29,7 @@ define(['angularAMD'], function (angularAMD) {
             expect(route.current.controller).toBeDefined();
 
             // Make sure that controller has been set to custom function
-            expect(route.current.controller.toString()).toMatch(/^\$scope,__AAMDCtrl,\$injector,function/);
+            expect(route.current.controller.toString()).toMatch(/^__AAMDCtrl,\$injector,\$scope,function/);
         });
 
     });
