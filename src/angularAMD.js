@@ -153,7 +153,10 @@ define(function () {
             var resolve = config.resolve || {};
             resolve['__AAMDCtrl'] = ['$q', '$rootScope', function ($q, $rootScope) { // jshint ignore:line
                 var defer = $q.defer();
-                require([load_controller], function (ctrl) {
+                if (typeof load_controller.push == "undefined") {
+                    load_controller = [load_controller];
+                }                
+                require(load_controller, function (ctrl) {
                     defer.resolve(ctrl);
                     $rootScope.$apply();
                 });
