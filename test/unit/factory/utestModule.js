@@ -13,7 +13,7 @@ define(['angularAMD', 'test/unit/factory/utestProvider'], function (angularAMD, 
         describe("Utest " + result.suffix + " Modules", function () {
             it(".config check.", inject([result.UtestStoreResult, function (UtestStoreResult) {
                 if (UtestStoreResult === "undefined") {
-                    console.log("### ERROR on " + result.suffix + ": ", result.config_name);
+                    console.log("### ERROR on " + result.suffix + ": ", result.config_name);
                 }
                 expect(UtestStoreResult).toBe(result.config_name);
             }]));

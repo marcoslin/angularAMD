@@ -57,9 +57,8 @@ define(['angularAMD', 'angular-mocks'], function (angularAMD) {
             var scope, animate, elem;
 
             beforeEach(function () {
-                module("ngAnimateMock");
                 inject(function ($rootScope, $compile, $rootElement, $animate) {
-                    var html_text = "<div ng-class='AnimationClass' class='" + result.utestAnimation + "'></div>";
+                    var html_text = "<div class='" + result.utestAnimation.substring(1) + "'></div>";
                     scope = $rootScope;
                     animate = $animate;
                     elem = $compile(html_text)(scope);
@@ -68,13 +67,13 @@ define(['angularAMD', 'angular-mocks'], function (angularAMD) {
             });
 
             it(".animation check.", function () {
-                animate.addClass(elem, "custom-hide");
-                scope.$digest();
-                expect(elem.css("opacity")).toBe("0");
+                animate.addClass(elem, "custom-hide").then(function () {
+                    expect(elem.css("opacity")).toBe("0");
+                });
 
-                animate.removeClass(elem, "custom-hide");
-                scope.$digest();
-                expect(elem.css("opacity")).toBe("1");
+                animate.removeClass(elem, "custom-hide").then(function () {
+                    expect(elem.css("opacity")).toBe("1");
+                });
             });
         });
     };
