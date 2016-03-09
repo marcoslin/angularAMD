@@ -139,7 +139,9 @@ define(function () {
                     '$scope', '__AAMDCtrl', '$injector',
                     function ($scope, __AAMDCtrl, $injector) {
                         if (typeof __AAMDCtrl !== 'undefined' ) {
-                            this.__proto__ = __AAMDCtrl.prototype;
+                            if (__AAMDCtrl.prototype) {
+                                this.__proto__ = __AAMDCtrl.prototype;
+                            }
                             $injector.invoke(__AAMDCtrl, this, { '$scope': $scope });
                         }
                     }
