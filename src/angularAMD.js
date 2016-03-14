@@ -142,6 +142,12 @@ define(function () {
                             if (__AAMDCtrl.prototype) {
                                 this.__proto__ = __AAMDCtrl.prototype;
                             }
+                            if (Array.isArray(__AAMDCtrl) && __AAMDCtrl.length) {
+                                var fn = __AAMDCtrl[__AAMDCtrl.length - 1];
+                                if (fn.prototype) {
+                                    this.__proto__ = fn.prototype;
+                                }
+                            }
                             $injector.invoke(__AAMDCtrl, this, { '$scope': $scope });
                         }
                     }
