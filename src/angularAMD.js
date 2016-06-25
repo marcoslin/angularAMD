@@ -408,6 +408,10 @@ define(function () {
                         compileProvider.directive(name, constructor);
                         return this;
                     },
+                    component : function(name, options) {
+                        compileProvider.component(name, options);
+                        return this;
+                    },
                     filter : function(name, constructor) {
                         filterProvider.register(name, constructor);
                         return this;
@@ -498,6 +502,8 @@ define(function () {
     AngularAMD.prototype.controller = executeProvider('controller');
     // .directive
     AngularAMD.prototype.directive = executeProvider('directive');
+    // .component
+    AngularAMD.prototype.component = executeProvider('component');
     // .filter
     AngularAMD.prototype.filter = executeProvider('filter');
     // .factory
