@@ -2,7 +2,7 @@
     "name": "angularAMD",
     "version": "0.2.1",
     "dependencies": {
-        "angular": "^1.2.221",
+        "angular": "^1.2.1",
         "requirejs": "~2.1.9"
     },
     "devDependencies": {
