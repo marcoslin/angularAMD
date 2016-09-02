@@ -28,7 +28,7 @@ define(function () {
         alternate_modules = {},
         alternate_modules_tracker = {},
         alternate_queue = [];
-    
+
     // Private method to check if angularAMD has been initialized
     function checkBootstrapped() {
         if ( !bootstrapped ) {
@@ -38,17 +38,17 @@ define(function () {
 
     /**
      * Create an alternate angular so that subsequent call to angular.module will queue up
-     * the module created for later processing via the .processQueue method. 
-     * 
+     * the module created for later processing via the .processQueue method.
+     *
      * This delaying processing is needed as angular does not recognize any newly created
      * module after angular.bootstrap has ran.  The only way to add new objects to angular
      * post bootstrap is using cached provider.
-     * 
+     *
      * Once the modules has been queued, processQueue would then use each module's _invokeQueue
      * and _runBlock to recreate object using cached $provider.  In essence, creating a duplicate
      * object into the current ng-app.  As result, if there are subsequent call to retrieve the
      * module post processQueue, it would retrieve a module that is not integrated into the ng-app.
-     * 
+     *
      * Therefore, any subsequent to call to angular.module after processQueue should return undefined
      * to prevent obtaining a duplicated object.  However, it is critical that angular.module return
      * appropriate object *during* processQueue.
@@ -81,7 +81,7 @@ define(function () {
                     item = { name: name, module: orig_mod};
                 alternate_queue.push(item);
                 orig_angular.extend(orig_mod, onDemandLoader);
-                
+
                 /*
                 Use `alternate_modules_tracker` to track which module has been created by alt_angular
                 but use `alternate_modules` to cache the module created.  This is to simplify the
@@ -89,12 +89,12 @@ define(function () {
                 */
                 alternate_modules_tracker[name] = true;
                 alternate_modules[name] = orig_mod;
-                
+
                 // Return created module
                 return orig_mod;
             }
         };
-                
+
         window.angular = alt_angular;
 
         if (require.defined('angular')) {
@@ -105,11 +105,11 @@ define(function () {
 
     // Constructor
     function AngularAMD() {}
-    
-    
+
+
     /**
      * Helper function to generate angular's $routeProvider.route.  'config' input param must be an object.
-     * 
+     *
      * Populate the resolve attribute using either 'controllerUrl' or 'controller'.  If 'controllerUrl'
      * is passed, it will attempt to load the Url using requirejs and remove the attribute from the config
      * object.  Otherwise, it will attempt to populate resolve by loading what's been passed in 'controller'.
@@ -147,7 +147,7 @@ define(function () {
         } else if (typeof config.controller === 'string') {
             load_controller = config.controller;
         }
-        
+
         // If controller needs to be loaded, append to the resolve property
         if (load_controller) {
             var resolve = config.resolve || {};
@@ -164,8 +164,8 @@ define(function () {
 
         return config;
     };
-    
-    
+
+
     /**
      * Expose name of the app that has been bootstrapped
      */
@@ -173,8 +173,8 @@ define(function () {
         checkBootstrapped();
         return app_name;
     };
-    
-    
+
+
     /**
      * Recreate the modules created by alternate angular in ng-app using cached $provider.
      * As AMD loader does not guarantee the order of dependency in a require([...],...)
@@ -191,7 +191,7 @@ define(function () {
      */
     AngularAMD.prototype.processQueue = function () {
         checkBootstrapped();
-        
+
         if (typeof alt_angular === 'undefined') {
             throw new Error('Alternate angular not set.  Make sure that `enable_ngload` option has been set when calling angularAMD.bootstrap');
         }
@@ -251,7 +251,7 @@ define(function () {
                 }
             }
 
-            
+
         }
 
          //after we have executed all config blocks, we finally execute the run blocks
@@ -269,8 +269,8 @@ define(function () {
         alternate_modules = {};
 
     };
-    
-    
+
+
     /**
      * Return cached app provider
      */
@@ -298,7 +298,7 @@ define(function () {
 
         return cachedProvider;
     };
-    
+
     /**
      * Create inject function that uses cached $injector.
      * Designed primarly to be used during unit testing.
@@ -317,7 +317,7 @@ define(function () {
         checkBootstrapped();
         return config_injector.invoke.apply(null, arguments);
     };
-    
+
     /**
      * Reset angularAMD for resuse
      */
@@ -325,7 +325,7 @@ define(function () {
         if (typeof orig_angular === 'undefined') {
             return;
         }
-        
+
         // Restore original angular instance
         window.angular = orig_angular;
         if (require.defined('angular')) {
@@ -353,12 +353,12 @@ define(function () {
         // Clear bootstrap flag but there is no way to un-bootstrap AngularJS
         bootstrapped = false;
     };
-    
+
     /**
      * Initialization of angularAMD that bootstraps AngularJS.  The objective is to cache the
      * $provider and $injector from the app to be used later.
      *
-     * enable_ngload: 
+     * enable_ngload:
      */
     AngularAMD.prototype.bootstrap = function (app, enable_ngload, elem) {
         // Prevent bootstrap from being called multiple times
@@ -380,7 +380,7 @@ define(function () {
 
         // Determine element to bootstrap angular
         elem = elem || document.documentElement;
-        
+
         // Cache provider needed
         app.config(
             ['$controllerProvider', '$compileProvider', '$filterProvider', '$animateProvider', '$provide', '$injector', function (controllerProvider, compileProvider, filterProvider, animateProvider, provide, injector) {
@@ -429,20 +429,24 @@ define(function () {
                         provide.value(name, constructor);
                         return this;
                     },
+                    component : function(name, constructor) {
+                        compileProvider.component(name, constructor);
+                        return this;
+                    },
                     animation: angular.bind(animateProvider, animateProvider.register)
                 });
                 angular.extend(alt_app, onDemandLoader);
 
             }]
         );
-        
+
         // Get the injector for the app
         app.run(['$injector', function ($injector) {
             // $injector must be obtained in .run instead of .config
             run_injector = $injector;
             app_cached_providers.$injector = run_injector;
         }]);
-        
+
         // Store the app name needed by .bootstrap function.
         app_name = app.name;
 
@@ -510,8 +514,10 @@ define(function () {
     AngularAMD.prototype.value = executeProvider('value');
     // .animation
     AngularAMD.prototype.animation = executeProvider('animation');
+    // .component
+    AngularAMD.prototype.component = executeProvider('component');
 
     // Create a new instance and return
     return new AngularAMD();
-    
+
 });
