@@ -1,8 +1,9 @@
-/*!
- angularAMD v0.2.1
+/*
+ angularAMD v<%= cvars.proj_version %>
  (c) 2013-2014 Marcos Lin https://github.com/marcoslin/
  License: MIT
 */
+
 define(function () {
     'use strict';
     var bootstrapped = false,
@@ -95,6 +96,11 @@ define(function () {
         };
                 
         window.angular = alt_angular;
+
+        if (require.defined('angular')) {
+            require.undef('angular');
+            define('angular', [], alt_angular);
+        }
     }
 
     // Constructor
@@ -189,15 +195,16 @@ define(function () {
         if (typeof alt_angular === 'undefined') {
             throw new Error('Alternate angular not set.  Make sure that `enable_ngload` option has been set when calling angularAMD.bootstrap');
         }
-        
+
         // Process alternate queue in FIFO fashion
         function processRunBlock(block) {
             //console.info('"' + item.name + '": executing run block: ', run_block);
             run_injector.invoke(block);
         }
 
-        while (alternate_queue.length) {
-            var item = alternate_queue.shift(),
+        // Process the config blocks
+        for (var i=0;i<alternate_queue.length;i++) {
+            var item = alternate_queue[i],
                 invokeQueue = item.module._invokeQueue,
                 y;
 
@@ -245,17 +252,21 @@ define(function () {
             }
 
             
-            // Execute the run block of the module
+        }
+
+         //after we have executed all config blocks, we finally execute the run blocks
+        while (alternate_queue.length) {
+            var item = alternate_queue.shift();
             if (item.module._runBlocks) {
                 angular.forEach(item.module._runBlocks, processRunBlock);
             }
-            
-            /*
-            Clear the cached modules created by alt_angular so that subsequent call to
-            angular.module will return undefined.
-            */
-            alternate_modules = {};
         }
+
+        /*
+        Clear the cached modules created by alt_angular so that subsequent call to
+        angular.module will return undefined.
+        */
+        alternate_modules = {};
 
     };
     
@@ -317,6 +328,10 @@ define(function () {
         
         // Restore original angular instance
         window.angular = orig_angular;
+        if (require.defined('angular')) {
+            require.undef('angular');
+            define('angular', [], orig_angular);
+        }
 
         // Clear stored app
         orig_app = undefined;
@@ -414,6 +429,10 @@ define(function () {
                         provide.value(name, constructor);
                         return this;
                     },
+                    component : function(name, constructor) {
+                        compileProvider.component(name, constructor);
+                        return this;
+                    },
                     animation: angular.bind(animateProvider, animateProvider.register)
                 });
                 angular.extend(alt_app, onDemandLoader);
@@ -495,6 +514,8 @@ define(function () {
     AngularAMD.prototype.value = executeProvider('value');
     // .animation
     AngularAMD.prototype.animation = executeProvider('animation');
+    // .component
+    AngularAMD.prototype.component = executeProvider('component');
 
     // Create a new instance and return
     return new AngularAMD();

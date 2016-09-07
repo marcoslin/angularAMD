@@ -429,6 +429,10 @@ define(function () {
                         provide.value(name, constructor);
                         return this;
                     },
+                    component : function(name, constructor) {
+                        compileProvider.component(name, constructor);
+                        return this;
+                    },
                     animation: angular.bind(animateProvider, animateProvider.register)
                 });
                 angular.extend(alt_app, onDemandLoader);
@@ -510,6 +514,8 @@ define(function () {
     AngularAMD.prototype.value = executeProvider('value');
     // .animation
     AngularAMD.prototype.animation = executeProvider('animation');
+    // .component
+    AngularAMD.prototype.component = executeProvider('component');
 
     // Create a new instance and return
     return new AngularAMD();

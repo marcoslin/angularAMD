@@ -17,6 +17,7 @@ module.exports = function (config) {
             {pattern: 'test/unit/app_no_ngload.spec.js', watched: true, included: false},
             {pattern: 'test/unit/lib/app_no_ngload.js', watched: true, included: false},
             'bower_components/requirejs/require.js',
+            'node_modules/phantomjs-polyfill/bind-polyfill.js',
             'test/unit/lib/main.no_ngload.js'
         ],
         
