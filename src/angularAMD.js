@@ -394,7 +394,7 @@ define(function () {
                     $provide: provide
                 };
 
-                // Substitue provider methods from app call the cached provider
+                // Substitute provider methods from app call the cached provider
                 angular.extend(onDemandLoader, {
                     provider : function(name, constructor) {
                         provide.provider(name, constructor);
@@ -407,6 +407,9 @@ define(function () {
                     directive : function(name, constructor) {
                         compileProvider.directive(name, constructor);
                         return this;
+                    },
+                    component : function(name, constructor) {
+                        // do nothing by default
                     },
                     filter : function(name, constructor) {
                         filterProvider.register(name, constructor);
@@ -435,6 +438,17 @@ define(function () {
                     },
                     animation: angular.bind(animateProvider, animateProvider.register)
                 });
+
+                // Only add component method if present on compileProvider (i.e. Angular >= v.1.5):
+                if (compileProvider.component) {
+                    angular.extend(onDemandLoader, {
+                        component : function(name, constructor) {
+                            compileProvider.component(name, constructor);
+                            return this;
+                        }
+                    });
+                }
+                
                 angular.extend(alt_app, onDemandLoader);
 
             }]
@@ -502,6 +516,8 @@ define(function () {
     AngularAMD.prototype.controller = executeProvider('controller');
     // .directive
     AngularAMD.prototype.directive = executeProvider('directive');
+    // .component
+    AngularAMD.prototype.component = executeProvider('component');
     // .filter
     AngularAMD.prototype.filter = executeProvider('filter');
     // .factory
