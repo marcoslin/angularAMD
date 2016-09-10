@@ -1,44 +1,45 @@
 {
-    "name": "angularAMD",
-    "version": "0.1.0",
-    "description": "RequireJS plugin for AngularJS",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/marcoslin/angularAMD.git"
-    },
-    "keywords": [
-        "angularjs",
-        "requirejs"
-    ],
-    "author": "Marcos Lin",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/marcoslin/angularAMD/issues"
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "mustache": "~0.7.2",
-        "grunt": "~0.4.1",
-        "grunt-contrib-copy": "~0.4.1",
-        "grunt-contrib-concat": "~0.3.0",
-        "grunt-bower-task": "~0.4.0",
-        "grunt-karma": "~0.6.2",
-        "grunt-contrib-uglify": "~0.4.0",
-        "grunt-contrib-cssmin": "~0.6.0",
-        "grunt-contrib-htmlmin": "~0.1.3",
-        "grunt-contrib-requirejs": "~0.4.0",
-        "grunt-contrib-connect": "~0.3.0",
-        "grunt-templater": "0.0.6",
-        "grunt-shell-spawn": "~0.3.0",
-        "grunt-open": "~0.2.2",
-        "grunt-usemin": "~0.1.11",
-        "grunt-ng-annotate": "~0.2.2",
-        "load-grunt-tasks": "~0.1.0",
-        "karma": "~0.10.2",
-        "protractor": "~0.21.0",
-        "grunt-protractor-runner": "~0.2.4"
-    },
-    "scripts": {
-        "test": "grunt build-travis"
-    }
+  "name": "angularAMD",
+  "version": "0.1.0",
+  "description": "RequireJS plugin for AngularJS",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/marcoslin/angularAMD.git"
+  },
+  "keywords": [
+    "angularjs",
+    "requirejs"
+  ],
+  "author": "Marcos Lin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcoslin/angularAMD/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-bower-task": "~0.4.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-cssmin": "~0.6.0",
+    "grunt-contrib-htmlmin": "~0.1.3",
+    "grunt-contrib-requirejs": "~0.4.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-karma": "~0.6.2",
+    "grunt-ng-annotate": "~0.2.2",
+    "grunt-open": "~0.2.2",
+    "grunt-protractor-runner": "~0.2.4",
+    "grunt-shell-spawn": "~0.3.0",
+    "grunt-templater": "0.0.6",
+    "grunt-usemin": "~0.1.11",
+    "karma": "~0.10.2",
+    "load-grunt-tasks": "~0.1.0",
+    "mustache": "~0.7.2",
+    "phantomjs-polyfill": "0.0.2",
+    "protractor": "~0.21.0"
+  },
+  "scripts": {
+    "test": "grunt build-travis"
+  }
 }
