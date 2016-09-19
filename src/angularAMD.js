@@ -135,14 +135,19 @@ define(function () {
             delete config.controllerUrl;
             if (typeof config.controller === 'undefined') {
                 // Only controllerUrl is defined.  Attempt to set the controller to return value of package loaded.
-                config.controller = [
-                    '$scope', '__AAMDCtrl', '$injector',
-                    function ($scope, __AAMDCtrl, $injector) {
-                        if (typeof __AAMDCtrl !== 'undefined' ) {
-                            $injector.invoke(__AAMDCtrl, this, { '$scope': $scope });
+                var dependencies = ['__AAMDCtrl', '$injector', '$scope'];
+                angular.forEach(config.resolve, function(factory, key) {
+                    dependencies.push(key);
+                });
+                config.controller = dependencies.concat(function(__AAMDCtrl, $injector) {
+                    if (typeof __AAMDCtrl !== 'undefined' ) {
+                        var locals = {};
+                        for (var i = 2; i < dependencies.length; ++i) {
+                            locals[dependencies[i]] = arguments[i];
                         }
+                        $injector.invoke(__AAMDCtrl, this, locals);
                     }
-                ];
+                });
             }
         } else if (typeof config.controller === 'string') {
             load_controller = config.controller;
