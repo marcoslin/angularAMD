@@ -4,7 +4,7 @@
  License: MIT
 */
 
-define(function () {
+define('angularAMD', function () {
     'use strict';
     var bootstrapped = false,
 
