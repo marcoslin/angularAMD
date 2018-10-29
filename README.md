@@ -238,3 +238,4 @@ References
 * [Dependency Injection using RequireJS & AngularJS](http://solutionoptimist.com/2013/09/30/requirejs-angularjs-dependency-injection/) by Thomas Burleson
 * [Lazy loading AngularJS modules with RequireJS](http://stackoverflow.com/questions/19134023/lazy-loading-angularjs-modules-with-requirejs) stackoverflow
 * [angular-require-lazy](https://github.com/nikospara/angular-require-lazy) by Nikos Paraskevopoulos
+https://github.com/Hilnanda
